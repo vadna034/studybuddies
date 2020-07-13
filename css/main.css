@@ -1,0 +1,390 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700");
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #555555;
+}
+
+#sideMenu {
+  background: #302d43;
+  max-width: 280px;
+  width: 280px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+#sideMenu nav {
+  padding-top: 100px;
+}
+#sideMenu nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 15px 30px;
+  font-weight: 300;
+  transition: all 0.3s ease-in-out;
+}
+#sideMenu nav a .fa {
+  color: #999999;
+  font-size: 1.4rem;
+  margin-right: 0.8rem;
+  display: inline-block;
+  width: 30px;
+  position: relative;
+  top: 2px;
+}
+#sideMenu nav a.active {
+  background: #282639;
+  border-left: 5px solid #92cf48;
+  padding: 15px 30px 15px 25px;
+}
+#sideMenu nav a.active .fa {
+  color: #92cf48;
+}
+#sideMenu nav a:hover {
+  background: #282639;
+  border-left: 5px solid #92cf48;
+  padding: 15px 30px 15px 25px;
+}
+
+.dash {
+  margin: 20px 50px;
+  padding: 10px;
+  background-color: #f4f6f9;
+}
+
+header {
+  margin-left: 280px;
+  padding: 10px;
+}
+header .search-area {
+  display: inline-block;
+  width: 50%;
+}
+header .search-area .fa {
+  color: #999999;
+}
+header .search-area input[type="text"] {
+  background: #fff;
+  border: none;
+  font-size: 1.3rem;
+  color: #92cf48;
+  padding: 10px;
+  font-weight: 100;
+  width: 80%;
+  transition: all 0.5 ease-in-out;
+}
+header .search-area input[type="text"]:hover {
+  background: #f4f6f9;
+}
+header .user-area {
+  float: right;
+  padding: 10px;
+}
+header .user-area a {
+  display: inline-block;
+  padding-right: 20px;
+  text-decoration: none;
+  color: #302d43;
+  vertical-align: top;
+  height: 30px;
+}
+header .user-area a.add {
+  font-size: 20px;
+  font-weight: 500;
+  padding-top: -10px;
+}
+header .user-area a.notification {
+  position: relative;
+  text-align: center;
+  padding-top: 8px;
+}
+header .user-area a.notification .circle {
+  background: red;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 8px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 3px;
+  left: 7px;
+}
+header .user-area a .user-img {
+  background: url("https://randomuser.me/api/portraits/men/46.jpg") no-repeat
+    center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+input:active,
+input:focus,
+textarea:focus {
+  outline: none;
+  color: #f4f6f9;
+}
+
+/* Fallback for Edge
+-------------------------------------------------- */
+/* Fallback for IE
+-------------------------------------------------- */
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+.card-signin .card-body {
+  padding: 2rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+.form-signin .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: 0.1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.form-label-group input {
+  height: auto;
+  border-radius: 2rem;
+}
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
+}
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+  color: #777;
+}
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+.form-label-group input::placeholder {
+  color: transparent;
+}
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+.form-label-group input:not(:placeholder-shown) ~ label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
+}
+.form-label-group > input {
+  padding: 0.75rem 1.5rem;
+}
+.form-label-group > label {
+  padding: 0.75rem 1.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  line-height: 1.5;
+  color: #495057;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.btn-google {
+  color: white;
+  background-color: #ea4335;
+}
+
+.btn-facebook {
+  color: white;
+  background-color: #3b5998;
+}
+
+/*
+@supports {
+	(-ms-ime-align: {
+		auto) {
+			.form-label-group>label { display: none;
+		}
+	}
+}
+*/
+@media all and (-ms-high-contrast: none) {
+  .form-label-group > label {
+    display: none;
+  }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777;
+  }
+}
+
+@media (-ms-high-contrast: active) {
+  .form-label-group > label {
+    display: none;
+  }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777;
+  }
+}

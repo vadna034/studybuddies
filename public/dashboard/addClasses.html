@@ -1,0 +1,119 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <meta name="description" content="yeah" />
+    <meta name="keywords" content="yeah" />
+    <meta name="author" content="Shane Vadnais" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <section id="sideMenu">
+      <nav>
+        <a href="#" class="active"><i class="fa fa-home"></i>Home</a>
+        <a href="dashboard/addClasses.html">Add Classes</a>
+        <a href="dashboard/myClasses.html">My Classes</a>
+        <a href="dashboard/myGroups.html">My Groups</a>
+        <a href="#"></a>
+      </nav>
+    </section>
+
+    <header>
+      <div class="search-area">
+        <div>
+          <i class="fa fa-search"></i>
+          <input type="text" name="" value="" />
+        </div>
+      </div>
+
+      <div class="user-area">
+        <a href="#" class="add">+ add</a>
+        <a href="#" class="notification">
+          <i class="fa fa-bell-o" aria-hidden="true"></i>
+          <span class="circle">3</span>
+        </a>
+        <a href="#">
+          <div class="user-img"></div>
+          <i class="fa fa-caret-down" aria-hidden="true"></i>
+        </a>
+      </div>
+    </header>
+
+    <div class="dash">
+      <form name="addClass" action="/addClass" method="POST">
+        <div class="form-group row">
+          <label for="term" class="col-sm-2 col-form-label">
+            Term:
+          </label>
+          <div class="col-sm-10">
+            <select name="term" id="term" class="custom-select">
+              <option selected>Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="dept" class="col-sm-2 col-form-label">
+            Dept:
+          </label>
+          <div class="col-sm-10">
+            <select name="dept" id="dept" class="custom-select mr-sm-2">
+              <option selected>Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="classNumber" class="col-sm-2 col-form-label">
+            Class Number:
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              name="classNumber"
+              class="form-control"
+              id="classNumber"
+              placeholder="####"
+            />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="classId" class="col-sm-2 col-form-label">
+            (Optional) Class Id:
+          </label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              name="classId"
+              class="form-control"
+              id="classId"
+              placeholder="#####"
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
