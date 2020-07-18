@@ -85,6 +85,10 @@ app.get("/dashboard/profile", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/profile.html");
 });
 
+app.get("/dashboard/home", (req, res) => {
+  res.sendFile(__dirname + "/public/dashboard/home.html");
+});
+
 app.post("/register.html", (req, res) => {
   var body = req.body;
   console.log(body);
