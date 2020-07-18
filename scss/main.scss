@@ -11,11 +11,38 @@ body {
   background-color: #555555;
 }
 
+.addClassForm {
+  padding: 20px 50px;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+td {
+  width: 25%;
+}
+
+.pageTitle {
+  padding-left: 20px;
+  padding-top: 12px;
+  h1 {
+    font-weight: 400;
+    font-size: 1.4rem;
+    color: purple;
+  }
+  p {
+    color: #999999;
+  }
+}
+
 #sideMenu {
+  display: inline-block;
   background: $purpleLight;
   max-width: 280px;
   width: 280px;
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   nav {
@@ -58,12 +85,39 @@ body {
 }
 
 .dash {
+  display: inline-block;
   margin-left: 280px;
   padding: 10px;
   background-color: $greyLight;
+  width: calc(100% - 280px);
+  min-height: 100%;
+}
+
+.homeCards {
+  .card {
+    display: inline-block;
+    padding: 30px;
+    min-width: 350px;
+  }
+
+  .profileCard {
+    width: 30%;
+    height: 30rem;
+  }
+
+  .classCard {
+    width: 30%;
+    height: 30rem;
+  }
+
+  .groupCard {
+    width: 60%;
+    min-height: 30rem;
+  }
 }
 
 header {
+  display: inline-block;
   margin-left: 280px;
   padding: 10px;
 
