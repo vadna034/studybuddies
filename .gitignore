@@ -1,0 +1,6 @@
+# ignores the node modules so that the repo is wayyy smaller
+node_modules/
+# don't want my vscode settings in there
+.vscode/
+# example dashboard that I don't really care about anymore 
+sideNav/
