@@ -32,21 +32,28 @@
                   <input
                     type="username"
                     name="inputUsername"
+                    id="usernameField"
                     class="form-control"
                     required
                   />
-                  <label for="inputPassword">username</label>
+                  <label for="inputUsername">username</label>
                 </div>
 
                 <div class="form-label-group">
-                  <input type="email" name="inputEmail" class="form-control" />
+                  <input
+                    type="email"
+                    name="inputEmail"
+                    id="emailField"
+                    class="form-control"
+                  />
                   <label for="inputEmail">Email Address</label>
                 </div>
 
                 <div class="form-label-group">
                   <input
-                    type="password"
+                    type="email"
                     name="inputPassword"
+                    id="passwordField"
                     class="form-control"
                     required
                   />
@@ -57,10 +64,11 @@
                   <input
                     type="password"
                     name="confirmPassword"
+                    id="confirmPasswordField"
                     class="form-control"
                     required
                   />
-                  <label for="inputPassword">Confirm Password</label>
+                  <label for="confirmPassword">Confirm Password</label>
                 </div>
 
                 <button
@@ -89,5 +97,30 @@
         </div>
       </div>
     </div>
+
+    <script>
+      $(document).ready(() => {
+        var usernameField = $("#usernameField")[0];
+        var emailField = $("#emailField")[0];
+        var passwordField = $("#passwordField")[0];
+        var confirmPasswordField = $("#confirmPasswordField")[0];
+
+        usernameField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+
+        emailField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+
+        passwordField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+
+        confirmPasswordField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+      });
+    </script>
   </body>
 </html>
