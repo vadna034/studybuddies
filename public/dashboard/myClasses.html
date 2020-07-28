@@ -54,7 +54,7 @@
     </header>
 
     <div class="dash">
-      <table class="table table-dark">
+      <table class="table table-dark" id="classTable">
         <thead>
           <tr>
             <th scope="col" class="text-center">Term</th>
@@ -64,6 +64,7 @@
             <th scope="col" class="text-center"></th>
           </tr>
         </thead>
+        <!--
         <tbody>
           <tr>
             <th scope="col" class="text-center">Spring 2019</th>
@@ -75,11 +76,31 @@
             </th>
           </tr>
         </tbody>
+        -->
       </table>
     </div>
 
     <script>
-      $(document).ready;
+      $(document).ready(() => {
+        var table = $("classTable")[0];
+
+        fetch("/getClasses", {
+          method: "POST",
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log(data);
+            var classes = JSON.parse(data).classes;
+
+            if (classes.length == 0) {
+            } else {
+              dash.innerHTML = "<h> You don't have any classes yet? Add some?";
+            }
+          })
+          .catch((error) => {
+            console.error("Error: ", error);
+          });
+      });
     </script>
   </body>
 </html>
