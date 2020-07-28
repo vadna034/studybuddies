@@ -53,13 +53,14 @@
       </div>
     </header>
 
-    <div class="dash">
+    <div class="dash" id="mainClass">
       <table class="table table-dark" id="classTable">
         <thead>
           <tr>
             <th scope="col" class="text-center">Term</th>
             <th scope="col" class="text-center">Code</th>
             <th scope="col" class="text-center">Number</th>
+            <th scope="col" class="text-center">Section</th>
             <th scope="col" class="text-center">Page</th>
             <th scope="col" class="text-center"></th>
           </tr>
@@ -90,11 +91,30 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data);
-            var classes = JSON.parse(data).classes;
+            var classes = JSON.parse(data)[0].classes;
+            console.log(classes);
+            console.log(classes.length);
 
-            if (classes.length == 0) {
+            if (classes.length != 0) {
+              var table = $("#classTable")[0];
+              classes.forEach((c) => {
+                var addRow = table.insertRow();
+
+                var termCell = addRow.insertCell(0);
+                termCell.innerHTML = "<p>" + c.term + "<p>";
+                var codeCell = addRow.insertCell(1);
+                codeCell.innerHTML = "<p>" + c.dept + "<p>";
+                var numberCell = addRow.insertCell(2);
+                numberCell.innerHTML = "<p>" + c.classNum + "<p>";
+                var IDCell = addRow.insertCell(3);
+                IDCell.innerHTML = "<p>" + c.classId + "<p>";
+                var pageCell = addRow.insertCell(4);
+                pageCell.innerHTML = "<p>" + c.dept + "<p>";
+              });
             } else {
-              dash.innerHTML = "<h> You don't have any classes yet? Add some?";
+              console.log("here");
+              $("#mainClass")[0].innerHTML =
+                "<h> You don't have any classes yet? Add some? <h>";
             }
           })
           .catch((error) => {
