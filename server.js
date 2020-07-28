@@ -16,12 +16,10 @@ const mongoURL =
 var db = null;
 // Gives us a dbclient, and connects that client to the database
 
-/*
 MongoClient.connect(mongoURL, (err, client) => {
-    if(err) console.error(err);
-    db = client.db('users');
-})
-*/
+  if (err) console.error(err);
+  db = client.db("users");
+});
 
 app.use(
   session({
@@ -66,13 +64,6 @@ app.get("/dashboard/addClasses", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/addClasses.html");
 });
 
-app.post("/addClass", (req, res) => {
-  console.log(req.body);
-  console.log("\n\n\n");
-  console.log(req);
-  res.sendFile(__dirname + "/public/dashboard/addClasses.html");
-});
-
 app.get("/dashboard/myClasses", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/myClasses.html");
 });
@@ -93,18 +84,10 @@ app.post("/register.html", (req, res) => {
   var body = req.body;
   console.log(body);
 
-  var entry = {
-    username: body.inputUsername,
-    email: body.inputEmail,
-    password: body.inputPassword,
-  };
-
-  var query = {
-    $or: [{ username: entry.username }, { email: entry.email }],
-  };
-
   db.collection("users")
-    .find(query)
+    .find({
+      $or: [{ username: body.inputUsername }, { email: body.inputEmail }],
+    })
     .toArray((err, docs) => {
       if (err) {
         console.error(err);
@@ -112,11 +95,19 @@ app.post("/register.html", (req, res) => {
 
       if (docs.length == 0) {
         console.log("Success");
-        db.collection("users").insertOne(entry, (err, docs) => {
-          if (err) {
-            console.error(err);
+        db.collection("users").insertOne(
+          {
+            username: body.inputUsername,
+            email: body.inputEmail,
+            password: body.inputPassword,
+            classes: [],
+          },
+          (err, docs) => {
+            if (err) {
+              console.error(err);
+            }
           }
-        });
+        );
         res.statusCode = 200;
         res.sendFile(__dirname + "/public/login.html");
       } else {
@@ -148,9 +139,44 @@ app.post("/login.html", (req, res) => {
         res.sendFile(__dirname + "/public/login.html");
       } else {
         console.log("success");
-        session.email = query.email;
-        session.username = docs[0].username;
-        res.sendFile(__dirname + "/public/login.html");
+        console.log(docs[0]);
+        req.session.id = docs[0]._id;
+        req.session.email = docs[0].email;
+        req.session.username = docs[0].username;
+        res.sendFile(__dirname + "/public/dashboard.html");
       }
     });
+});
+
+app.post("/addClass", (req, res) => {
+  // Post request used to add a class to the users datatbase entry
+  // Just using /in makes this stuff work :3. For arrays,, you can just push
+  // can use json.stringify on the object !
+
+  var body = req.body;
+  var entry_one = {
+    term: body.term,
+    dept: body.dept,
+    classNum: body.classNumber,
+    classId: body.classId,
+  };
+
+  var entry_two = {
+    term: body.term,
+    dept: body.dept,
+    classNum: body.classNumber,
+    classId: "",
+  };
+
+  db.collection("users").updateOne(
+    { username: req.session.username },
+    { $addToSet: { classes: { $each: [entry_one, entry_two] } } },
+    function (err, result) {
+      if (err) {
+        console.error(err);
+      }
+      res.statusCode = 200;
+      res.sendFile(__dirname + "/public/dashboard/addClasses.html");
+    }
+  );
 });
