@@ -53,17 +53,19 @@
       </div>
     </header>
 
-    <div class="dash">
-      <table class="table table-dark">
+    <div class="dash" id="mainClass">
+      <table class="table table-dark" id="classTable">
         <thead>
           <tr>
             <th scope="col" class="text-center">Term</th>
             <th scope="col" class="text-center">Code</th>
             <th scope="col" class="text-center">Number</th>
+            <th scope="col" class="text-center">Section</th>
             <th scope="col" class="text-center">Page</th>
             <th scope="col" class="text-center"></th>
           </tr>
         </thead>
+        <!--
         <tbody>
           <tr>
             <th scope="col" class="text-center">Spring 2019</th>
@@ -75,11 +77,51 @@
             </th>
           </tr>
         </tbody>
+        -->
       </table>
     </div>
 
     <script>
-      $(document).ready;
+      $(document).ready(() => {
+        var table = $("classTable")[0];
+
+        fetch("/getClasses", {
+          method: "POST",
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log(data);
+            var classes = JSON.parse(data)[0].classes;
+            console.log(classes);
+            console.log(classes.length);
+
+            if (classes.length != 0) {
+              var table = $("#classTable")[0];
+              classes.forEach((c) => {
+                var addRow = table.insertRow();
+
+                var termCell = addRow.insertCell(0);
+                termCell.innerHTML = c.term;
+                var codeCell = addRow.insertCell(1);
+                codeCell.innerHTML = c.dept;
+                var numberCell = addRow.insertCell(2);
+                numberCell.innerHTML = c.classNum;
+                var IDCell = addRow.insertCell(3);
+                IDCell.innerHTML = c.classId;
+                var pageCell = addRow.insertCell(4);
+                pageCell.class = "text-center";
+                pageCell.innerHTML = c.dept;
+              });
+            } else {
+              console.log("here");
+              $("#mainClass")[0].innerHTML =
+                "<h> You don't have any classes yet? Add some? <h>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error: ", error);
+          });
+      });
     </script>
   </body>
 </html>

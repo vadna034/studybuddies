@@ -51,7 +51,7 @@
 
                 <div class="form-label-group">
                   <input
-                    type="email"
+                    type="password"
                     name="inputPassword"
                     id="passwordField"
                     class="form-control"
@@ -105,24 +105,13 @@
         var passwordField = $("#passwordField")[0];
         var confirmPasswordField = $("#confirmPasswordField")[0];
 
-        usernameField.addEventListener("keypress", () => {
-          console.log("here");
-        });
+        usernameField.addEventListener("keypress", () => {});
 
-        emailField.addEventListener("keypress", () => {
-          console.log("here");
-        });
+        emailField.addEventListener("keypress", () => {});
 
-        passwordField.addEventListener("keypress", () => {
-          if (passwordField.length < 8) {
-            console.log("those");
-          }
-          console.log("there");
-        });
+        passwordField.addEventListener("keypress", () => {});
 
-        confirmPasswordField.addEventListener("keypress", () => {
-          console.log("here");
-        });
+        confirmPasswordField.addEventListener("keypress", () => {});
       });
     </script>
   </body>

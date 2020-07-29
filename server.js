@@ -5,6 +5,7 @@ var session = require("express-session");
 var crypto = require("crypto");
 var db = require("mongodb");
 const { MongoClient } = require("mongodb");
+const { query } = require("express");
 
 // Sets up our application, with a bodyparser for reading response messages
 var app = express();
@@ -179,4 +180,24 @@ app.post("/addClass", (req, res) => {
       res.sendFile(__dirname + "/public/dashboard/addClasses.html");
     }
   );
+});
+
+app.post("/getClasses", (req, res) => {
+  const cursor = db
+    .collection("users")
+    .find({
+      username: req.session.username,
+    })
+    .project({ classes: 1 })
+    .toArray()
+    .then((items) => {
+      console.log(items);
+      res.statusCode = 200;
+      res.contentType = "text/html";
+      res.send(JSON.stringify(items));
+    })
+    .catch(() => {
+      res.statusCode = 404;
+      res.send("");
+    });
 });
