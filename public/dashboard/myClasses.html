@@ -109,8 +109,10 @@
                 var IDCell = addRow.insertCell(3);
                 IDCell.innerHTML = c.classId;
                 var pageCell = addRow.insertCell(4);
-                pageCell.class = "text-center";
                 pageCell.innerHTML = c.dept;
+                var delCell = addRow.insertCell(5);
+                delCell.innerHTML =
+                  '<button type="button" class="btn btn-danger">Leave</button>';
               });
             } else {
               console.log("here");
