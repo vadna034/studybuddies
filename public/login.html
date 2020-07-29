@@ -28,7 +28,6 @@
                     type="email"
                     name="inputEmail"
                     class="form-control"
-                    id="emailField"
                     placeholder="Email address"
                     required
                     autofocus
@@ -39,7 +38,6 @@
                 <div class="form-label-group">
                   <input
                     type="password"
-                    id="inputPassword"
                     name="inputPassword"
                     class="form-control"
                     placeholder="Password"
@@ -83,16 +81,5 @@
         </div>
       </div>
     </div>
-    <script>
-      $(document).ready(() => {
-        var emailField = $("emailField");
-        var passField = $("inputPassword");
-        if (passField.value.match("This")) {
-          console.log("Correct length");
-        } else {
-          console.log("Incorrect length");
-        }
-      });
-    </script>
   </body>
 </html>

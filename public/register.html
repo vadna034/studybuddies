@@ -1,59 +1,129 @@
 <!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="yeah">
-        <meta name="keywords" content="yeah">
-        <meta name="author" content="Shane Vadnais">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="main.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <div class="card card-signin my-5">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Register</h5>
-                            <form name="register" class="form-signin" action="/register.html" method="POST" >
-                                <div class="form-label-group">
-                                    <input type="username" name="inputUsername" class="form-control" required>
-                                    <label for="inputPassword">username</label>
-                                </div>
-
-                                <div class="form-label-group">
-                                    <input type="email" name="inputEmail" class="form-control">
-                                    <label for="inputEmail">Email Address</label>
-                                </div>
-
-                                <div class="form-label-group">
-                                    <input type="password" 
-                                    name="inputPassword" class="form-control" required>
-                                    <label for="inputPassword">Password</label>
-                                </div>
-
-                                <div class="form-label-group">
-                                    <input type="password" name="confirmPassword" class="form-control" required>
-                                    <label for="inputPassword">Confirm Password</label>
-                                </div>
-
-                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-                                <hr class="my-4">
-
-                                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Register with Google</button>
-                                <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Register with Facebook</button>
-                            </form>
-                        </div>
-                    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="yeah" />
+    <meta name="keywords" content="yeah" />
+    <meta name="author" content="Shane Vadnais" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="main.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h5 class="card-title text-center">Register</h5>
+              <form
+                name="register"
+                class="form-signin"
+                action="/register.html"
+                method="POST"
+              >
+                <div class="form-label-group">
+                  <input
+                    type="username"
+                    name="inputUsername"
+                    id="usernameField"
+                    class="form-control"
+                    required
+                  />
+                  <label for="inputUsername">username</label>
                 </div>
+
+                <div class="form-label-group">
+                  <input
+                    type="email"
+                    name="inputEmail"
+                    id="emailField"
+                    class="form-control"
+                  />
+                  <label for="inputEmail">Email Address</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input
+                    type="email"
+                    name="inputPassword"
+                    id="passwordField"
+                    class="form-control"
+                    required
+                  />
+                  <label for="inputPassword">Password</label>
+                </div>
+
+                <div class="form-label-group">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPasswordField"
+                    class="form-control"
+                    required
+                  />
+                  <label for="confirmPassword">Confirm Password</label>
+                </div>
+
+                <button
+                  class="btn btn-lg btn-primary btn-block text-uppercase"
+                  type="submit"
+                >
+                  Sign in
+                </button>
+                <hr class="my-4" />
+
+                <button
+                  class="btn btn-lg btn-google btn-block text-uppercase"
+                  type="submit"
+                >
+                  <i class="fab fa-google mr-2"></i> Register with Google
+                </button>
+                <button
+                  class="btn btn-lg btn-facebook btn-block text-uppercase"
+                  type="submit"
+                >
+                  <i class="fab fa-facebook-f mr-2"></i> Register with Facebook
+                </button>
+              </form>
             </div>
+          </div>
         </div>
-    <script> 
+      </div>
+    </div>
 
+    <script>
+      $(document).ready(() => {
+        var usernameField = $("#usernameField")[0];
+        var emailField = $("#emailField")[0];
+        var passwordField = $("#passwordField")[0];
+        var confirmPasswordField = $("#confirmPasswordField")[0];
+
+        usernameField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+
+        emailField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+
+        passwordField.addEventListener("keypress", () => {
+          if (passwordField.length < 8) {
+            console.log("those");
+          }
+          console.log("there");
+        });
+
+        confirmPasswordField.addEventListener("keypress", () => {
+          console.log("here");
+        });
+      });
     </script>
-
-    </body>
+  </body>
 </html>
