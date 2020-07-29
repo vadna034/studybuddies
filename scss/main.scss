@@ -22,6 +22,7 @@ table {
 
 td {
   width: 25%;
+  text-align: center;
 }
 
 .pageTitle {
@@ -36,7 +37,6 @@ td {
     color: #999999;
   }
 }
-
 #sideMenu {
   display: inline-block;
   background: $purpleLight;
