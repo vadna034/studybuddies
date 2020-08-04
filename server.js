@@ -169,17 +169,21 @@ app.post("/addClass", (req, res) => {
     classId: "",
   };
 
-  db.collection("users").updateOne(
-    { username: req.session.username },
-    { $addToSet: { classes: { $each: [entry_one, entry_two] } } },
-    function (err, result) {
-      if (err) {
-        console.error(err);
+  const cursor = db
+    .collection("classes")
+    .find({
+      $or: [entry_one, entry_two],
+    })
+    .toArray()
+    .then((docs) => {
+      if (docs.length == 0) {
       }
-      res.statusCode = 200;
-      res.sendFile(__dirname + "/public/dashboard/addClasses.html");
-    }
-  );
+    })
+    .catch((err) => {
+      console.error(err);
+      res.statusCode = 409;
+      res.send("Failed");
+    });
 });
 
 app.post("/getClasses", (req, res) => {
