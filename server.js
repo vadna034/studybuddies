@@ -3,23 +3,20 @@ var bodyparser = require("body-parser");
 var fs = require("fs");
 var session = require("express-session");
 var crypto = require("crypto");
-var db = require("mongodb");
-const { MongoClient } = require("mongodb");
 const { query } = require("express");
+const { Pool, Client } = require("pg");
+const connectionString =
+  "postgres://mkgzmxfz:loV45Qk1P0veufFoUlxJcUdEx2XN46BO@drona.db.elephantsql.com:5432/mkgzmxfz";
 
 // Sets up our application, with a bodyparser for reading response messages
 var app = express();
 app.use(bodyparser());
 // Sets up our port, our mongoURL, and the variable which will hold our database
 const PORT = 9000;
-const mongoURL =
-  "mongodb+srv://shane:Mark_Kelsey_Rae123@users-byzip.mongodb.net/Users?retryWrites=true&w=majority";
-var db = null;
 // Gives us a dbclient, and connects that client to the database
 
-MongoClient.connect(mongoURL, (err, client) => {
-  if (err) console.error(err);
-  db = client.db("users");
+const pool = new Pool({
+  connectionString: connectionString,
 });
 
 app.use(
@@ -82,41 +79,32 @@ app.get("/dashboard/home", (req, res) => {
 });
 
 app.post("/register.html", (req, res) => {
-  var body = req.body;
-  console.log(body);
+  var valuesOne = [req.body.inputEmail];
+  var valuesTwo = [req.body.inputEmail, req.body.inputPassword];
+  var queryOne = "SELECT * FROM users WHERE email=$1";
+  var queryTwo = "INSERT INTO users(email, password) VALUES ($1, $2)";
 
-  db.collection("users")
-    .find({
-      $or: [{ username: body.inputUsername }, { email: body.inputEmail }],
-    })
-    .toArray((err, docs) => {
-      if (err) {
-        console.error(err);
-      }
-
-      if (docs.length == 0) {
-        console.log("Success");
-        db.collection("users").insertOne(
-          {
-            username: body.inputUsername,
-            email: body.inputEmail,
-            password: body.inputPassword,
-            classes: [],
-          },
-          (err, docs) => {
-            if (err) {
-              console.error(err);
-            }
-          }
-        );
-        res.statusCode = 200;
-        res.sendFile(__dirname + "/public/login.html");
-      } else {
-        console.log("Fail");
-        res.statusCode = 403;
-        res.sendFile(__dirname + "/public/register.html");
-      }
-    });
+  pool.query(queryOne, valuesOne, (err, result) => {
+    if (err) {
+      console.error(err.stack);
+    } else if (result.rows.length == 0) {
+      pool.query(queryTwo, valuesTwo, (err) => {
+        if (err) {
+          console.log("error");
+          console.error(err.stack);
+          res.statusCode = 200;
+          res.sendFile(__dirname + "/public/register.html");
+        } else {
+          console.log("success");
+          res.statusCode = 200;
+          res.sendFile(__dirname + "/public/login.html");
+        }
+      });
+    } else {
+      console.log("user already exists");
+      res.sendFile(__dirname + "/public/register.html");
+    }
+  });
 });
 
 app.post("/login.html", (req, res) => {
@@ -170,15 +158,12 @@ app.post("/addClass", (req, res) => {
   };
 
   const cursor = db
-    .collection("classes")
+    .collection("users")
     .find({
       $or: [entry_one, entry_two],
     })
     .toArray()
-    .then((docs) => {
-      if (docs.length == 0) {
-      }
-    })
+    .then((docs) => {})
     .catch((err) => {
       console.error(err);
       res.statusCode = 409;
