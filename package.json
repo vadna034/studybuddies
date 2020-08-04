@@ -4,7 +4,7 @@
   "description": "Web application allowing you to effectively plan your study groups",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
+    "test": "echo \"Error: no test specified\" && exit 1",
     "scss": "node-sass --watch scss -o css"
   },
   "author": "Shane Vadnais and Wyatt Holmes",
@@ -16,6 +16,7 @@
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
     "mongodb": "^3.5.9",
-    "node-sass": "^4.14.1"
+    "node-sass": "^4.14.1",
+    "pg": "^8.3.0"
   }
 }
