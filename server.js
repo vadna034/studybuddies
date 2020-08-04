@@ -11,7 +11,7 @@ const { query } = require("express");
 var app = express();
 app.use(bodyparser());
 // Sets up our port, our mongoURL, and the variable which will hold our database
-const PORT = 9006;
+const PORT = 9007;
 const mongoURL =
   "mongodb+srv://shane:Mark_Kelsey_Rae123@users-byzip.mongodb.net/Users?retryWrites=true&w=majority";
 var db = null;
@@ -206,6 +206,20 @@ app.post("/getClasses", (req, res) => {
     });
 });
 
-app.post("/deleteClass", (req, res) => {
-  console.log(req.body);
+app.post("deleteClass", (req, res) => {
+  console.log("I got here");
+  var body = req.body;
+  var entry_one = {
+    term: body.term,
+    dept: body.dept,
+    classNum: body.classNumber,
+    classId: body.classId,
+  };
+
+  var entry_two = {
+    term: body.term,
+    dept: body.dept,
+    classNum: body.classNumber,
+    classId: "",
+  };
 });
