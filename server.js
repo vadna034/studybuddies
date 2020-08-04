@@ -11,7 +11,7 @@ const { query } = require("express");
 var app = express();
 app.use(bodyparser());
 // Sets up our port, our mongoURL, and the variable which will hold our database
-const PORT = 9005;
+const PORT = 9006;
 const mongoURL =
   "mongodb+srv://shane:Mark_Kelsey_Rae123@users-byzip.mongodb.net/Users?retryWrites=true&w=majority";
 var db = null;
@@ -200,4 +200,8 @@ app.post("/getClasses", (req, res) => {
       res.statusCode = 404;
       res.send("");
     });
+});
+
+app.post("/deleteClass", (req, res) => {
+  console.log(req.body);
 });

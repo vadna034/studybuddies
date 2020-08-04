@@ -97,6 +97,7 @@
 
             if (classes.length != 0) {
               var table = $("#classTable")[0];
+
               classes.forEach((c) => {
                 var addRow = table.insertRow();
 
@@ -111,8 +112,12 @@
                 var pageCell = addRow.insertCell(4);
                 pageCell.innerHTML = c.dept;
                 var delCell = addRow.insertCell(5);
+                console.log(c.toString());
+
                 delCell.innerHTML =
-                  '<button type="button" class="btn btn-danger">Leave</button>';
+                  '<form name = "deleteClass" action = "/deleteClass" method = "POST"><button type="button" class="btn tn-danger" value = ' +
+                  JSON.stringify(c) +
+                  ">Leave</button></form>";
               });
             } else {
               console.log("here");
