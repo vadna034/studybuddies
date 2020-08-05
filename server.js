@@ -79,32 +79,35 @@ app.get("/dashboard/home", (req, res) => {
 });
 
 app.post("/register.html", (req, res) => {
-  var valuesOne = [req.body.inputEmail];
-  var valuesTwo = [req.body.inputEmail, req.body.inputPassword];
-  var queryOne = "SELECT * FROM users WHERE email=$1";
-  var queryTwo = "INSERT INTO users(email, password) VALUES ($1, $2)";
-
-  pool.query(queryOne, valuesOne, (err, result) => {
-    if (err) {
-      console.error(err.stack);
-    } else if (result.rows.length == 0) {
-      pool.query(queryTwo, valuesTwo, (err) => {
-        if (err) {
-          console.log("error");
-          console.error(err.stack);
-          res.statusCode = 200;
-          res.sendFile(__dirname + "/public/register.html");
-        } else {
-          console.log("success");
-          res.statusCode = 200;
-          res.sendFile(__dirname + "/public/login.html");
-        }
-      });
-    } else {
-      console.log("user already exists");
-      res.sendFile(__dirname + "/public/register.html");
+  pool.query(
+    "SELECT * FROM users WHERE email=$1",
+    [req.body.inputEmail],
+    (err, result) => {
+      if (err) {
+        console.error(err.stack);
+      } else if (result.rows.length != 0) {
+        console.log("user already exists");
+        res.sendFile(__dirname + "/public/register.html");
+      } else {
+        pool.query(
+          "INSERT INTO users(email, password) VALUES ($1, $2)",
+          [req.body.inputEmail, req.body.inputPassword],
+          (err) => {
+            if (err) {
+              console.log("error");
+              console.error(err.stack);
+              res.statusCode = 200;
+              res.sendFile(__dirname + "/public/register.html");
+            } else {
+              console.log("success");
+              res.statusCode = 200;
+              res.sendFile(__dirname + "/public/login.html");
+            }
+          }
+        );
+      }
     }
-  });
+  );
 });
 
 app.post("/login.html", (req, res) => {
