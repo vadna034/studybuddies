@@ -119,9 +119,9 @@ app.post("/login.html", (req, res) => {
       res.sendFile(__dirname + "/public/login.html");
     } else {
       console.log("success");
-      console.log(result);
-      req.session.id = result.id;
-      req.session.email = result.email;
+      req.session.data = {};
+      req.session.data.id = result.rows[0].id;
+      req.session.data.email = result.rows[0].email;
       res.sendFile(__dirname + "/public/dashboard.html");
     }
   });
@@ -136,9 +136,14 @@ app.post("/addClass", (req, res) => {
   var code = req.body.dept + " " + req.body.classNumber;
   var section = req.body.classId;
 
-  var valuesOne = [req.body.term, req.body.code, req.body.sections];
+  if (section === "") {
+    section = "0";
+  }
+
+  var valuesOne = [term, code, section];
+  console.log(valuesOne);
   var queryOne =
-    "SELECT classid FROM classes WHERE term = $1 AND code = $2 AND section = $3";
+    "SELECT id FROM classes WHERE term = $1 AND code = $2 AND section = $3";
   pool.query(queryOne, valuesOne, (err, result) => {
     console.log(result);
     if (err) {
@@ -147,20 +152,26 @@ app.post("/addClass", (req, res) => {
       res.send("Failed");
     } else {
       if (result.rows.length == 0) {
-        console.log("FAIL");
+        console.log("No such class matches your query");
         res.statusCode = 403;
+        res.send("");
       } else {
-        var queryTwo = "INSERT INTO classMembership ($1, $2)";
-        pool.query(queryTwo, req.session.userId, result, (err, result) => {
-          if (err) {
-            console.log(err);
-            res.statusCode = 403;
-          } else {
-            console.log("success");
-            res.statusCode = 200;
-            res.sendFile(__dirname + "/public/dashboard.html");
+        var queryTwo = "INSERT INTO classMembership VALUES ($1, $2)";
+        console.log(req.session.data.id, result.rows[0].id);
+        pool.query(
+          queryTwo,
+          [req.session.data.id, result.rows[0].id],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.statusCode = 403;
+            } else {
+              console.log("success");
+              res.statusCode = 200;
+              res.sendFile(__dirname + "/public/dashboard/myClasses.html");
+            }
           }
-        });
+        );
       }
     }
   });
