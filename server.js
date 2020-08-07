@@ -108,12 +108,12 @@ app.post("/login.html", (req, res) => {
   Good
   */
   pool
-    .query("SELECT FROM users WHERE email = $1 AND password = $2", [
-      req.inputEmail,
-      req.inputPassword,
+    .query("SELECT * FROM users WHERE email = $1 AND password = $2", [
+      req.body.inputEmail,
+      req.body.inputPassword,
     ])
     .then((result) => {
-      if (result.length == 0) {
+      if (result.rows.length === 0) {
         res.statusCode = 200;
         res.send("No user found");
       } else {
@@ -132,40 +132,53 @@ app.post("/login.html", (req, res) => {
 });
 
 app.post("/addClass", (req, res) => {
-  // Post request used to add a class to the users datatbase entry
-  // Just using /in makes this stuff work :3. For arrays,, you can just push
-  // can use json.stringify on the object !
-  /*
   var term = req.body.term;
   var code = req.body.dept + " " + req.body.classNumber;
   var section = req.body.classId;
-  */
-  /*
-  pool.query()
-  .then( result => {
 
-  })
-  .catch( err => {
-    console.log(err);
-    res.statusCode = 500;
-    res.send("Server Error");
-  });
-  */
+  if (section === "") {
+    section = "0";
+  }
+
+  console.log(req.session.data);
+
+  pool
+    .query(
+      "INSERT INTO classMembership (userId, classId) VALUES ($1, (SELECT id FROM classes WHERE term =$2 AND code = $3 AND section = $4))",
+      [req.session.data.id, term, code, section]
+    )
+    .then((result) => {
+      res.statusCode = 200;
+      res.send("Success");
+    })
+    .catch((err) => {
+      if (err.code == 23505) {
+        res.statusCode = 200;
+        res.send("Already registered");
+      } else if (err.code == 23502) {
+        res.statusCode = 200;
+        res.send("Class does not exist");
+      } else {
+        res.statusCode = 500;
+        res.send("Server Error");
+      }
+    });
 });
 
 app.post("/getClasses", (req, res) => {
-  var valuesOne = [req.session.inputEmail];
-  var queryOne = "SELECT classid FROM classMembership WHERE userid.email = $1";
-  pool.query(valuesOne, queryOne, (err, result) => {
-    if (err) {
-      console.log(error);
-    } else {
-      console.log(result);
+  pool
+    .query("SELECT FROM classMembership WHERE userId = $1", [
+      req.session.data.id,
+    ])
+    .then((result) => {
       res.statusCode = 200;
-      res.contentType = "text/html";
-      res.send(JSON.stringify(result));
-    }
-  });
+      res.send(JSON.stringify(result.rows));
+    })
+    .catch((err) => {
+      res.statusCode = 500;
+      res.send("");
+      console.log("Server Error");
+    });
 });
 
 app.post("/deleteClass", (req, res) => {
