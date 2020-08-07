@@ -12,7 +12,7 @@ const connectionString =
 var app = express();
 app.use(bodyparser());
 // Sets up our port, our mongoURL, and the variable which will hold our database
-const PORT = 9001;
+const PORT = 9000;
 // Gives us a dbclient, and connects that client to the database
 
 const pool = new Pool({
@@ -79,6 +79,9 @@ app.get("/dashboard/home", (req, res) => {
 });
 
 app.post("/register.html", (req, res) => {
+  /* 
+  This function needs email verification"
+  */
   pool
     .query("INSERT INTO users (email, password) VALUES ($1, $2)", [
       req.body.inputEmail,
@@ -101,6 +104,9 @@ app.post("/register.html", (req, res) => {
 });
 
 app.post("/login.html", (req, res) => {
+  /*
+  Good
+  */
   pool
     .query("SELECT FROM users WHERE email = $1 AND password = $2", [
       req.inputEmail,
@@ -114,8 +120,8 @@ app.post("/login.html", (req, res) => {
         req.session.data = {};
         req.session.data.id = result.rows[0].id;
         req.session.data.email = result.rows[0].email;
-        res.statusCode = 200;
-        res.send("Success");
+        res.writeHead(302, { Location: "/dashboard/home" });
+        res.end();
       }
     })
     .catch((err) => {
@@ -129,50 +135,22 @@ app.post("/addClass", (req, res) => {
   // Post request used to add a class to the users datatbase entry
   // Just using /in makes this stuff work :3. For arrays,, you can just push
   // can use json.stringify on the object !
-
+  /*
   var term = req.body.term;
   var code = req.body.dept + " " + req.body.classNumber;
   var section = req.body.classId;
+  */
+  /*
+  pool.query()
+  .then( result => {
 
-  if (section === "") {
-    section = "0";
-  }
-
-  var valuesOne = [term, code, section];
-  console.log(valuesOne);
-  var queryOne =
-    "SELECT id FROM classes WHERE term = $1 AND code = $2 AND section = $3";
-  pool.query(queryOne, valuesOne, (err, result) => {
-    console.log(result);
-    if (err) {
-      console.log(err);
-      res.statusCode = 409;
-      res.send("Failed");
-    } else {
-      if (result.rows.length == 0) {
-        console.log("No such class matches your query");
-        res.statusCode = 403;
-        res.send("");
-      } else {
-        var queryTwo = "INSERT INTO classMembership VALUES ($1, $2)";
-        console.log(req.session.data.id, result.rows[0].id);
-        pool.query(
-          queryTwo,
-          [req.session.data.id, result.rows[0].id],
-          (err, result) => {
-            if (err) {
-              console.log(err);
-              res.statusCode = 403;
-            } else {
-              console.log("success");
-              res.statusCode = 200;
-              res.sendFile(__dirname + "/public/dashboard/myClasses.html");
-            }
-          }
-        );
-      }
-    }
+  })
+  .catch( err => {
+    console.log(err);
+    res.statusCode = 500;
+    res.send("Server Error");
   });
+  */
 });
 
 app.post("/getClasses", (req, res) => {
