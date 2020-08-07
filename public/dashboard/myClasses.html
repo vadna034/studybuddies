@@ -59,7 +59,6 @@
           <tr>
             <th scope="col" class="text-center">Term</th>
             <th scope="col" class="text-center">Code</th>
-            <th scope="col" class="text-center">Number</th>
             <th scope="col" class="text-center">Section</th>
             <th scope="col" class="text-center">Page</th>
             <th scope="col" class="text-center"></th>
@@ -97,28 +96,28 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data);
-            var classes = JSON.parse(data)[0].classes;
+            var classes = JSON.parse(data);
             console.log(classes);
-            console.log(classes.length);
-
             if (classes.length != 0) {
               var table = $("#classTable")[0];
 
               classes.forEach((c) => {
                 var addRow = table.insertRow();
+                console.log(c);
+
+                if (c.section === "0") {
+                  c.section = "";
+                }
 
                 var termCell = addRow.insertCell(0);
                 termCell.innerHTML = c.term;
                 var codeCell = addRow.insertCell(1);
-                codeCell.innerHTML = c.dept;
-                var numberCell = addRow.insertCell(2);
-                numberCell.innerHTML = c.classNum;
-                var IDCell = addRow.insertCell(3);
-                IDCell.innerHTML = c.classId;
-                var pageCell = addRow.insertCell(4);
-                pageCell.innerHTML = c.dept;
-                var delCell = addRow.insertCell(5);
-                console.log(c.toString());
+                codeCell.innerHTML = c.code;
+                var IDCell = addRow.insertCell(2);
+                IDCell.innerHTML = c.section;
+                var pageCell = addRow.insertCell(3);
+                pageCell.innerHTML = "";
+                var delCell = addRow.insertCell(4);
 
                 delCell.innerHTML =
                   '<form name = "deleteClass" method = "POST"><button type="button" class="btn tn-danger" value = ' +

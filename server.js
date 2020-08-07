@@ -167,15 +167,19 @@ app.post("/addClass", (req, res) => {
 
 app.post("/getClasses", (req, res) => {
   pool
-    .query("SELECT FROM classMembership WHERE userId = $1", [
-      req.session.data.id,
-    ])
+    .query(
+      "SELECT * from classes WHERE id IN (SELECT classId FROM classMembership WHERE userId = $1)",
+      [req.session.data.id]
+    )
     .then((result) => {
       res.statusCode = 200;
+      console.log(result.rows);
+      console.log(JSON.stringify(result.rows));
       res.send(JSON.stringify(result.rows));
     })
     .catch((err) => {
       res.statusCode = 500;
+      console.log(err);
       res.send("");
       console.log("Server Error");
     });
