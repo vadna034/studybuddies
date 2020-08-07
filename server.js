@@ -101,27 +101,28 @@ app.post("/register.html", (req, res) => {
 });
 
 app.post("/login.html", (req, res) => {
-  var valuesOne = [req.body.inputEmail, req.body.inputPassword];
-  var queryOne = "";
-  pool.query(
-    "SELECT * from users WHERE email = $1 AND password = $2",
-    valuesOne,
-    (err, result) => {
-      if (err) {
-        console.log(err.stack);
-      } else if (result.rows.length == 0) {
-        console.log("FAIL");
-        res.statusCode = 403;
-        res.sendFile(__dirname + "/public/login.html");
+  pool
+    .query("SELECT FROM users WHERE email = $1 AND password = $2", [
+      req.inputEmail,
+      req.inputPassword,
+    ])
+    .then((result) => {
+      if (result.length == 0) {
+        res.statusCode = 200;
+        res.send("No user found");
       } else {
-        console.log("success");
         req.session.data = {};
         req.session.data.id = result.rows[0].id;
         req.session.data.email = result.rows[0].email;
-        res.sendFile(__dirname + "/public/dashboard.html");
+        res.statusCode = 200;
+        res.send("Success");
       }
-    }
-  );
+    })
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.send("Server Error");
+    });
 });
 
 app.post("/addClass", (req, res) => {
