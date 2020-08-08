@@ -106,9 +106,9 @@
                 var delCell = addRow.insertCell(4);
 
                 delCell.innerHTML =
-                  '<form name = "deleteClass" method = "POST"><button type="button" class="btn btn-danger" value = \'' +
-                  JSON.stringify(c) +
-                  "'>Leave</button></form>";
+                  '<form name = "deleteClass" action="/deleteClass" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
+                  c.id +
+                  ">Leave</button></form>";
               });
             } else {
               console.log("here");

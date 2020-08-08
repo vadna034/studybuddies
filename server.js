@@ -200,19 +200,20 @@ app.post("/getClasses", (req, res) => {
 });
 
 app.post("/deleteClass", (req, res) => {
-  console.log("I got here");
-  var body = req.body;
-  var entry_one = {
-    term: body.term,
-    dept: body.dept,
-    classNum: body.classNumber,
-    classId: body.classId,
-  };
-
-  var entry_two = {
-    term: body.term,
-    dept: body.dept,
-    classNum: body.classNumber,
-    classId: "",
-  };
+  pool
+    .query("DELETE FROM classMembership WHERE userID = $1 AND classID = $2", [
+      req.session.data.id,
+      req.body.id,
+    ])
+    .then(() => {
+      console.log("success");
+      res.writeHead(302, { Location: "/dashboard/myClasses" });
+      res.end();
+    })
+    .catch((err) => {
+      console.log("Server Error");
+      console.log(err);
+      res.statusCode = 500;
+      res.send("Server Error");
+    });
 });
