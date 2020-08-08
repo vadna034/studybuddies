@@ -5,6 +5,7 @@ var session = require("express-session");
 var crypto = require("crypto");
 const { query } = require("express");
 const { Pool, Client } = require("pg");
+var hbs = require("express-handlebars");
 const connectionString =
   "postgres://mkgzmxfz:loV45Qk1P0veufFoUlxJcUdEx2XN46BO@drona.db.elephantsql.com:5432/mkgzmxfz";
 
@@ -14,6 +15,19 @@ app.use(bodyparser());
 // Sets up our port, our mongoURL, and the variable which will hold our database
 const PORT = 9000;
 // Gives us a dbclient, and connects that client to the database
+
+// view engine setup
+app.set("view engine", "hbs");
+
+app.engine(
+  "hbs",
+  hbs({
+    extname: "hbs",
+    defaultView: "default",
+    layoutsDir: __dirname + "/views/pages/",
+    partialsDir: __dirname + "/views/partials/",
+  })
+);
 
 const pool = new Pool({
   connectionString: connectionString,
