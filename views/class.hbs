@@ -1,0 +1,48 @@
+<div class="dash" id="mainClass">
+    <h1>
+        {{class.code}}
+    </h1>
+
+
+    <h1> Users </h1>
+    <table class="table table-dark" id="classTable">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td> {{email}} </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h1> Meetings </h1>
+    <table class="table table-dark" id="classTable">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Owner</th>
+                <th scope="col" class="text-center">Max Size </th>
+                <th scope="col" class="text-center">Start Time</th>
+                <th scope="col" class="text-center">End Time</th>
+                <th scope="col" class="text-center"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each meetings}}
+            <tr>
+                <td> {{owner}} </td>
+                <td> {{maxsize}} </td>
+                <td> {{starttime}}</td>
+                <td> {{endtime}} </td>
+
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</div>
