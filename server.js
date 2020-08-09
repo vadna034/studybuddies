@@ -17,6 +17,11 @@ app.engine(
   handlebars({
     layoutsDir: __dirname + "/views/layouts",
     extname: "hbs",
+    helpers: {
+      toJSON: function (object) {
+        return JSON.stringify(object);
+      },
+    },
   })
 );
 
@@ -216,6 +221,10 @@ app.post("/deleteClass", (req, res) => {
     });
 });
 
+app.get("/class", (req, res) => {
+  res.render("class", { layout: "index" });
+});
+
 app.get("/class/*", (req, res) => {
   /* Need to redirect to an error page */
   var classID = req.originalUrl.split("/")[2]; // Class ID parameter
@@ -225,18 +234,25 @@ app.get("/class/*", (req, res) => {
       "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
       [classID]
     )
-    .then((usersData) => {
+    .then((userData) => {
       pool
-        .query("SELECT * from classMeetings WHERE classId = $1", [classID])
-        .then((meetingsData) => {
+        .query(
+          "SELECT * from classMeetings WHERE classId = $1 ORDER BY StartTime",
+          [classID]
+        )
+        .then((meetingData) => {
           pool
             .query("SELECT * from classes WHERE id=$1", [classID])
             .then((classData) => {
-              console.log(usersData.rows);
-              console.log(meetingsData.rows);
+              console.log(userData.rows);
+              console.log(meetingData.rows);
               console.log(classData.rows);
-              res.writeHead(302, { Location: "/dashboard/home" });
-              res.end();
+              res.render("class", {
+                layout: "index",
+                users: userData.rows,
+                meetings: meetingData.rows,
+                class: classData.rows[0],
+              });
             })
             .catch((err) => {
               throw err;
