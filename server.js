@@ -90,44 +90,6 @@ app.get("/dashboard/home", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/home.html");
 });
 
-app.get("/class/*", (req, res) => {
-  /* Need to redirect to an error page */
-  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
-  var userID = req.session.data.id;
-  pool
-    .query(
-      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
-      [classID]
-    )
-    .then((usersData) => {
-      pool
-        .query("SELECT * from classMeetings WHERE classId = $1", [classID])
-        .then((meetingsData) => {
-          pool
-            .query("SELECT * from classes WHERE id=$1", [classID])
-            .then((classData) => {
-              console.log(usersData.rows);
-              console.log(meetingsData.rows);
-              console.log(classData.rows);
-              res.writeHead(302, { Location: "/dashboard/home" });
-              res.end();
-            })
-            .catch((err) => {
-              throw err;
-            });
-        })
-        .catch((err) => {
-          throw err;
-        });
-    })
-    .catch((err) => {
-      console.log("SERVER ERROR");
-      console.log(err);
-      res.writeHead(302, { Location: "/dashboard/home" });
-      res.end();
-    });
-});
-
 app.post("/register.html", (req, res) => {
   /* 
   This function needs email verification"
@@ -251,5 +213,43 @@ app.post("/deleteClass", (req, res) => {
       console.log(err);
       res.statusCode = 500;
       res.send("Server Error");
+    });
+});
+
+app.get("/class/*", (req, res) => {
+  /* Need to redirect to an error page */
+  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
+  var userID = req.session.data.id;
+  pool
+    .query(
+      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
+      [classID]
+    )
+    .then((usersData) => {
+      pool
+        .query("SELECT * from classMeetings WHERE classId = $1", [classID])
+        .then((meetingsData) => {
+          pool
+            .query("SELECT * from classes WHERE id=$1", [classID])
+            .then((classData) => {
+              console.log(usersData.rows);
+              console.log(meetingsData.rows);
+              console.log(classData.rows);
+              res.writeHead(302, { Location: "/dashboard/home" });
+              res.end();
+            })
+            .catch((err) => {
+              throw err;
+            });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    })
+    .catch((err) => {
+      console.log("SERVER ERROR");
+      console.log(err);
+      res.writeHead(302, { Location: "/dashboard/home" });
+      res.end();
     });
 });
