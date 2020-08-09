@@ -51,24 +51,21 @@
         </a>
       </div>
     </header>
-
     <div class="dash" id="mainClass">
-      <table class="table table-dark" id="classTable">
-        <thead>
-          <tr>
-            <th scope="col" class="text-center">Term</th>
-            <th scope="col" class="text-center">Code</th>
-            <th scope="col" class="text-center">Section</th>
-            <th scope="col" class="text-center">Page</th>
-            <th scope="col" class="text-center"></th>
-          </tr>
-        </thead>
-      </table>
+      <div class="card">
+        <table class="table table-dark" id="classTable">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Term</th>
+              <th scope="col" class="text-center">Code</th>
+              <th scope="col" class="text-center">Section</th>
+              <th scope="col" class="text-center">Link</th>
+              <th scope="col" class="text-center"></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
-
-    <form action="route" method="POST">
-      <button value="?"></button>
-    </form>
 
     <script>
       var submit = function () {};
@@ -92,7 +89,7 @@
                 console.log(c);
 
                 if (c.section === "0") {
-                  c.section = "";
+                  c.section = "N/A";
                 }
 
                 var termCell = addRow.insertCell(0);
