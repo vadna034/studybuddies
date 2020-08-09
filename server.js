@@ -1,36 +1,33 @@
-var express = require("express");
-var bodyparser = require("body-parser");
-var fs = require("fs");
-var session = require("express-session");
-var crypto = require("crypto");
-const { query } = require("express");
-const { Pool, Client } = require("pg");
-var hbs = require("express-handlebars");
+var express = require("express"); // The server module
+var bodyparser = require("body-parser"); // Allows simple parsing of request body's
+var session = require("express-session"); // Allows sessions
+const { Pool } = require("pg"); // Postgres module
+const handlebars = require("express-handlebars"); // Allows us to use templating
+
 const connectionString =
   "postgres://mkgzmxfz:loV45Qk1P0veufFoUlxJcUdEx2XN46BO@drona.db.elephantsql.com:5432/mkgzmxfz";
 
 // Sets up our application, with a bodyparser for reading response messages
 var app = express();
 app.use(bodyparser());
+app.use(express.static("public"));
+app.set("view engine", "hbs");
+app.engine(
+  "hbs",
+  handlebars({
+    layoutsDir: __dirname + "/views/layouts",
+    extname: "hbs",
+  })
+);
+
 // Sets up our port, our mongoURL, and the variable which will hold our database
 const PORT = 9000;
 // Gives us a dbclient, and connects that client to the database
 
-// view engine setup
-app.set("view engine", "hbs");
-
-app.engine(
-  "hbs",
-  hbs({
-    extname: "hbs",
-    defaultView: "default",
-    layoutsDir: __dirname + "/views/pages/",
-    partialsDir: __dirname + "/views/partials/",
-  })
-);
-
 const pool = new Pool({
   connectionString: connectionString,
+  max: 5,
+  idleTimeoutMillis: 1000,
 });
 
 app.use(
@@ -89,7 +86,46 @@ app.get("/dashboard/profile", (req, res) => {
 });
 
 app.get("/dashboard/home", (req, res) => {
+  /* Need to render this page */
   res.sendFile(__dirname + "/public/dashboard/home.html");
+});
+
+app.get("/class/*", (req, res) => {
+  /* Need to redirect to an error page */
+  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
+  var userID = req.session.data.id;
+  pool
+    .query(
+      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
+      [classID]
+    )
+    .then((usersData) => {
+      pool
+        .query("SELECT * from classMeetings WHERE classId = $1", [classID])
+        .then((meetingsData) => {
+          pool
+            .query("SELECT * from classes WHERE id=$1", [classID])
+            .then((classData) => {
+              console.log(usersData.rows);
+              console.log(meetingsData.rows);
+              console.log(classData.rows);
+              res.writeHead(302, { Location: "/dashboard/home" });
+              res.end();
+            })
+            .catch((err) => {
+              throw err;
+            });
+        })
+        .catch((err) => {
+          throw err;
+        });
+    })
+    .catch((err) => {
+      console.log("SERVER ERROR");
+      console.log(err);
+      res.writeHead(302, { Location: "/dashboard/home" });
+      res.end();
+    });
 });
 
 app.post("/register.html", (req, res) => {
