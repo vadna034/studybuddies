@@ -21,7 +21,10 @@ table {
 }
 
 td {
-  width: 25%;
+  min-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   text-align: center;
 }
 
