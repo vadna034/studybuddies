@@ -100,9 +100,10 @@ app.post("/register.html", (req, res) => {
   This function needs email verification"
   */
   pool
-    .query("INSERT INTO users (email, password) VALUES ($1, $2)", [
+    .query("INSERT INTO users (email, password, name) VALUES ($1, $2, $3)", [
       req.body.inputEmail,
       req.body.inputPassword,
+      req.body.inputName,
     ])
     .then((result) => {
       console.log(result);
