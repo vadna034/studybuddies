@@ -115,7 +115,7 @@ app.post("/register.html", (req, res) => {
         res.statudCode = 200;
         res.send("Email already registered");
       } else {
-        res.statusCode = 200;
+        res.statusCode = 500;
         res.send("Server Error");
       }
     });
@@ -230,9 +230,10 @@ app.get("/class/*", (req, res) => {
   /* Need to redirect to an error page */
   var classID = req.originalUrl.split("/")[2]; // Class ID parameter
   var userID = req.session.data.id;
+
   pool
     .query(
-      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
+      "SELECT users.id, users.email, users.name FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
       [classID]
     )
     .then((userData) => {

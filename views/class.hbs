@@ -8,12 +8,14 @@
     <table class="table table-dark" id="classTable">
         <thead>
             <tr>
+                <th scope="col" class="text-center">Name</th>
                 <th scope="col" class="text-center">Email</th>
             </tr>
         </thead>
         <tbody>
             {{#each users}}
             <tr>
+                <td> {{name}} </td>
                 <td> {{email}} </td>
             </tr>
             {{/each}}
@@ -39,7 +41,7 @@
                 <td> {{maxsize}} </td>
                 <td> {{starttime}}</td>
                 <td> {{endtime}} </td>
-
+                <td> <button type="button" class="btn btn-primary">Join</button>
             </tr>
             {{/each}}
         </tbody>
