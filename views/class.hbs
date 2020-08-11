@@ -27,9 +27,9 @@
         <thead>
             <tr>
                 <th scope="col" class="text-center">Owner</th>
-                <th scope="col" class="text-center">Max Size </th>
                 <th scope="col" class="text-center">Start Time</th>
                 <th scope="col" class="text-center">End Time</th>
+                <th scope="col" class="text-center">Link</th>
                 <th scope="col" class="text-center"></th>
             </tr>
         </thead>
@@ -38,9 +38,9 @@
             {{#each meetings}}
             <tr>
                 <td> {{owner}} </td>
-                <td> {{maxsize}} </td>
                 <td> {{starttime}}</td>
                 <td> {{endtime}} </td>
+                <td> {{link}} </td>
                 <td> <button type="button" class="btn btn-primary">Join</button>
             </tr>
             {{/each}}
