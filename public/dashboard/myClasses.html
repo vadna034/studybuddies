@@ -92,6 +92,8 @@
                   c.section = "N/A";
                 }
 
+                var link = "https://localhost:9000/class/" + c.id;
+
                 var termCell = addRow.insertCell(0);
                 termCell.innerHTML = c.term;
                 var codeCell = addRow.insertCell(1);
@@ -99,7 +101,8 @@
                 var IDCell = addRow.insertCell(2);
                 IDCell.innerHTML = c.section;
                 var pageCell = addRow.insertCell(3);
-                pageCell.innerHTML = "";
+                pageCell.innerHTML =
+                  "<a href='/class/" + c.id + "'>" + "Link" + "</a>";
                 var delCell = addRow.insertCell(4);
 
                 delCell.innerHTML =
