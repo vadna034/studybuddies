@@ -1,0 +1,50 @@
+<div class="dash" id="mainClass">
+    <h1>
+        {{class.code}}
+    </h1>
+
+
+    <h1> Users </h1>
+    <table class="table table-dark" id="classTable">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Name</th>
+                <th scope="col" class="text-center">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td> {{name}} </td>
+                <td> {{email}} </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h1> Meetings </h1>
+    <table class="table table-dark" id="classTable">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">Owner</th>
+                <th scope="col" class="text-center">Start Time</th>
+                <th scope="col" class="text-center">End Time</th>
+                <th scope="col" class="text-center">Zoom Link</th>
+                <th scope="col" class="text-center"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each meetings}}
+            <tr>
+                <td> {{owner}} </td>
+                <td> {{starttime}}</td>
+                <td> {{endtime}} </td>
+                <td> {{link}} </td>
+                <td> <button type="button" class="btn btn-primary">Join</button>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</div>
