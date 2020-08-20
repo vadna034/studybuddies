@@ -27,7 +27,6 @@
         <a href="home"><i class="fa fa-home"></i>Home</a>
         <a href="addClasses">Add Classes</a>
         <a href="myClasses" class="active">My Classes</a>
-        <a href="myGroups">My Groups</a>
       </nav>
     </section>
 
@@ -51,14 +50,19 @@
         </a>
       </div>
     </header>
+
     <div class="dash" id="mainClass">
+      <div class="pageTitle">
+        <h1>My Classes</h1>
+      </div>
+
       <div class="card">
         <table class="table table-dark" id="classTable">
           <thead>
             <tr>
               <th scope="col" class="text-center">Term</th>
               <th scope="col" class="text-center">Code</th>
-              <th scope="col" class="text-center">Section</th>
+              <th scope="col" class="text-center">Name</th>
               <th scope="col" class="text-center">Link</th>
               <th scope="col" class="text-center"></th>
             </tr>
@@ -98,8 +102,8 @@
                 termCell.innerHTML = c.term;
                 var codeCell = addRow.insertCell(1);
                 codeCell.innerHTML = c.code;
-                var IDCell = addRow.insertCell(2);
-                IDCell.innerHTML = c.section;
+                var nameCell = addRow.insertCell(2);
+                nameCell.innerHTML = c.name;
                 var pageCell = addRow.insertCell(3);
                 pageCell.innerHTML =
                   "<a href='/class/" + c.id + "'>" + "Link" + "</a>";

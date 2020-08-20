@@ -144,19 +144,24 @@ table {
 td {
   min-width: 100px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: initial;
   text-align: center; }
 
 .pageTitle {
+  display: inline-block;
   padding-left: 20px;
-  padding-top: 12px; }
+  padding-top: 12px;
+  width: 80%; }
   .pageTitle h1 {
     font-weight: 400;
     font-size: 1.4rem;
     color: purple; }
   .pageTitle p {
     color: #999999; }
+
+.createMeetingButton {
+  display: inline-block;
+  width: calc(20% - 20px); }
 
 #sideMenu {
   display: inline-block;
@@ -380,3 +385,7 @@ textarea:focus {
     display: none; }
   .form-label-group input:-ms-input-placeholder {
     color: #777; } }
+
+.meetingTable {
+  padding-left: 20px;
+  padding-right: 20px; }

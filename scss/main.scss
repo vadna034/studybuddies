@@ -23,14 +23,15 @@ table {
 td {
   min-width: 100px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: initial;
   text-align: center;
 }
 
 .pageTitle {
+  display: inline-block;
   padding-left: 20px;
   padding-top: 12px;
+  width: 80%;
   h1 {
     font-weight: 400;
     font-size: 1.4rem;
@@ -39,6 +40,11 @@ td {
   p {
     color: #999999;
   }
+}
+
+.createMeetingButton {
+  display: inline-block;
+  width: calc(20% - 20px);
 }
 #sideMenu {
   display: inline-block;
@@ -330,4 +336,9 @@ textarea:focus {
       }
     }
   }
+}
+
+.meetingTable {
+  padding-left: 20px;
+  padding-right: 20px;
 }

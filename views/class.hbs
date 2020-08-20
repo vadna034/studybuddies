@@ -1,50 +1,48 @@
 <div class="dash" id="mainClass">
-    <h1>
-        {{class.code}}
-    </h1>
+    <div class="classHeader">
+        <div class="pageTitle">
+            <h1>{{class.term}}: {{class.code}}</h1>
+            <p>{{class.name}}</p>
+            <p>{{numberUsers}} users currently enrolled in this class</p>
+        </div>
+        <div class="createMeetingButton">
+            <form action="{{class.id}}/createMeeting" method="get">
+                <button type="submit" class="btn btn-primary">Create Meeting</button>
+            </form>
+        </div>
+    </div>
+    <div class="meetingTable">
+        {{#if meetings.length}}
+        <h1> Scheduled Meetings </h1>
+        <table class="table table-dark" id="classTable">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Owner</th>
+                    <th scope="col" class="text-center">Start Time</th>
+                    <th scope="col" class="text-center">End Time</th>
+                    <th scope="col" class="text-center">Zoom Link</th>
+                    <th scope="col" class="text-center"></th>
+                </tr>
+            </thead>
 
+            <tbody>
+                {{#each meetings}}
+                <tr>
+                    <td> {{owner}} </td>
+                    <td> {{starttime}}</td>
+                    <td> {{endtime}} </td>
+                    <td> {{link}} </td>
+                    <td> <button type="button" class="btn btn-primary">Enter meeting</button>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="alert alert-primary" role="alert">
+            No meetings for this class have been created. You should create one :)
+        </div>
+        {{/if}}
+    </div>
 
-    <h1> Users </h1>
-    <table class="table table-dark" id="classTable">
-        <thead>
-            <tr>
-                <th scope="col" class="text-center">Name</th>
-                <th scope="col" class="text-center">Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each users}}
-            <tr>
-                <td> {{name}} </td>
-                <td> {{email}} </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
-    <h1> Meetings </h1>
-    <table class="table table-dark" id="classTable">
-        <thead>
-            <tr>
-                <th scope="col" class="text-center">Owner</th>
-                <th scope="col" class="text-center">Start Time</th>
-                <th scope="col" class="text-center">End Time</th>
-                <th scope="col" class="text-center">Zoom Link</th>
-                <th scope="col" class="text-center"></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            {{#each meetings}}
-            <tr>
-                <td> {{owner}} </td>
-                <td> {{starttime}}</td>
-                <td> {{endtime}} </td>
-                <td> {{link}} </td>
-                <td> <button type="button" class="btn btn-primary">Join</button>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
 
 </div>

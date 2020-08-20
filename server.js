@@ -21,6 +21,9 @@ app.engine(
       toJSON: function (object) {
         return JSON.stringify(object);
       },
+      isEmpty: function (arr) {
+        return arr.length === 0;
+      },
     },
   })
 );
@@ -112,7 +115,7 @@ app.post("/register.html", (req, res) => {
     })
     .catch((err) => {
       if (err.code == 23505) {
-        res.statudCode = 200;
+        res.statusCode = 200;
         res.send("Email already registered");
       } else {
         res.statusCode = 500;
@@ -152,18 +155,12 @@ app.post("/login.html", (req, res) => {
 app.post("/addClass", (req, res) => {
   var term = req.body.term;
   var code = req.body.dept + " " + req.body.classNumber;
-  var section = req.body.classId;
-
-  if (section === "") {
-    section = "0";
-  }
-
   console.log(req.session.data);
 
   pool
     .query(
-      "INSERT INTO classMembership (userId, classId) VALUES ($1, (SELECT id FROM classes WHERE term =$2 AND code = $3 AND section = $4))",
-      [req.session.data.id, term, code, section]
+      "INSERT INTO classMembership (userId, classId) VALUES ($1, (SELECT id FROM classes WHERE term =$2 AND code = $3))",
+      [req.session.data.id, term, code]
     )
     .then((result) => {
       res.statusCode = 200;
@@ -178,6 +175,7 @@ app.post("/addClass", (req, res) => {
         res.send("Class does not exist");
       } else {
         res.statusCode = 500;
+        console.log(err);
         res.send("Server Error");
       }
     });
@@ -222,11 +220,7 @@ app.post("/deleteClass", (req, res) => {
     });
 });
 
-app.get("/class", (req, res) => {
-  res.render("class", { layout: "index" });
-});
-
-app.get("/class/*", (req, res) => {
+app.get("/class/([0-9]+)", (req, res) => {
   /* Need to redirect to an error page */
   var classID = req.originalUrl.split("/")[2]; // Class ID parameter
   var userID = req.session.data.id;
@@ -254,6 +248,7 @@ app.get("/class/*", (req, res) => {
                 users: userData.rows,
                 meetings: meetingData.rows,
                 class: classData.rows[0],
+                numberUsers: userData.rows.length,
               });
             })
             .catch((err) => {
@@ -271,3 +266,27 @@ app.get("/class/*", (req, res) => {
       res.end();
     });
 });
+
+app.get("/class/([0-9]+)/createMeeting", (req, res) => {
+  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
+
+  pool
+    .query("SELECT * from classes WHERE id=$1", [classID])
+    .then((classData) => {
+      if (classData.rows.length == 1) {
+        res.render("createMeeting", {
+          layout: "index",
+          classData: classData.rows,
+        });
+      } else {
+        res.send("That class doesn't exist");
+      }
+    })
+    .catch((err) => {
+      res.statusCode = 500;
+      console.log("SERVER ERROR");
+      res.send("SERVER ERROR");
+    });
+});
+
+app.post("/createMeeting", (req, res) => {});
