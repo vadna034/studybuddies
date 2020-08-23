@@ -276,7 +276,7 @@ app.get("/class/([0-9]+)/createMeeting", (req, res) => {
       if (classData.rows.length == 1) {
         res.render("createMeeting", {
           layout: "index",
-          classData: classData.rows,
+          classId: classData.rows[0].id,
         });
       } else {
         res.send("That class doesn't exist");
@@ -289,4 +289,32 @@ app.get("/class/([0-9]+)/createMeeting", (req, res) => {
     });
 });
 
-app.post("/createMeeting", (req, res) => {});
+app.post("/createMeeting", (req, res) => {
+  var start =
+    Date.parse(req.body.startDate + " " + req.body.startTime + " CST") / 1000.0;
+  var end =
+    Date.parse(req.body.startDate + " " + req.body.endTime + " CST") / 1000.0;
+
+  if (end < start) {
+    end += 86400000;
+  }
+
+  console.log(start);
+  console.log(end);
+  console.log(req.body);
+
+  pool
+    .query(
+      "INSERT into classmeetings (owner, classid, startTime, endTime, purpose) values ($1,$2,to_timestamp($3),to_timestamp($4),$5)",
+      [req.session.data.id, req.body.classId, start, end, req.body.purpose]
+    )
+    .then((results) => {
+      res.statusCode = 200;
+      res.send("Success");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.send("SERVER ERROR");
+    });
+});
