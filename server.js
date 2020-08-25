@@ -289,7 +289,7 @@ app.get("/class/([0-9]+)/createMeeting", (req, res) => {
     });
 });
 
-app.post("/createMeeting", (req, res) => {
+app.post("/createMeeting", async (req, res) => {
   var start =
     Date.parse(req.body.startDate + " " + req.body.startTime + " CST") / 1000.0;
   var end =
@@ -303,18 +303,32 @@ app.post("/createMeeting", (req, res) => {
   console.log(end);
   console.log(req.body);
 
-  pool
-    .query(
-      "INSERT into classmeetings (owner, classid, startTime, endTime, purpose) values ($1,$2,to_timestamp($3),to_timestamp($4),$5)",
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    const result = await client.query(
+      "INSERT into classmeetings (owner, classid, startTime, endTime, purpose) values ($1,$2,to_timestamp($3),to_timestamp($4),$5) returning id",
       [req.session.data.id, req.body.classId, start, end, req.body.purpose]
-    )
-    .then((results) => {
-      res.statusCode = 200;
-      res.send("Success");
-    })
-    .catch((err) => {
-      console.log(err);
-      res.statusCode = 500;
-      res.send("SERVER ERROR");
-    });
+    );
+    console.log(result);
+    await client.query(
+      "INSERT INTO classmeetingmembership (userid, classmeetingid) values ($1, $2)",
+      [req.session.data.id, result.rows[0].id]
+    );
+    await client.query("COMMIT");
+    res.statusCode = 200;
+    res.send("success");
+    console.log("success");
+  } catch (err) {
+    console.log(err);
+    await client.query("ROLLBACK");
+    res.statusCode = 500;
+    res.send("SERVER ERROR");
+    console.log("fail");
+  } finally {
+    client.release();
+  }
 });
+
+app.post("/getMeetings", (req, res) => {});
