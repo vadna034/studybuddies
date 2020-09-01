@@ -4,3 +4,5 @@ node_modules/
 .vscode/
 # example dashboard that I don't really care about anymore 
 sideNav/
+
+.misc/

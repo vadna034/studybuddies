@@ -53,54 +53,55 @@ app.listen(process.env.PORT || PORT, () =>
 app.use("/client", express.static(__dirname + "/public/client"));
 
 app.get("/", (req, res) => {
+  // Sends the user our index file
   res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/index", (req, res) => {
+  // Sends the user our index file
   res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/login", (req, res) => {
+  // Sends the user to our login page
   res.sendFile(__dirname + "/public/login.html");
 });
 
 app.get("/register", (req, res) => {
+  // Sends register page
   res.sendFile(__dirname + "/public/register.html");
 });
 
-app.get("/dashboard", (req, res) => {
-  res.sendFile(__dirname + "/public/dashboard.html");
-});
-
 app.get("/main.css", (req, res) => {
+  // Sends our CSS file
   res.sendFile(__dirname + "/css/main.css");
 });
 
 app.get("/dashboard/addClasses", (req, res) => {
-  console.log("SENDING");
+  // Sends addClasses page
   res.sendFile(__dirname + "/public/dashboard/addClasses.html");
 });
 
 app.get("/dashboard/myClasses", (req, res) => {
+  // Sends myClasses page
   res.sendFile(__dirname + "/public/dashboard/myClasses.html");
 });
 
-app.get("/dashboard/myGroups", (req, res) => {
-  res.sendFile(__dirname + "/public/dashboard/myGroups.html");
-});
-
-app.get("/dashboard/profile", (req, res) => {
-  res.sendFile(__dirname + "/public/dashboard/profile.html");
-});
-
 app.get("/dashboard/home", (req, res) => {
-  /* Need to render this page */
+  // Sends user home page
   res.sendFile(__dirname + "/public/dashboard/home.html");
+});
+
+app.get("/dashboard/myMeetings", (req, res) => {
+  // Sends user page to display meetings they are attending
+  res.sendFile(__dirname + "/public/dashboard/myMeetings.html");
 });
 
 app.post("/register.html", (req, res) => {
   /* 
-  This function needs email verification"
+  This function needs email verification
+
+  Lets users register for our site 
   */
   pool
     .query("INSERT INTO users (email, password, name) VALUES ($1, $2, $3)", [
@@ -126,7 +127,7 @@ app.post("/register.html", (req, res) => {
 
 app.post("/login.html", (req, res) => {
   /*
-  Good
+  Lets users login to our site 
   */
   pool
     .query("SELECT * FROM users WHERE email = $1 AND password = $2", [
@@ -135,9 +136,11 @@ app.post("/login.html", (req, res) => {
     ])
     .then((result) => {
       if (result.rows.length === 0) {
+        // FAILURE: No user exists
         res.statusCode = 200;
         res.send("No user found");
       } else {
+        // SUCCESS: Redirect to home page
         req.session.data = {};
         req.session.data.id = result.rows[0].id;
         req.session.data.email = result.rows[0].email;
@@ -146,6 +149,7 @@ app.post("/login.html", (req, res) => {
       }
     })
     .catch((err) => {
+      // Failure: Generic failure on our end
       console.log(err);
       res.statusCode = 500;
       res.send("Server Error");
@@ -153,6 +157,7 @@ app.post("/login.html", (req, res) => {
 });
 
 app.post("/addClass", (req, res) => {
+  // Used when a user wants to add a class to their list of classes
   var term = req.body.term;
   var code = req.body.dept + " " + req.body.classNumber;
   console.log(req.session.data);
@@ -182,9 +187,10 @@ app.post("/addClass", (req, res) => {
 });
 
 app.post("/getClasses", (req, res) => {
+  // Used to display classes that a user is attending
   pool
     .query(
-      "SELECT * from classes WHERE id IN (SELECT classId FROM classMembership WHERE userId = $1)",
+      "SELECT C.id, C.term, C.code, C.name FROM classes AS C, classmembership AS CM WHERE CM.userid = $1 AND C.id = CM.classid",
       [req.session.data.id]
     )
     .then((result) => {
@@ -202,6 +208,7 @@ app.post("/getClasses", (req, res) => {
 });
 
 app.post("/deleteClass", (req, res) => {
+  // Used to delete a class from a users list of classes
   pool
     .query("DELETE FROM classMembership WHERE userID = $1 AND classID = $2", [
       req.session.data.id,
@@ -220,9 +227,9 @@ app.post("/deleteClass", (req, res) => {
     });
 });
 
-app.get("/class/([0-9]+)", (req, res) => {
-  /* Need to redirect to an error page */
-  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
+app.get("/dashboard/class/([0-9]+)", (req, res) => {
+  // Displays a classes home page, with the meetings it has scheduled
+  var classID = req.originalUrl.split("/")[3]; // Class ID parameter
   var userID = req.session.data.id;
 
   pool
@@ -267,8 +274,9 @@ app.get("/class/([0-9]+)", (req, res) => {
     });
 });
 
-app.get("/class/([0-9]+)/createMeeting", (req, res) => {
-  var classID = req.originalUrl.split("/")[2]; // Class ID parameter
+app.get("/dashboard/class/([0-9]+)/createMeeting", (req, res) => {
+  // Allows a user to create a meeting for their class
+  var classID = req.originalUrl.split("/")[3];
 
   pool
     .query("SELECT * from classes WHERE id=$1", [classID])
@@ -290,6 +298,7 @@ app.get("/class/([0-9]+)/createMeeting", (req, res) => {
 });
 
 app.post("/createMeeting", async (req, res) => {
+  // Creates a meeting
   var start =
     Date.parse(req.body.startDate + " " + req.body.startTime + " CST") / 1000.0;
   var end =
@@ -331,4 +340,59 @@ app.post("/createMeeting", async (req, res) => {
   }
 });
 
-app.post("/getMeetings", (req, res) => {});
+app.post("/getMeetings", (req, res) => {
+  // Gets all of the meetings that our user is attending
+  pool
+    .query(
+      "SELECT CM.id, C.code, CM.startTime, CM.endTime, CM.link, CM.owner FROM classes AS C, classmeetings AS CM, classmeetingmembership AS CMM WHERE CMM.userid = $1 AND CM.id = CMM.classmeetingid AND c.id = CM.classid ORDER BY CM.startTime",
+      [req.session.data.id]
+    )
+    .then((data) => {
+      // On success we send the user useful meeting data. This useful data is
+      // Class code, startTime, endTime, meeting link, and owner (owner decides whether the user can delete the meeting)
+      res.statusCode = 200;
+      console.log("success");
+
+      var meetings = data.rows;
+      meetings.forEach(
+        (meeting) => (meeting.delete = meeting.owner == req.session.data.id)
+      );
+      res.send(JSON.stringify(meetings));
+    })
+    .catch((err) => {
+      res.statusCode = 500;
+      console.log("fail");
+      res.send("SERVER ERROR");
+    });
+});
+
+app.post("/deleteMeeting", (req, res) => {
+  pool
+    .query("DELETE FROM classMeetings WHERE id = $1", [req.body.id])
+    .then(() => {
+      res.statusCode = 200;
+      res.send("SUCCESS");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.send("SERVER ERROR");
+    });
+});
+
+app.post("/leaveMeeting", (req, res) => {
+  pool
+    .query(
+      "DELETE FROM classMeetingMembership WHERE classMeetingid = $1 AND userid = $2",
+      [req.body.id, req.session.data.id]
+    )
+    .then(() => {
+      res.statusCode = 200;
+      res.send("SUCCESS");
+    })
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.send("SERVER ERROR");
+    });
+});
