@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scss": "node-sass --watch scss -o css",
-    "start": "node src/server.js"
+    "scss": "node-sass --watch scss -o css"
   },
   "author": "Shane Vadnais and Wyatt Holmes",
   "license": "ISC",
