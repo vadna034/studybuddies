@@ -27,6 +27,7 @@
         <a href="home"><i class="fa fa-home"></i>Home</a>
         <a href="addClasses" class="active">Add Classes</a>
         <a href="myClasses">My Classes</a>
+        <a href="myMeetings">My Meetings</a>
       </nav>
     </section>
 
@@ -59,9 +60,7 @@
       <div class="addClassForm">
         <form name="addClass" action="/addClass" method="POST">
           <div class="form-group row">
-            <label for="term" class="col-sm-2 col-form-label">
-              Term:
-            </label>
+            <label for="term" class="col-sm-2 col-form-label"> Term: </label>
             <div class="col-sm-10">
               <select name="term" id="term" class="custom-select">
                 <option selected>Choose...</option>
@@ -71,401 +70,463 @@
           </div>
 
           <div class="form-group row">
-            <label for="dept" class="col-sm-2 col-form-label">
-              Dept:
-            </label>
+            <label for="dept" class="col-sm-2 col-form-label"> Dept: </label>
             <div class="col-sm-10">
-              <select name="dept" id="dept" class="custom-select"
-                ><option value="" selected>Choose...</option
-                ><option value="AAS">AAS - Asian American Studies</option
-                ><option value="ABUS">ABUS - Applied Business</option
-                ><option value="ACCT">ACCT - Accounting</option
-                ><option value="ACL">ACL - Arts and Cultural Leadership</option
-                ><option value="ADDS">ADDS - Addiction Studies</option
-                ><option value="ADES">ADES - Apparel Design</option
-                ><option value="ADPY">ADPY - Adult Psychiatry</option
-                ><option value="AECM">AECM - Ag Educ, Comm &amp; Mktg</option
-                ><option value="AEM"
-                  >AEM - Aerospace Engineering and Mech</option
-                ><option value="AFRO"
-                  >AFRO - African Amer &amp; African Studies</option
-                ><option value="AGRO">AGRO - Agronomy and Plant Genetics</option
-                ><option value="AHS">AHS - Academic Health Center Shared</option
-                ><option value="AIR">AIR - Aerospace Studies</option
-                ><option value="AMES"
-                  >AMES - Asian &amp; Middle Eastern Studies</option
-                ><option value="AMIN">AMIN - American Indian Studies</option
-                ><option value="AMST">AMST - American Studies</option
-                ><option value="ANAT">ANAT - Anatomy</option
-                ><option value="ANES">ANES - Anesthesiology</option
-                ><option value="ANSC">ANSC - Animal Science</option
-                ><option value="ANTH">ANTH - Anthropology</option
-                ><option value="APEC">APEC - Applied Economics</option
-                ><option value="APS">APS - Applied Professional Studies</option
-                ><option value="APSC">APSC - Applied Plant Sciences</option
-                ><option value="APST">APST - Apparel Studies</option
-                ><option value="ARAB">ARAB - Arabic</option
-                ><option value="ARCH">ARCH - Architecture</option
-                ><option value="ARGN">ARGN - Study Abroad in Argentina</option
-                ><option value="ARTH">ARTH - Art History</option
-                ><option value="ARTS">ARTS - Art</option
-                ><option value="ASL">ASL - American Sign Language</option
-                ><option value="AST">AST - Astronomy</option
-                ><option value="BA">BA - Business Administration</option
-                ><option value="BBE"
-                  >BBE - Bioproducts and Biosystems Eng</option
-                ><option value="BIOC">BIOC - Biochemistry</option
-                ><option value="BIOL">BIOL - Biology</option
-                ><option value="BLAW">BLAW - Business Law</option
-                ><option value="BMEN">BMEN - Biomedical Engineering</option
-                ><option value="BSE">BSE - Biology, Society, and Environ</option
-                ><option value="BTHX">BTHX - Bioethics, Center for</option
-                ><option value="CAHP"
-                  >CAHP - Center for Allied Health Prog</option
-                ><option value="CAPY"
-                  >CAPY - Child &amp; Adolescent Psychiatry</option
-                ><option value="CDED">CDED - Continuing Dental Education</option
-                ><option value="CEGE"
-                  >CEGE - Civil, Environ, and Geo-Engin</option
-                ><option value="CESP"
-                  >CESP - Commun Engage Scholars Program</option
-                ><option value="CFAN"
-                  >CFAN - Col of Food, Agr &amp; Nat Res Sci</option
-                ><option value="CGSC">CGSC - Cognitive Science</option
-                ><option value="CHEM">CHEM - Chemistry</option
-                ><option value="CHEN">CHEN - Chemical Engineering</option
-                ><option value="CHIC">CHIC - Chicano Studies</option
-                ><option value="CHMB">CHMB - China Executive MBA</option
-                ><option value="CHN">CHN - Chinese</option
-                ><option value="CHPH">CHPH - Chemical Physics</option
-                ><option value="CI">CI - Curriculum and Instruction</option
-                ><option value="CLA">CLA - College of Liberal Arts</option
-                ><option value="CMB"
-                  >CMB - Comparative &amp; Molecular Biosci</option
-                ><option value="CMBA">CMBA - Carlson Executive MBA</option
-                ><option value="CMGT">CMGT - Construction Management</option
-                ><option value="CNES"
-                  >CNES - Classical and Near Eastern Std</option
-                ><option value="COMM">COMM - Communication Studies</option
-                ><option value="CONS">CONS - Conservation Sciences</option
-                ><option value="COP"
-                  >COP - Cellular/Organismal Physiology</option
-                ><option value="CPMS"
-                  >CPMS - Clinical Physiol, Movement Sci</option
-                ><option value="CPSY">CPSY - Child Psychology</option
-                ><option value="CSCI">CSCI - Computer Science</option
-                ><option value="CSCL"
-                  >CSCL - Cultural Stdy/Comparative Lit</option
-                ><option value="CSE">CSE - Coll of Science, Engineering</option
-                ><option value="CSPH"
-                  >CSPH - Ctr for Spirituality/Healing</option
-                ><option value="CVM">CVM - Veterinary Medicine</option
-                ><option value="DAKO">DAKO - Dakota</option
-                ><option value="DBLN">DBLN - Study Abroad in Dublin</option
-                ><option value="DDS">DDS - Doctor of Dental Surgery</option
-                ><option value="DENT">DENT - Dentistry</option
-                ><option value="DERM">DERM - Dermatology</option
-                ><option value="DES">DES - Design</option
-                ><option value="DH">DH - Dental Hygiene</option
-                ><option value="DNCE">DNCE - Dance</option
-                ><option value="DSCI">DSCI - Data Science</option
-                ><option value="DSSC">DSSC - Develpmt Std and Soc Change</option
-                ><option value="DT">DT - Dental Therapy</option
-                ><option value="DTCH">DTCH - Dutch</option
-                ><option value="EAS">EAS - East Asian Studies</option
-                ><option value="ECDR">ECDR - Ecuador</option
-                ><option value="ECON">ECON - Economics</option
-                ><option value="ECP"
-                  >ECP - Experimental and Clinical Phar</option
-                ><option value="EDHD"
-                  >EDHD - Educational/Human Development</option
-                ><option value="EDUC">EDUC - Education</option
-                ><option value="EE">EE - Electrical &amp; Computer Eng</option
-                ><option value="EEB">EEB - Ecology, Evolution, and Behav</option
-                ><option value="EMMD">EMMD - Emergency Medicine</option
-                ><option value="EMS">EMS - Early Modern Studies</option
-                ><option value="ENDO">ENDO - Endodontics</option
-                ><option value="ENGL">ENGL - English: Literature</option
-                ><option value="ENGW">ENGW - English: Creative Writing</option
-                ><option value="ENT">ENT - Entomology</option
-                ><option value="ENTR">ENTR - Entrepreneurship</option
-                ><option value="EPSY">EPSY - Educational Psychology</option
-                ><option value="ESCI">ESCI - Earth Sciences</option
-                ><option value="ESL">ESL - English as a Second Language</option
-                ><option value="ESPM"
-                  >ESPM - Environment Sci, Policy, Mgmt</option
-                ><option value="FDSY">FDSY - Food Systems</option
-                ><option value="FIN">FIN - Finnish</option
-                ><option value="FINA">FINA - Finance</option
-                ><option value="FLOR">FLOR - Study Abroad in Florence</option
-                ><option value="FM">FM - Financial Mathematics</option
-                ><option value="FMCH"
-                  >FMCH - Family Med &amp; Community Health</option
-                ><option value="FNRM"
-                  >FNRM - Forest and Natural Res. Mgmt.</option
-                ><option value="FOST">FOST - Foreign Study</option
-                ><option value="FREN">FREN - French</option
-                ><option value="FRIT">FRIT - French and Italian</option
-                ><option value="FSCN">FSCN - Food Science and Nutrition</option
-                ><option value="FSOS">FSOS - Family Social Science</option
-                ><option value="FW">FW - Fisheries and Wildlife</option
-                ><option value="GCC">GCC - Grand Challenge Curriculum</option
-                ><option value="GCD"
-                  >GCD - Genetics, Cell Biol/Developmnt</option
-                ><option value="GDBA"
-                  >GDBA - Global Doctorate of Business</option
-                ><option value="GDES">GDES - Graphic Design</option
-                ><option value="GEND">GEND - General Dentistry</option
-                ><option value="GEOG">GEOG - Geography</option
-                ><option value="GER">GER - German</option
-                ><option value="GERI">GERI - Geriatrics</option
-                ><option value="GERO">GERO - Gerontology</option
-                ><option value="GIS"
-                  >GIS - Geographic Information Science</option
-                ><option value="GLBT"
-                  >GLBT - Gay, Lesbian, Bisexual, Transg</option
-                ><option value="GLOS">GLOS - Global Studies</option
-                ><option value="GRAD">GRAD - Graduate School</option
-                ><option value="GRD">GRD - Graduate Summer Research</option
-                ><option value="GRK">GRK - Greek</option
-                ><option value="GSD"
-                  >GSD - German,Scandinavian, and Dutch</option
-                ><option value="GWSS"
-                  >GWSS - Gender, Women, &amp; Sexuality Std</option
-                ><option value="HCOL">HCOL - Honors Colloquia</option
-                ><option value="HEBR">HEBR - Hebrew</option
-                ><option value="HECU"
-                  >HECU - Higher Ed Consortium Urban Aff</option
-                ><option value="HINF">HINF - Health Informatics</option
-                ><option value="HIST">HIST - History</option
-                ><option value="HMED">HMED - History of Medicine</option
-                ><option value="HMNG">HMNG - Hmong</option
-                ><option value="HNDI">HNDI - Hindi</option
-                ><option value="HNUR">HNUR - Hindi-Urdu</option
-                ><option value="HORT">HORT - Horticultural Science</option
-                ><option value="HRIR">HRIR - Human Resources/Indus Rel</option
-                ><option value="HSCI">HSCI - History of Science and Tech</option
-                ><option value="HSEM">HSEM - Honors Seminar</option
-                ><option value="HSEX">HSEX - Human Sexuality</option
-                ><option value="HSG">HSG - Housing Studies</option
-                ><option value="HSM">HSM - Health Services Management</option
-                ><option value="HSPH"
-                  >HSPH - Heritage Studies &amp; Public Hist</option
-                ><option value="HUMF">HUMF - Human Factors</option
-                ><option value="IBH">IBH - Integrated Behavioral Health</option
-                ><option value="IBUS">IBUS - International Business</option
-                ><option value="ICP">ICP - Inter-College Program</option
-                ><option value="ID">ID - Interdepartmental Study</option
-                ><option value="IDES">IDES - Interior Design</option
-                ><option value="IDSC"
-                  >IDSC - Information and Decision Sci</option
-                ><option value="IE">IE - Industrial Engineering</option
-                ><option value="IFSL"
-                  >IFSL - Integrated Food Systems Ldrshp</option
-                ><option value="INAR"
-                  >INAR - Interdisciplinary Archaeologic</option
-                ><option value="INET">INET - Information Networking</option
-                ><option value="INMD">INMD - Interdisciplinary Medicine</option
-                ><option value="INS">INS - Insurance and Risk Management</option
-                ><option value="IREL"
-                  >IREL - Interprsnl Relations Research</option
-                ><option value="ITAL">ITAL - Italian</option
-                ><option value="JOUR"
-                  >JOUR - Journalism &amp; Mass Communicat</option
-                ><option value="JPN">JPN - Japanese</option
-                ><option value="JWST">JWST - Jewish Studies</option
-                ><option value="KIN">KIN - Kinesiology</option
-                ><option value="KNYA">KNYA - Kenya</option
-                ><option value="KOR">KOR - Korean</option
-                ><option value="LA">LA - Landscape Architecture</option
-                ><option value="LAAS"
-                  >LAAS - Land and Atmospheric Science</option
-                ><option value="LAMP"
-                  >LAMP - Laboratory Medicine and Path</option
-                ><option value="LANG"
-                  >LANG - Language Centr CLA Courseshare</option
-                ><option value="LAS">LAS - Latin American Studies</option
-                ><option value="LASK"
-                  >LASK - Learning and Academic Skills</option
-                ><option value="LAT">LAT - Latin</option
-                ><option value="LAW">LAW - Law School</option
-                ><option value="LEAD">LEAD - Leadership Education</option
-                ><option value="LING">LING - Linguistics</option
-                ><option value="LM">LM - Logistics Management</option
-                ><option value="LNDN">LNDN - Study Abroad in London</option
-                ><option value="MABA"
-                  >MABA - Masters of Appl Bus Analytics</option
-                ><option value="MADR"
-                  >MADR - Madrid Learning Abroad Program</option
-                ><option value="MATH">MATH - Mathematics</option
-                ><option value="MATS">MATS - Materials Science</option
-                ><option value="MBA">MBA - Master of Business Admin</option
-                ><option value="MBS">MBS - Master of Biological Sciences</option
-                ><option value="MBT">MBT - Master of Business Taxation</option
-                ><option value="MCDG"
-                  >MCDG - Mol Cell Devlpmental Biol/Gene</option
-                ><option value="MCOM">MCOM - Managerial Communications</option
-                ><option value="MDI">MDI - Medical Device Innovation</option
-                ><option value="MDP"
-                  >MDP - Master of Development Practice</option
-                ><option value="MDS">MDS - Multidisciplinary Studies</option
-                ><option value="ME">ME - Mechanical Engineering</option
-                ><option value="MED">MED - Medicine</option
-                ><option value="MEDC">MEDC - Medicinal Chemistry</option
-                ><option value="MEST">MEST - Medieval Studies</option
-                ><option value="MGMT">MGMT - Management</option
-                ><option value="MICA"
-                  >MICA - Microbiol/Immun/Cancer Biology</option
-                ><option value="MICB">MICB - Microbiology</option
-                ><option value="MICE">MICE - Microbial Engineering</option
-                ><option value="MIL">MIL - Military Science</option
-                ><option value="MILI"
-                  >MILI - Medical Industry Leadrshp Inst</option
-                ><option value="MIMB">MIMB - Medical Industry MBA</option
-                ><option value="MIMS">MIMS - Moving Image Studies</option
-                ><option value="MKTG">MKTG - Marketing</option
-                ><option value="MLK"
-                  >MLK - Martin Luther King, Jr Program</option
-                ><option value="MLSP"
-                  >MLSP - Medical Laboratory Sciences Pr</option
-                ><option value="MM">MM - Manufacturing Operations Mgmt</option
-                ><option value="MONT">MONT - Study Abroad in Montpellier</option
-                ><option value="MORT">MORT - Mortuary Science</option
-                ><option value="MOT">MOT - Management of Technology</option
-                ><option value="MPHY">MPHY - Medical Physics</option
-                ><option value="MRCO"
-                  >MRCO - Arabic Lang/Culture in Morocco</option
-                ><option value="MSBA"
-                  >MSBA - Masters of Business Analytics</option
-                ><option value="MSF">MSF - Master of Science in Finance</option
-                ><option value="MSID"
-                  >MSID - MN Studies in Intl Devel Prog</option
-                ><option value="MST">MST - Museum Studies</option
-                ><option value="MTHE">MTHE - Mathematics Education</option
-                ><option value="MUED">MUED - Music Education</option
-                ><option value="MULT"
-                  >MULT - Multi-Inst Cross Registration</option
-                ><option value="MUS">MUS - Music</option
-                ><option value="MUSA">MUSA - Music Applied</option
-                ><option value="NAV">NAV - Naval Science</option
-                ><option value="NEUR">NEUR - Neurology</option
-                ><option value="NOR">NOR - Norwegian</option
-                ><option value="NPSE"
-                  >NPSE - Nanoparticle Science and Eng</option
-                ><option value="NR">NR - Natural Resources Sci and Mgmt</option
-                ><option value="NSC">NSC - Neuroscience</option
-                ><option value="NSCI">NSCI - Neuroscience Department</option
-                ><option value="NSU">NSU - Neurosurgery</option
-                ><option value="NURS">NURS - Nursing</option
-                ><option value="NUTR">NUTR - Nutrition</option
-                ><option value="OBIO">OBIO - Oral Biology</option
-                ><option value="OBST">OBST - Obstetrics and Gynecology</option
-                ><option value="OCS">OCS - Off-Campus Study</option
-                ><option value="OJIB">OJIB - Ojibwe</option
-                ><option value="OLPD"
-                  >OLPD - Org Leadership, Policy &amp; Dev</option
-                ><option value="OPH">OPH - Ophthalmology</option
-                ><option value="ORSU">ORSU - Orthopaedic Surgery</option
-                ><option value="OSUR"
-                  >OSUR - Oral and Maxillofacial Surgery</option
-                ><option value="OT">OT - Occupational Therapy</option
-                ><option value="OTHO">OTHO - Orthodontics</option
-                ><option value="OTOL">OTOL - Otolaryngology</option
-                ><option value="OUE">OUE - Office of Undergrad Education</option
-                ><option value="PA">PA - Public Affairs</option
-                ><option value="PATH">PATH - Pathology</option
-                ><option value="PDEN">PDEN - Pediatric Dentistry</option
-                ><option value="PDES">PDES - Product Design</option
-                ><option value="PE">PE - Physical Education</option
-                ><option value="PED">PED - Pediatrics</option
-                ><option value="PERO">PERO - Periodontics</option
-                ><option value="PHAR">PHAR - Pharmacy</option
-                ><option value="PHCL">PHCL - Pharmacology</option
-                ><option value="PHIL">PHIL - Philosophy</option
-                ><option value="PHM">PHM - Pharmaceutics</option
-                ><option value="PHSL">PHSL - Physiology</option
-                ><option value="PHYS">PHYS - Physics</option
-                ><option value="PLPA">PLPA - Plant Pathology</option
-                ><option value="PLSC">PLSC - Plant Science</option
-                ><option value="PMB">PMB - Plant and Microbial Biology</option
-                ><option value="PMED"
-                  >PMED - Physical Med &amp; Rehabilitation</option
-                ><option value="POL">POL - Political Science</option
-                ><option value="PORT">PORT - Portuguese</option
-                ><option value="POUL">POUL - Poultry Health</option
-                ><option value="PREV">PREV - Preventive Science Minor</option
-                ><option value="PROS">PROS - Prosthodontics</option
-                ><option value="PSY">PSY - Psychology</option
-                ><option value="PT">PT - Physical Therapy</option
-                ><option value="PUBH">PUBH - Public Health</option
-                ><option value="RAD">RAD - Radiology</option
-                ><option value="REC"
-                  >REC - Rec, Park, and Leisure Studies</option
-                ><option value="RELS">RELS - Religious Studies</option
-                ><option value="RM">RM - Retail Merchandising</option
-                ><option value="ROB">ROB - Robotics</option
-                ><option value="RSC">RSC - Rehabilitation Science</option
-                ><option value="RUSS">RUSS - Russian</option
-                ><option value="SACP"
-                  >SACP - Social, Adm, and Clinical Phar</option
-                ><option value="SAGR"
-                  >SAGR - Sustainable Agricultural Syst</option
-                ><option value="SAPH"
-                  >SAPH - Social/Administrative Pharmacy</option
-                ><option value="SCAN">SCAN - Scandinavian</option
-                ><option value="SCB">SCB - Stem Cell Biology</option
-                ><option value="SCIC">SCIC - Scientific Computation</option
-                ><option value="SCMC"
-                  >SCMC - Studies in Cinema Media Cultur</option
-                ><option value="SCO">SCO - Supply Chain and Operations</option
-                ><option value="SDNY">SDNY - Study Abroad in Sydney</option
-                ><option value="SENG">SENG - Software Engineering</option
-                ><option value="SFS">SFS - School for Field Studies</option
-                ><option value="SLHS">SLHS - Speech-Language-Hearing Sci</option
-                ><option value="SMGT">SMGT - Sport Management</option
-                ><option value="SMLI">SMLI - Somali</option
-                ><option value="SNGL">SNGL - Senegal</option
-                ><option value="SOC">SOC - Sociology</option
-                ><option value="SOIL">SOIL - Soil, Water, and Climate</option
-                ><option value="SPAN">SPAN - Spanish</option
-                ><option value="SPPT">SPPT - Spanish and Portuguese</option
-                ><option value="SSM"
-                  >SSM - Sustainable Systems Management</option
-                ><option value="SST">SST - Studies of Science and Tech</option
-                ><option value="ST">ST - Security Technologies</option
-                ><option value="STAT">STAT - Statistics</option
-                ><option value="SURG">SURG - Surgery</option
-                ><option value="SUST">SUST - Sustainability Studies</option
-                ><option value="SW">SW - Social Work</option
-                ><option value="SWAH">SWAH - Swahili</option
-                ><option value="SWED">SWED - Swedish</option
-                ><option value="TH">TH - Theatre Arts</option
-                ><option value="THAI">THAI - MSID Program in Thailand</option
-                ><option value="TLDO"
-                  >TLDO - Toledo International Program</option
-                ><option value="TMDP">TMDP - TMD &amp; Orofacial Pain</option
-                ><option value="TRAD">TRAD - Therapeutic Radiology</option
-                ><option value="TRIN"
-                  >TRIN - Translation and Interpreting</option
-                ><option value="TXCL">TXCL - Toxicology</option
-                ><option value="UC">UC - University College</option
-                ><option value="URBS">URBS - Urban Studies</option
-                ><option value="URDU">URDU - Urdu</option
-                ><option value="UROL">UROL - Urologic Surgery</option
-                ><option value="VBS"
-                  >VBS - Veterinary &amp; Biomedical Sci</option
-                ><option value="VCS">VCS - Veterinary Clinical Sciences</option
-                ><option value="VMBA">VMBA - Vienna Executive MBA</option
-                ><option value="VMED"
-                  >VMED - Veterinary Medicine, Graduate</option
-                ><option value="VPM"
-                  >VPM - Veterinary Population Medicine</option
-                ><option value="WRIT">WRIT - Writing Studies</option
-                ><option value="WRS">WRS - Water Resources Science</option
-                ><option value="YOST"
-                  >YOST - Youth Development and Research</option
-                ></select
-              >
+              <select name="dept" id="dept" class="custom-select">
+                <option value="" selected>Choose...</option>
+                <option value="AAS">AAS - Asian American Studies</option>
+                <option value="ABUS">ABUS - Applied Business</option>
+                <option value="ACCT">ACCT - Accounting</option>
+                <option value="ACL">ACL - Arts and Cultural Leadership</option>
+                <option value="ADDS">ADDS - Addiction Studies</option>
+                <option value="ADES">ADES - Apparel Design</option>
+                <option value="ADPY">ADPY - Adult Psychiatry</option>
+                <option value="AECM">AECM - Ag Educ, Comm &amp; Mktg</option>
+                <option value="AEM">
+                  AEM - Aerospace Engineering and Mech
+                </option>
+                <option value="AFRO">
+                  AFRO - African Amer &amp; African Studies
+                </option>
+                <option value="AGRO">AGRO - Agronomy and Plant Genetics</option>
+                <option value="AHS">AHS - Academic Health Center Shared</option>
+                <option value="AIR">AIR - Aerospace Studies</option>
+                <option value="AMES">
+                  AMES - Asian &amp; Middle Eastern Studies
+                </option>
+                <option value="AMIN">AMIN - American Indian Studies</option>
+                <option value="AMST">AMST - American Studies</option>
+                <option value="ANAT">ANAT - Anatomy</option>
+                <option value="ANES">ANES - Anesthesiology</option>
+                <option value="ANSC">ANSC - Animal Science</option>
+                <option value="ANTH">ANTH - Anthropology</option>
+                <option value="APEC">APEC - Applied Economics</option>
+                <option value="APS">APS - Applied Professional Studies</option>
+                <option value="APSC">APSC - Applied Plant Sciences</option>
+                <option value="APST">APST - Apparel Studies</option>
+                <option value="ARAB">ARAB - Arabic</option>
+                <option value="ARCH">ARCH - Architecture</option>
+                <option value="ARGN">ARGN - Study Abroad in Argentina</option>
+                <option value="ARTH">ARTH - Art History</option>
+                <option value="ARTS">ARTS - Art</option>
+                <option value="ASL">ASL - American Sign Language</option>
+                <option value="AST">AST - Astronomy</option>
+                <option value="BA">BA - Business Administration</option>
+                <option value="BBE">
+                  BBE - Bioproducts and Biosystems Eng
+                </option>
+                <option value="BIOC">BIOC - Biochemistry</option>
+                <option value="BIOL">BIOL - Biology</option>
+                <option value="BLAW">BLAW - Business Law</option>
+                <option value="BMEN">BMEN - Biomedical Engineering</option>
+                <option value="BSE">BSE - Biology, Society, and Environ</option>
+                <option value="BTHX">BTHX - Bioethics, Center for</option>
+                <option value="CAHP">
+                  CAHP - Center for Allied Health Prog
+                </option>
+                <option value="CAPY">
+                  CAPY - Child &amp; Adolescent Psychiatry
+                </option>
+                <option value="CDED">CDED - Continuing Dental Education</option>
+                <option value="CEGE">
+                  CEGE - Civil, Environ, and Geo-Engin
+                </option>
+                <option value="CESP">
+                  CESP - Commun Engage Scholars Program
+                </option>
+                <option value="CFAN">
+                  CFAN - Col of Food, Agr &amp; Nat Res Sci
+                </option>
+                <option value="CGSC">CGSC - Cognitive Science</option>
+                <option value="CHEM">CHEM - Chemistry</option>
+                <option value="CHEN">CHEN - Chemical Engineering</option>
+                <option value="CHIC">CHIC - Chicano Studies</option>
+                <option value="CHMB">CHMB - China Executive MBA</option>
+                <option value="CHN">CHN - Chinese</option>
+                <option value="CHPH">CHPH - Chemical Physics</option>
+                <option value="CI">CI - Curriculum and Instruction</option>
+                <option value="CLA">CLA - College of Liberal Arts</option>
+                <option value="CMB">
+                  CMB - Comparative &amp; Molecular Biosci
+                </option>
+                <option value="CMBA">CMBA - Carlson Executive MBA</option>
+                <option value="CMGT">CMGT - Construction Management</option>
+                <option value="CNES">
+                  CNES - Classical and Near Eastern Std
+                </option>
+                <option value="COMM">COMM - Communication Studies</option>
+                <option value="CONS">CONS - Conservation Sciences</option>
+                <option value="COP">
+                  COP - Cellular/Organismal Physiology
+                </option>
+                <option value="CPMS">
+                  CPMS - Clinical Physiol, Movement Sci
+                </option>
+                <option value="CPSY">CPSY - Child Psychology</option>
+                <option value="CSCI">CSCI - Computer Science</option>
+                <option value="CSCL">
+                  CSCL - Cultural Stdy/Comparative Lit
+                </option>
+                <option value="CSE">CSE - Coll of Science, Engineering</option>
+                <option value="CSPH">
+                  CSPH - Ctr for Spirituality/Healing
+                </option>
+                <option value="CVM">CVM - Veterinary Medicine</option>
+                <option value="DAKO">DAKO - Dakota</option>
+                <option value="DBLN">DBLN - Study Abroad in Dublin</option>
+                <option value="DDS">DDS - Doctor of Dental Surgery</option>
+                <option value="DENT">DENT - Dentistry</option>
+                <option value="DERM">DERM - Dermatology</option>
+                <option value="DES">DES - Design</option>
+                <option value="DH">DH - Dental Hygiene</option>
+                <option value="DNCE">DNCE - Dance</option>
+                <option value="DSCI">DSCI - Data Science</option>
+                <option value="DSSC">DSSC - Develpmt Std and Soc Change</option>
+                <option value="DT">DT - Dental Therapy</option>
+                <option value="DTCH">DTCH - Dutch</option>
+                <option value="EAS">EAS - East Asian Studies</option>
+                <option value="ECDR">ECDR - Ecuador</option>
+                <option value="ECON">ECON - Economics</option>
+                <option value="ECP">
+                  ECP - Experimental and Clinical Phar
+                </option>
+                <option value="EDHD">
+                  EDHD - Educational/Human Development
+                </option>
+                <option value="EDUC">EDUC - Education</option>
+                <option value="EE">EE - Electrical &amp; Computer Eng</option>
+                <option value="EEB">EEB - Ecology, Evolution, and Behav</option>
+                <option value="EMMD">EMMD - Emergency Medicine</option>
+                <option value="EMS">EMS - Early Modern Studies</option>
+                <option value="ENDO">ENDO - Endodontics</option>
+                <option value="ENGL">ENGL - English: Literature</option>
+                <option value="ENGW">ENGW - English: Creative Writing</option>
+                <option value="ENT">ENT - Entomology</option>
+                <option value="ENTR">ENTR - Entrepreneurship</option>
+                <option value="EPSY">EPSY - Educational Psychology</option>
+                <option value="ESCI">ESCI - Earth Sciences</option>
+                <option value="ESL">ESL - English as a Second Language</option>
+                <option value="ESPM">
+                  ESPM - Environment Sci, Policy, Mgmt
+                </option>
+                <option value="FDSY">FDSY - Food Systems</option>
+                <option value="FIN">FIN - Finnish</option>
+                <option value="FINA">FINA - Finance</option>
+                <option value="FLOR">FLOR - Study Abroad in Florence</option>
+                <option value="FM">FM - Financial Mathematics</option>
+                <option value="FMCH">
+                  FMCH - Family Med &amp; Community Health
+                </option>
+                <option value="FNRM">
+                  FNRM - Forest and Natural Res. Mgmt.
+                </option>
+                <option value="FOST">FOST - Foreign Study</option>
+                <option value="FREN">FREN - French</option>
+                <option value="FRIT">FRIT - French and Italian</option>
+                <option value="FSCN">FSCN - Food Science and Nutrition</option>
+                <option value="FSOS">FSOS - Family Social Science</option>
+                <option value="FW">FW - Fisheries and Wildlife</option>
+                <option value="GCC">GCC - Grand Challenge Curriculum</option>
+                <option value="GCD">
+                  GCD - Genetics, Cell Biol/Developmnt
+                </option>
+                <option value="GDBA">
+                  GDBA - Global Doctorate of Business
+                </option>
+                <option value="GDES">GDES - Graphic Design</option>
+                <option value="GEND">GEND - General Dentistry</option>
+                <option value="GEOG">GEOG - Geography</option>
+                <option value="GER">GER - German</option>
+                <option value="GERI">GERI - Geriatrics</option>
+                <option value="GERO">GERO - Gerontology</option>
+                <option value="GIS">
+                  GIS - Geographic Information Science
+                </option>
+                <option value="GLBT">
+                  GLBT - Gay, Lesbian, Bisexual, Transg
+                </option>
+                <option value="GLOS">GLOS - Global Studies</option>
+                <option value="GRAD">GRAD - Graduate School</option>
+                <option value="GRD">GRD - Graduate Summer Research</option>
+                <option value="GRK">GRK - Greek</option>
+                <option value="GSD">
+                  GSD - German,Scandinavian, and Dutch
+                </option>
+                <option value="GWSS">
+                  GWSS - Gender, Women, &amp; Sexuality Std
+                </option>
+                <option value="HCOL">HCOL - Honors Colloquia</option>
+                <option value="HEBR">HEBR - Hebrew</option>
+                <option value="HECU">
+                  HECU - Higher Ed Consortium Urban Aff
+                </option>
+                <option value="HINF">HINF - Health Informatics</option>
+                <option value="HIST">HIST - History</option>
+                <option value="HMED">HMED - History of Medicine</option>
+                <option value="HMNG">HMNG - Hmong</option>
+                <option value="HNDI">HNDI - Hindi</option>
+                <option value="HNUR">HNUR - Hindi-Urdu</option>
+                <option value="HORT">HORT - Horticultural Science</option>
+                <option value="HRIR">HRIR - Human Resources/Indus Rel</option>
+                <option value="HSCI">HSCI - History of Science and Tech</option>
+                <option value="HSEM">HSEM - Honors Seminar</option>
+                <option value="HSEX">HSEX - Human Sexuality</option>
+                <option value="HSG">HSG - Housing Studies</option>
+                <option value="HSM">HSM - Health Services Management</option>
+                <option value="HSPH">
+                  HSPH - Heritage Studies &amp; Public Hist
+                </option>
+                <option value="HUMF">HUMF - Human Factors</option>
+                <option value="IBH">IBH - Integrated Behavioral Health</option>
+                <option value="IBUS">IBUS - International Business</option>
+                <option value="ICP">ICP - Inter-College Program</option>
+                <option value="ID">ID - Interdepartmental Study</option>
+                <option value="IDES">IDES - Interior Design</option>
+                <option value="IDSC">
+                  IDSC - Information and Decision Sci
+                </option>
+                <option value="IE">IE - Industrial Engineering</option>
+                <option value="IFSL">
+                  IFSL - Integrated Food Systems Ldrshp
+                </option>
+                <option value="INAR">
+                  INAR - Interdisciplinary Archaeologic
+                </option>
+                <option value="INET">INET - Information Networking</option>
+                <option value="INMD">INMD - Interdisciplinary Medicine</option>
+                <option value="INS">INS - Insurance and Risk Management</option>
+                <option value="IREL">
+                  IREL - Interprsnl Relations Research
+                </option>
+                <option value="ITAL">ITAL - Italian</option>
+                <option value="JOUR">
+                  JOUR - Journalism &amp; Mass Communicat
+                </option>
+                <option value="JPN">JPN - Japanese</option>
+                <option value="JWST">JWST - Jewish Studies</option>
+                <option value="KIN">KIN - Kinesiology</option>
+                <option value="KNYA">KNYA - Kenya</option>
+                <option value="KOR">KOR - Korean</option>
+                <option value="LA">LA - Landscape Architecture</option>
+                <option value="LAAS">
+                  LAAS - Land and Atmospheric Science
+                </option>
+                <option value="LAMP">
+                  LAMP - Laboratory Medicine and Path
+                </option>
+                <option value="LANG">
+                  LANG - Language Centr CLA Courseshare
+                </option>
+                <option value="LAS">LAS - Latin American Studies</option>
+                <option value="LASK">
+                  LASK - Learning and Academic Skills
+                </option>
+                <option value="LAT">LAT - Latin</option>
+                <option value="LAW">LAW - Law School</option>
+                <option value="LEAD">LEAD - Leadership Education</option>
+                <option value="LING">LING - Linguistics</option>
+                <option value="LM">LM - Logistics Management</option>
+                <option value="LNDN">LNDN - Study Abroad in London</option>
+                <option value="MABA">
+                  MABA - Masters of Appl Bus Analytics
+                </option>
+                <option value="MADR">
+                  MADR - Madrid Learning Abroad Program
+                </option>
+                <option value="MATH">MATH - Mathematics</option>
+                <option value="MATS">MATS - Materials Science</option>
+                <option value="MBA">MBA - Master of Business Admin</option>
+                <option value="MBS">MBS - Master of Biological Sciences</option>
+                <option value="MBT">MBT - Master of Business Taxation</option>
+                <option value="MCDG">
+                  MCDG - Mol Cell Devlpmental Biol/Gene
+                </option>
+                <option value="MCOM">MCOM - Managerial Communications</option>
+                <option value="MDI">MDI - Medical Device Innovation</option>
+                <option value="MDP">
+                  MDP - Master of Development Practice
+                </option>
+                <option value="MDS">MDS - Multidisciplinary Studies</option>
+                <option value="ME">ME - Mechanical Engineering</option>
+                <option value="MED">MED - Medicine</option>
+                <option value="MEDC">MEDC - Medicinal Chemistry</option>
+                <option value="MEST">MEST - Medieval Studies</option>
+                <option value="MGMT">MGMT - Management</option>
+                <option value="MICA">
+                  MICA - Microbiol/Immun/Cancer Biology
+                </option>
+                <option value="MICB">MICB - Microbiology</option>
+                <option value="MICE">MICE - Microbial Engineering</option>
+                <option value="MIL">MIL - Military Science</option>
+                <option value="MILI">
+                  MILI - Medical Industry Leadrshp Inst
+                </option>
+                <option value="MIMB">MIMB - Medical Industry MBA</option>
+                <option value="MIMS">MIMS - Moving Image Studies</option>
+                <option value="MKTG">MKTG - Marketing</option>
+                <option value="MLK">
+                  MLK - Martin Luther King, Jr Program
+                </option>
+                <option value="MLSP">
+                  MLSP - Medical Laboratory Sciences Pr
+                </option>
+                <option value="MM">MM - Manufacturing Operations Mgmt</option>
+                <option value="MONT">MONT - Study Abroad in Montpellier</option>
+                <option value="MORT">MORT - Mortuary Science</option>
+                <option value="MOT">MOT - Management of Technology</option>
+                <option value="MPHY">MPHY - Medical Physics</option>
+                <option value="MRCO">
+                  MRCO - Arabic Lang/Culture in Morocco
+                </option>
+                <option value="MSBA">
+                  MSBA - Masters of Business Analytics
+                </option>
+                <option value="MSF">MSF - Master of Science in Finance</option>
+                <option value="MSID">
+                  MSID - MN Studies in Intl Devel Prog
+                </option>
+                <option value="MST">MST - Museum Studies</option>
+                <option value="MTHE">MTHE - Mathematics Education</option>
+                <option value="MUED">MUED - Music Education</option>
+                <option value="MULT">
+                  MULT - Multi-Inst Cross Registration
+                </option>
+                <option value="MUS">MUS - Music</option>
+                <option value="MUSA">MUSA - Music Applied</option>
+                <option value="NAV">NAV - Naval Science</option>
+                <option value="NEUR">NEUR - Neurology</option>
+                <option value="NOR">NOR - Norwegian</option>
+                <option value="NPSE">
+                  NPSE - Nanoparticle Science and Eng
+                </option>
+                <option value="NR">NR - Natural Resources Sci and Mgmt</option>
+                <option value="NSC">NSC - Neuroscience</option>
+                <option value="NSCI">NSCI - Neuroscience Department</option>
+                <option value="NSU">NSU - Neurosurgery</option>
+                <option value="NURS">NURS - Nursing</option>
+                <option value="NUTR">NUTR - Nutrition</option>
+                <option value="OBIO">OBIO - Oral Biology</option>
+                <option value="OBST">OBST - Obstetrics and Gynecology</option>
+                <option value="OCS">OCS - Off-Campus Study</option>
+                <option value="OJIB">OJIB - Ojibwe</option>
+                <option value="OLPD">
+                  OLPD - Org Leadership, Policy &amp; Dev
+                </option>
+                <option value="OPH">OPH - Ophthalmology</option>
+                <option value="ORSU">ORSU - Orthopaedic Surgery</option>
+                <option value="OSUR">
+                  OSUR - Oral and Maxillofacial Surgery
+                </option>
+                <option value="OT">OT - Occupational Therapy</option>
+                <option value="OTHO">OTHO - Orthodontics</option>
+                <option value="OTOL">OTOL - Otolaryngology</option>
+                <option value="OUE">OUE - Office of Undergrad Education</option>
+                <option value="PA">PA - Public Affairs</option>
+                <option value="PATH">PATH - Pathology</option>
+                <option value="PDEN">PDEN - Pediatric Dentistry</option>
+                <option value="PDES">PDES - Product Design</option>
+                <option value="PE">PE - Physical Education</option>
+                <option value="PED">PED - Pediatrics</option>
+                <option value="PERO">PERO - Periodontics</option>
+                <option value="PHAR">PHAR - Pharmacy</option>
+                <option value="PHCL">PHCL - Pharmacology</option>
+                <option value="PHIL">PHIL - Philosophy</option>
+                <option value="PHM">PHM - Pharmaceutics</option>
+                <option value="PHSL">PHSL - Physiology</option>
+                <option value="PHYS">PHYS - Physics</option>
+                <option value="PLPA">PLPA - Plant Pathology</option>
+                <option value="PLSC">PLSC - Plant Science</option>
+                <option value="PMB">PMB - Plant and Microbial Biology</option>
+                <option value="PMED">
+                  PMED - Physical Med &amp; Rehabilitation
+                </option>
+                <option value="POL">POL - Political Science</option>
+                <option value="PORT">PORT - Portuguese</option>
+                <option value="POUL">POUL - Poultry Health</option>
+                <option value="PREV">PREV - Preventive Science Minor</option>
+                <option value="PROS">PROS - Prosthodontics</option>
+                <option value="PSY">PSY - Psychology</option>
+                <option value="PT">PT - Physical Therapy</option>
+                <option value="PUBH">PUBH - Public Health</option>
+                <option value="RAD">RAD - Radiology</option>
+                <option value="REC">
+                  REC - Rec, Park, and Leisure Studies
+                </option>
+                <option value="RELS">RELS - Religious Studies</option>
+                <option value="RM">RM - Retail Merchandising</option>
+                <option value="ROB">ROB - Robotics</option>
+                <option value="RSC">RSC - Rehabilitation Science</option>
+                <option value="RUSS">RUSS - Russian</option>
+                <option value="SACP">
+                  SACP - Social, Adm, and Clinical Phar
+                </option>
+                <option value="SAGR">
+                  SAGR - Sustainable Agricultural Syst
+                </option>
+                <option value="SAPH">
+                  SAPH - Social/Administrative Pharmacy
+                </option>
+                <option value="SCAN">SCAN - Scandinavian</option>
+                <option value="SCB">SCB - Stem Cell Biology</option>
+                <option value="SCIC">SCIC - Scientific Computation</option>
+                <option value="SCMC">
+                  SCMC - Studies in Cinema Media Cultur
+                </option>
+                <option value="SCO">SCO - Supply Chain and Operations</option>
+                <option value="SDNY">SDNY - Study Abroad in Sydney</option>
+                <option value="SENG">SENG - Software Engineering</option>
+                <option value="SFS">SFS - School for Field Studies</option>
+                <option value="SLHS">SLHS - Speech-Language-Hearing Sci</option>
+                <option value="SMGT">SMGT - Sport Management</option>
+                <option value="SMLI">SMLI - Somali</option>
+                <option value="SNGL">SNGL - Senegal</option>
+                <option value="SOC">SOC - Sociology</option>
+                <option value="SOIL">SOIL - Soil, Water, and Climate</option>
+                <option value="SPAN">SPAN - Spanish</option>
+                <option value="SPPT">SPPT - Spanish and Portuguese</option>
+                <option value="SSM">
+                  SSM - Sustainable Systems Management
+                </option>
+                <option value="SST">SST - Studies of Science and Tech</option>
+                <option value="ST">ST - Security Technologies</option>
+                <option value="STAT">STAT - Statistics</option>
+                <option value="SURG">SURG - Surgery</option>
+                <option value="SUST">SUST - Sustainability Studies</option>
+                <option value="SW">SW - Social Work</option>
+                <option value="SWAH">SWAH - Swahili</option>
+                <option value="SWED">SWED - Swedish</option>
+                <option value="TH">TH - Theatre Arts</option>
+                <option value="THAI">THAI - MSID Program in Thailand</option>
+                <option value="TLDO">
+                  TLDO - Toledo International Program
+                </option>
+                <option value="TMDP">TMDP - TMD &amp; Orofacial Pain</option>
+                <option value="TRAD">TRAD - Therapeutic Radiology</option>
+                <option value="TRIN">
+                  TRIN - Translation and Interpreting
+                </option>
+                <option value="TXCL">TXCL - Toxicology</option>
+                <option value="UC">UC - University College</option>
+                <option value="URBS">URBS - Urban Studies</option>
+                <option value="URDU">URDU - Urdu</option>
+                <option value="UROL">UROL - Urologic Surgery</option>
+                <option value="VBS">
+                  VBS - Veterinary &amp; Biomedical Sci
+                </option>
+                <option value="VCS">VCS - Veterinary Clinical Sciences</option>
+                <option value="VMBA">VMBA - Vienna Executive MBA</option>
+                <option value="VMED">
+                  VMED - Veterinary Medicine, Graduate
+                </option>
+                <option value="VPM">
+                  VPM - Veterinary Population Medicine
+                </option>
+                <option value="WRIT">WRIT - Writing Studies</option>
+                <option value="WRS">WRS - Water Resources Science</option>
+                <option value="YOST">
+                  YOST - Youth Development and Research
+                </option>
+              </select>
             </div>
           </div>
 

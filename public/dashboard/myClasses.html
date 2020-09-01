@@ -27,6 +27,7 @@
         <a href="home"><i class="fa fa-home"></i>Home</a>
         <a href="addClasses">Add Classes</a>
         <a href="myClasses" class="active">My Classes</a>
+        <a href="myMeetings">My Meetings</a>
       </nav>
     </section>
 
@@ -96,7 +97,7 @@
                   c.section = "N/A";
                 }
 
-                var link = "https://localhost:9000/class/" + c.id;
+                var link = "class/" + c.id;
 
                 var termCell = addRow.insertCell(0);
                 termCell.innerHTML = c.term;
@@ -106,13 +107,13 @@
                 nameCell.innerHTML = c.name;
                 var pageCell = addRow.insertCell(3);
                 pageCell.innerHTML =
-                  "<a href='/class/" + c.id + "'>" + "Link" + "</a>";
+                  "<a href='class/" + c.id + "'>" + "Link" + "</a>";
                 var delCell = addRow.insertCell(4);
 
                 delCell.innerHTML =
                   '<form name = "deleteClass" action="/deleteClass" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
                   c.id +
-                  ">Leave</button></form>";
+                  ">Leave Class</button></form>";
               });
             } else {
               console.log("here");
