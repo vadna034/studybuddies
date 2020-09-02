@@ -20,6 +20,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
@@ -64,12 +66,17 @@
       </div>
 
       <div class="addForm">
-        <form name="addMeeting" action="/addMeeting" method="POST">
+        <form
+          id="addMeeting"
+          name="addMeeting"
+          action="/addMeeting"
+          method="POST"
+        >
           <div class="form-group row">
             <label for="class" class="col-sm-2 col-form-label">Class: </label>
-            <div class="col-sm-7">
-              <select name="class" id="class" class="custom-select col-sm-7">
-                <option selected>Choose...</option>
+            <div class="col-sm-10">
+              <select name="classId" id="classId" class="custom-select">
+                <option disabled selected hidden>Choose...</option>
               </select>
             </div>
           </div>
@@ -83,7 +90,7 @@
                 type="text"
                 id="startdatetime"
                 name="startdatetime"
-                class="col-sm-7"
+                class="form-control"
                 placeholder="Choose..."
                 required
               />
@@ -98,7 +105,7 @@
               <input
                 type="text"
                 id="enddatetime"
-                class="col-sm-7"
+                class="form-control"
                 name="enddatetime"
                 placeholder="Choose..."
                 required
@@ -114,14 +121,17 @@
               <input
                 type="text"
                 name="zoom"
-                class="form-control col-sm-7"
+                class="form-control"
                 id="classNumber"
                 placeholder="https://..."
+                required
               />
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button id="addMeetingSubmit" type="submit" class="btn btn-primary">
+            Submit
+          </button>
         </form>
       </div>
     </div>
@@ -147,7 +157,7 @@
         .then((response) => response.text())
         .then((response) => {
           var classes = JSON.parse(response);
-          var classElement = document.getElementById("class");
+          var classElement = document.getElementById("classId");
           if (classes.length) {
             classes.forEach((c) => {
               var opt = document.createElement("option");
@@ -160,9 +170,20 @@
               "<h> You haven't signed up for any classes!</h>";
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           console.log("error");
         });
+    });
+
+    $("#addMeeting").submit(function () {
+      var startTime = moment.utc($("#startdatetime").val());
+      var endTime = moment.utc($("#enddatetime").val());
+      $("#startdatetime").val(startTime);
+      $("#enddatetime").val(endTime);
+      console.log(startTime);
+      console.log(endTime);
+      return true;
     });
   </script>
 </html>

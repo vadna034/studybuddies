@@ -20,6 +20,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone.min.js"></script>
   </head>
   <body>
     <section id="sideMenu">
@@ -101,6 +103,7 @@
         // The response is a stringified JSON object containing meeting data.
         .then((response) => {
           var meetings = JSON.parse(response);
+          const format1 = "HH:mm \n YYYY-MM-DD ";
 
           if (meetings.length != 0) {
             console.log("POPULATE TABLE");
@@ -109,12 +112,21 @@
               console.log(element);
               var addRow = table.insertRow();
 
+              console.log(element.starttime);
+              console.log(element.endtime);
+
               var codeCell = addRow.insertCell(0);
               codeCell.innerHTML = element.code;
               var startCell = addRow.insertCell(1);
-              startCell.innerHTML = element.starttime;
+              startCell.innerHTML = moment
+                .utc(Date.parse(element.starttime))
+                .local()
+                .format(format1);
               var endCell = addRow.insertCell(2);
-              endCell.innerHTML = element.endtime;
+              endCell.innerHTML = moment
+                .utc(Date.parse(element.endtime))
+                .local()
+                .format(format1);
               var linkCell = addRow.insertCell(3);
               linkCell.innerHTML = element.link;
 
