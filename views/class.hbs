@@ -5,11 +5,7 @@
             <p>{{class.name}}</p>
             <p>{{numberUsers}} users currently enrolled in this class</p>
         </div>
-        <div class="createMeetingButton">
-            <form action="{{class.id}}/createMeeting" method="get">
-                <button type="submit" class="btn btn-primary">Create Meeting</button>
-            </form>
-        </div>
+
     </div>
     <div class="meetingTable">
         {{#if meetings.length}}
