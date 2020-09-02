@@ -97,6 +97,11 @@ app.get("/dashboard/myMeetings", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/myMeetings.html");
 });
 
+app.get("/dashboard/addMeetings", (req, res) => {
+  // Sends user page to display meetings they are attending
+  res.sendFile(__dirname + "/public/dashboard/addMeetings.html");
+});
+
 app.post("/register.html", (req, res) => {
   /* 
   This function needs email verification
@@ -308,10 +313,6 @@ app.post("/createMeeting", async (req, res) => {
     end += 86400000;
   }
 
-  console.log(start);
-  console.log(end);
-  console.log(req.body);
-
   const client = await pool.connect();
 
   try {
@@ -355,7 +356,10 @@ app.post("/getMeetings", (req, res) => {
 
       var meetings = data.rows;
       meetings.forEach(
-        (meeting) => (meeting.delete = meeting.owner == req.session.data.id)
+        // Tells us whether a user can delete a meeting, or if they can delete the meeting
+        (meeting) => {
+          meeting.delete = meeting.owner == req.session.data.id;
+        }
       );
       res.send(JSON.stringify(meetings));
     })
@@ -395,4 +399,10 @@ app.post("/leaveMeeting", (req, res) => {
       res.statusCode = 500;
       res.send("SERVER ERROR");
     });
+});
+
+app.get("*", (req, res) => {
+  console.log(req.url);
+  res.statusCode = 404;
+  res.send("NOT FOUND");
 });
