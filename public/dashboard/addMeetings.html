@@ -1,0 +1,168 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <meta name="description" content="yeah" />
+    <meta name="keywords" content="yeah" />
+    <meta name="author" content="Shane Vadnais" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </head>
+  <body>
+    <section id="sideMenu">
+      <nav>
+        <a href="home"><i class="fa fa-home"></i>Home</a>
+        <a href="addClasses">Add Classes</a>
+        <a href="addMeetings" class="active">Add Meetings</a>
+        <a href="myClasses">My Classes</a>
+        <a href="myMeetings">My Meetings</a>
+      </nav>
+    </section>
+
+    <header>
+      <div class="search-area">
+        <div>
+          <i class="fa fa-search"></i>
+          <input type="text" name="" value="" />
+        </div>
+      </div>
+
+      <div class="user-area">
+        <a href="#" class="add">+ add</a>
+        <a href="#" class="notification">
+          <i class="fa fa-bell-o" aria-hidden="true"></i>
+          <span class="circle">3</span>
+        </a>
+        <a href="#">
+          <div class="user-img"></div>
+          <i class="fa fa-caret-down" aria-hidden="true"></i>
+        </a>
+      </div>
+    </header>
+
+    <div class="dash">
+      <div class="pageTitle">
+        <h1>Add Classes</h1>
+      </div>
+
+      <div class="addForm">
+        <form name="addMeeting" action="/addMeeting" method="POST">
+          <div class="form-group row">
+            <label for="class" class="col-sm-2 col-form-label">Class: </label>
+            <div class="col-sm-7">
+              <select name="class" id="class" class="custom-select col-sm-7">
+                <option selected>Choose...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="startdatetime" class="col-sm-2 col-form-label"
+              >Start:
+            </label>
+            <div class="col-sm-7">
+              <input
+                type="text"
+                id="startdatetime"
+                name="startdatetime"
+                class="col-sm-7"
+                placeholder="Choose..."
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="enddatetime" class="col-sm-2 col-form-label"
+              >End:
+            </label>
+            <div class="col-sm-7">
+              <input
+                type="text"
+                id="enddatetime"
+                class="col-sm-7"
+                name="enddatetime"
+                placeholder="Choose..."
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="zoom" class="col-sm-2 col-form-label"
+              >Zoom Link:
+            </label>
+            <div class="col-sm-7">
+              <input
+                type="text"
+                name="zoom"
+                class="form-control col-sm-7"
+                id="classNumber"
+                placeholder="https://..."
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    $(document).ready(() => {
+      console.log("READY");
+      $("#startdatetime").flatpickr({
+        enableTime: true,
+        dateFormat: "F, d Y H:i",
+        minDate: "today",
+      });
+      $("#enddatetime").flatpickr({
+        enableTime: true,
+        dateFormat: "F, d Y H:i",
+        minDate: "today",
+      });
+
+      fetch("/getClasses", {
+        method: "POST",
+      })
+        .then((response) => response.text())
+        .then((response) => {
+          var classes = JSON.parse(response);
+          var classElement = document.getElementById("class");
+          if (classes.length) {
+            classes.forEach((c) => {
+              var opt = document.createElement("option");
+              opt.value = c.id;
+              opt.innerHTML = c.code; // whatever property it has
+              classElement.appendChild(opt);
+            });
+          } else {
+            document.getElementsByClassName("dash")[0].innerHTML =
+              "<h> You haven't signed up for any classes!</h>";
+          }
+        })
+        .catch(() => {
+          console.log("error");
+        });
+    });
+  </script>
+</html>
