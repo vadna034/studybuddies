@@ -102,6 +102,43 @@ app.get("/dashboard/addMeetings", (req, res) => {
   res.sendFile(__dirname + "/public/dashboard/addMeetings.html");
 });
 
+app.post("/addMeeting", async (req, res) => {
+  var start = Date.parse(req.body.startdatetime) / 1000.0;
+  var end = Date.parse(req.body.enddatetime) / 1000.0;
+
+  console.log(req.body);
+
+  console.log(start);
+  console.log(end);
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    const result = await client.query(
+      "INSERT into classmeetings (owner, classid, startTime, endTime, link) values ($1,$2,to_timestamp($3),to_timestamp($4),$5) returning id",
+      [req.session.data.id, req.body.classId, start, end, req.body.zoom]
+    );
+    console.log(result);
+    await client.query(
+      "INSERT INTO classmeetingmembership (userid, classmeetingid) values ($1, $2)",
+      [req.session.data.id, result.rows[0].id]
+    );
+    await client.query("COMMIT");
+    res.statusCode = 200;
+    res.send("success");
+    console.log("success");
+  } catch (err) {
+    console.log(err);
+    await client.query("ROLLBACK");
+    res.statusCode = 500;
+    res.send("SERVER ERROR");
+    console.log("fail");
+  } finally {
+    client.release();
+  }
+});
+
 app.post("/register.html", (req, res) => {
   /* 
   This function needs email verification
@@ -279,68 +316,6 @@ app.get("/dashboard/class/([0-9]+)", (req, res) => {
     });
 });
 
-app.get("/dashboard/class/([0-9]+)/createMeeting", (req, res) => {
-  // Allows a user to create a meeting for their class
-  var classID = req.originalUrl.split("/")[3];
-
-  pool
-    .query("SELECT * from classes WHERE id=$1", [classID])
-    .then((classData) => {
-      if (classData.rows.length == 1) {
-        res.render("createMeeting", {
-          layout: "index",
-          classId: classData.rows[0].id,
-        });
-      } else {
-        res.send("That class doesn't exist");
-      }
-    })
-    .catch((err) => {
-      res.statusCode = 500;
-      console.log("SERVER ERROR");
-      res.send("SERVER ERROR");
-    });
-});
-
-app.post("/createMeeting", async (req, res) => {
-  // Creates a meeting
-  var start =
-    Date.parse(req.body.startDate + " " + req.body.startTime + " CST") / 1000.0;
-  var end =
-    Date.parse(req.body.startDate + " " + req.body.endTime + " CST") / 1000.0;
-
-  if (end < start) {
-    end += 86400000;
-  }
-
-  const client = await pool.connect();
-
-  try {
-    await client.query("BEGIN");
-    const result = await client.query(
-      "INSERT into classmeetings (owner, classid, startTime, endTime, purpose) values ($1,$2,to_timestamp($3),to_timestamp($4),$5) returning id",
-      [req.session.data.id, req.body.classId, start, end, req.body.purpose]
-    );
-    console.log(result);
-    await client.query(
-      "INSERT INTO classmeetingmembership (userid, classmeetingid) values ($1, $2)",
-      [req.session.data.id, result.rows[0].id]
-    );
-    await client.query("COMMIT");
-    res.statusCode = 200;
-    res.send("success");
-    console.log("success");
-  } catch (err) {
-    console.log(err);
-    await client.query("ROLLBACK");
-    res.statusCode = 500;
-    res.send("SERVER ERROR");
-    console.log("fail");
-  } finally {
-    client.release();
-  }
-});
-
 app.post("/getMeetings", (req, res) => {
   // Gets all of the meetings that our user is attending
   pool
@@ -352,8 +327,7 @@ app.post("/getMeetings", (req, res) => {
       // On success we send the user useful meeting data. This useful data is
       // Class code, startTime, endTime, meeting link, and owner (owner decides whether the user can delete the meeting)
       res.statusCode = 200;
-      console.log("success");
-
+      console.log(data.rows);
       var meetings = data.rows;
       meetings.forEach(
         // Tells us whether a user can delete a meeting, or if they can delete the meeting
