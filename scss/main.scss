@@ -11,7 +11,7 @@ body {
   background-color: #555555;
 }
 
-.addClassForm {
+.addForm {
   padding: 20px 50px;
 }
 
@@ -25,6 +25,12 @@ td {
   overflow: hidden;
   white-space: initial;
   text-align: center;
+}
+
+#calendar {
+  margin: auto;
+  width: 80%;
+  height: 600px;
 }
 
 .pageTitle {

@@ -134,7 +134,7 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: #555555; }
 
-.addClassForm {
+.addForm {
   padding: 20px 50px; }
 
 table {
@@ -146,6 +146,11 @@ td {
   overflow: hidden;
   white-space: initial;
   text-align: center; }
+
+#calendar {
+  margin: auto;
+  width: 80%;
+  height: 600px; }
 
 .pageTitle {
   display: inline-block;
