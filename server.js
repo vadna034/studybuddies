@@ -24,6 +24,17 @@ app.engine(
       isEmpty: function (arr) {
         return arr.length === 0;
       },
+      if_all: function () {
+        var args = [].slice.apply(arguments);
+        var opts = args.pop();
+
+        var fn = opts.fn;
+        for (var i = 0; i < args.length; ++i) {
+          if (args[i]) continue;
+          fn = opts.inverse;
+          break;
+        }
+      },
     },
   })
 );
@@ -200,9 +211,10 @@ app.post("/login.html", (req, res) => {
 
 app.post("/addClass", (req, res) => {
   // Used when a user wants to add a class to their list of classes
+  console.log("/addClass");
+  console.log(req.body);
   var term = req.body.term;
   var code = req.body.dept + " " + req.body.classNumber;
-  console.log(req.session.data);
 
   pool
     .query(
@@ -216,9 +228,9 @@ app.post("/addClass", (req, res) => {
     .catch((err) => {
       if (err.code == 23505) {
         res.statusCode = 200;
-        res.send("Already registered");
+        res.send("Success");
       } else if (err.code == 23502) {
-        res.statusCode = 200;
+        res.statusCode = 404;
         res.send("Class does not exist");
       } else {
         res.statusCode = 500;
@@ -289,13 +301,21 @@ app.get("/dashboard/class/([0-9]+)", (req, res) => {
           pool
             .query("SELECT * from classes WHERE id=$1", [classID])
             .then((classData) => {
-              console.log(userData.rows);
-              console.log(meetingData.rows);
-              console.log(classData.rows);
+              curMeetings = meetingData.rows.filter(
+                (meeting) =>
+                  Date.parse(meeting.starttime) <= Date.now() &&
+                  Date.parse(meeting.endtime) >= Date.now()
+              );
+
+              otherMeetings = meetingData.rows.filter(
+                (meeting) => Date.parse(meeting.starttime) > Date.now()
+              );
+
               res.render("class", {
                 layout: "index",
                 users: userData.rows,
-                meetings: meetingData.rows,
+                curMeetings: curMeetings,
+                otherMeetings: otherMeetings,
                 class: classData.rows[0],
                 numberUsers: userData.rows.length,
               });

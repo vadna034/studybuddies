@@ -139,7 +139,8 @@ body {
 
 table {
   table-layout: fixed;
-  width: 100%; }
+  width: 100%;
+  padding-top: 20px; }
 
 td {
   min-width: 100px;
