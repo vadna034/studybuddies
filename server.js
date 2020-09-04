@@ -57,6 +57,23 @@ app.use(
   })
 );
 
+app.use(function (req, res, next) {
+  if (
+    req.url === "/login" ||
+    req.url === "/main.css" ||
+    req.url === "/login.html"
+  ) {
+    next();
+  } else if (!req.session.data) {
+    // check logged in status
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+    // redirect to login page when not logged in
+  } else {
+    next();
+  } // else just pass the request along
+});
+
 app.listen(process.env.PORT || PORT, () =>
   console.log("Listening on port " + PORT + "!")
 );
