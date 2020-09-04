@@ -8,34 +8,78 @@
 
     </div>
     <div class="meetingTable">
-        {{#if meetings.length}}
-        <h1> Scheduled Meetings </h1>
-        <table class="table table-dark" id="classTable">
-            <thead>
-                <tr>
-                    <th scope="col" class="text-center">Owner</th>
-                    <th scope="col" class="text-center">Start Time</th>
-                    <th scope="col" class="text-center">End Time</th>
-                    <th scope="col" class="text-center">Zoom Link</th>
-                    <th scope="col" class="text-center"></th>
-                </tr>
-            </thead>
+        <!-- So now we have curMeetings and otherMeetings -->
+        <div class="pageTitle">
+            <h1 class="text-center "> Current Meetings </h1>
+        </div>
 
-            <tbody>
-                {{#each meetings}}
-                <tr>
-                    <td> {{owner}} </td>
-                    <td> {{starttime}}</td>
-                    <td> {{endtime}} </td>
-                    <td> {{link}} </td>
-                    <td> <button type="button" class="btn btn-primary">RSVP</button>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        {{#if curMeetings.length}}
+        <div>
+            <table class="table table-dark" id="classTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">Owner</th>
+                        <th scope="col" class="text-center">Start Time</th>
+                        <th scope="col" class="text-center">End Time</th>
+                        <th scope="col" class="text-center">Zoom Link</th>
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{#each curMeetings}}
+                    <tr>
+                        <td> {{owner}} </td>
+                        <td> {{starttime}}</td>
+                        <td> {{endtime}} </td>
+                        <td> {{link}} </td>
+                        <td> <button type="button" class="btn btn-primary">RSVP</button>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
         {{else}}
         <div class="alert alert-primary" role="alert">
-            No meetings for this class have been created. You should create one :)
+            No meetings for this class are currently occurring. You should create one :)
+        </div>
+        {{/if}}
+
+        <div class="pageTitle">
+            <h1 class="text-center "> Future Meetings </h1>
+        </div>
+
+        {{#if otherMeetings.length}}
+        <div>
+            <table class="table table-dark" id="classTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">Owner</th>
+                        <th scope="col" class="text-center">Start Time</th>
+                        <th scope="col" class="text-center">End Time</th>
+                        <th scope="col" class="text-center">Zoom Link</th>
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{#each otherMeetings}}
+                    <tr>
+                        <td> {{owner}} </td>
+                        <td> {{starttime}}</td>
+                        <td> {{endtime}} </td>
+                        <td> {{link}} </td>
+                        <td> <button type="button" href="{{zoom}}" class="btn btn-primary">JOIN</button>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+        {{else}}
+        <div class="alert alert-primary" role="alert">
+            No meetings for this class are scheduled to start in the future.
         </div>
         {{/if}}
     </div>
