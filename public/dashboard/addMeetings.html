@@ -61,129 +61,60 @@
     </header>
 
     <div class="dash">
-      <div class="pageTitle">
-        <h1>Add Classes</h1>
-      </div>
-
-      <div class="addForm">
-        <form
-          id="addMeeting"
-          name="addMeeting"
-          action="/addMeeting"
-          method="POST"
-        >
-          <div class="form-group row">
-            <label for="class" class="col-sm-2 col-form-label">Class: </label>
-            <div class="col-sm-10">
-              <select name="classId" id="classId" class="custom-select">
-                <option disabled selected hidden>Choose...</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="startdatetime" class="col-sm-2 col-form-label"
-              >Start:
-            </label>
-            <div class="col-sm-7">
-              <input
-                type="text"
-                id="startdatetime"
-                name="startdatetime"
-                class="form-control"
-                placeholder="Choose..."
-                required
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="enddatetime" class="col-sm-2 col-form-label"
-              >End:
-            </label>
-            <div class="col-sm-7">
-              <input
-                type="text"
-                id="enddatetime"
-                class="form-control"
-                name="enddatetime"
-                placeholder="Choose..."
-                required
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="zoom" class="col-sm-2 col-form-label"
-              >Zoom Link:
-            </label>
-            <div class="col-sm-7">
-              <input
-                type="text"
-                name="zoom"
-                class="form-control"
-                id="classNumber"
-                placeholder="https://..."
-                required
-              />
-            </div>
-          </div>
-
-          <button id="addMeetingSubmit" type="submit" class="btn btn-primary">
-            Submit
-          </button>
-        </form>
-      </div>
+      <div class="pageTitle"><h1>Add Meetings</h1></div>
+      <div id="mainSection"></div>
     </div>
   </body>
 
   <script>
     $(document).ready(() => {
       console.log("READY");
-      $("#startdatetime").flatpickr({
-        enableTime: true,
-        dateFormat: "F, d Y H:i",
-        minDate: "today",
-      });
-      $("#enddatetime").flatpickr({
-        enableTime: true,
-        dateFormat: "F, d Y H:i",
-        minDate: "today",
-      });
-
       fetch("/getClasses", {
         method: "POST",
       })
         .then((response) => response.text())
         .then((response) => {
           var classes = JSON.parse(response);
-          var classElement = document.getElementById("classId");
-          if (classes.length) {
+          if (classes.length != 0) {
+            document.getElementById("mainSection").innerHTML =
+              '<div class="addForm"> <form   id="addMeeting"   name="addMeeting"   action="/addMeeting"   method="POST" >   <div class="form-group row"> <label for="class" class="col-sm-2 col-form-label">Class: </label> <div class="col-sm-10">   <select name="classId" id="classId" class="custom-select"> <option disabled selected hidden>Choose...</option>   </select> </div>   </div><div class="form-group row"> <label for="startdatetime" class="col-sm-2 col-form-label"   >Start: </label> <div class="col-sm-7">   <input type="text" id="startdatetime" name="startdatetime" class="form-control" placeholder="Choose..." required   /> </div>   </div><div class="form-group row"> <label for="enddatetime" class="col-sm-2 col-form-label"   >End: </label> <div class="col-sm-7">   <input type="text" id="enddatetime" class="form-control" name="enddatetime" placeholder="Choose..." required   /> </div>   </div><div class="form-group row"> <label for="zoom" class="col-sm-2 col-form-label"   >Zoom Link: </label> <div class="col-sm-7">   <input type="text" name="zoom" class="form-control" id="classNumber" placeholder="https://..." required   /> </div>   </div><button id="addMeetingSubmit" type="submit" class="btn btn-primary"> Submit   </button> </form>   </div>';
+            var classElement = document.getElementById("classId");
             classes.forEach((c) => {
               var opt = document.createElement("option");
               opt.value = c.id;
               opt.innerHTML = c.code; // whatever property it has
               classElement.appendChild(opt);
             });
+
+            $("#startdatetime").flatpickr({
+              enableTime: true,
+              dateFormat: "F, d Y H:i",
+              minDate: "today",
+            });
+            $("#enddatetime").flatpickr({
+              enableTime: true,
+              dateFormat: "F, d Y H:i",
+              minDate: "today",
+            });
+
+            $("#addMeeting").submit(function () {
+              var startTime = moment.utc($("#startdatetime").val());
+              var endTime = moment.utc($("#enddatetime").val());
+              $("#startdatetime").val(startTime);
+              $("#enddatetime").val(endTime);
+              console.log(startTime);
+              console.log(endTime);
+              return true;
+            });
           } else {
-            document.getElementsByClassName("dash")[0].innerHTML =
-              "<h> You haven't signed up for any classes!</h>";
+            document.getElementById("mainSection").innerHTML =
+              "<div class='alert alert-primary'> You haven't signed up for any classes! You can schedule a meeting once you do that</h>";
           }
         })
         .catch((err) => {
           console.log(err);
           console.log("error");
         });
-    });
-
-    $("#addMeeting").submit(function () {
-      var startTime = moment.utc($("#startdatetime").val());
-      var endTime = moment.utc($("#enddatetime").val());
-      $("#startdatetime").val(startTime);
-      $("#enddatetime").val(endTime);
-      console.log(startTime);
-      console.log(endTime);
-      return true;
     });
   </script>
 </html>

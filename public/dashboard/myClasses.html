@@ -58,19 +58,7 @@
         <h1>My Classes</h1>
       </div>
 
-      <div class="card">
-        <table class="table table-dark" id="classTable">
-          <thead>
-            <tr>
-              <th scope="col" class="text-center">Term</th>
-              <th scope="col" class="text-center">Code</th>
-              <th scope="col" class="text-center">Name</th>
-              <th scope="col" class="text-center">Link</th>
-              <th scope="col" class="text-center"></th>
-            </tr>
-          </thead>
-        </table>
-      </div>
+      <div id="tableCard"></div>
     </div>
 
     <script>
@@ -88,6 +76,8 @@
             var classes = JSON.parse(data);
             console.log(classes);
             if (classes.length != 0) {
+              $("#tableCard")[0].innerHTML =
+                '<table class="table table-dark" id="classTable"><thead> <tr><th scope="col" class="text-center">Term</th><th scope="col" class="text-center">Code</th><th scope="col" class="text-center">Name</th><th scope="col" class="text-center">Link</th><th scope="col" class="text-center"></th></tr></thead></table>';
               var table = $("#classTable")[0];
 
               classes.forEach((c) => {
@@ -118,8 +108,8 @@
               });
             } else {
               console.log("here");
-              $("#mainClass")[0].innerHTML =
-                "<h> You don't have any classes yet? Add some? <h>";
+              $("#tableCard")[0].innerHTML =
+                "<div class='alert alert-primary'> You don't have any classes yet? Add some? </div>";
             }
           })
           .catch((error) => {

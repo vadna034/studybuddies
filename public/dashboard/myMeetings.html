@@ -57,22 +57,10 @@
 
     <div class="dash" id="mainClass">
       <div class="pageTitle">
-        <h1>My Classes</h1>
+        <h1>My Meetings</h1>
       </div>
 
-      <div class="card">
-        <table class="table table-dark" id="meetingTable">
-          <thead>
-            <tr>
-              <th scope="col" class="text-center">Class</th>
-              <th scope="col" class="text-center">Start Time</th>
-              <th scope="col" class="text-center">End Time</th>
-              <th scope="col" class="text-center">Zoom Link</th>
-              <th scope="col" class="text-center"></th>
-            </tr>
-          </thead>
-        </table>
-      </div>
+      <div id="mainSection"></div>
     </div>
   </body>
 
@@ -94,8 +82,6 @@
     };
 
     $(document).ready(() => {
-      var table = document.getElementById("meetingTable");
-
       fetch("/getMeetings", {
         method: "POST",
       })
@@ -103,17 +89,20 @@
         // The response is a stringified JSON object containing meeting data.
         .then((response) => {
           var meetings = JSON.parse(response);
+          meetings = meetings.filter(
+            (meeting) => Date.parse(meeting.endtime) > Date.now()
+          );
           const format1 = "HH:mm \n YYYY-MM-DD ";
 
           if (meetings.length != 0) {
+            $("#mainSection")[0].innerHTML =
+              '<div class="card"><table class="table table-dark" id="meetingTable"><thead><tr><th scope="col" class="text-center">Class</th><th scope="col" class="text-center">Start Time</th><th scope="col" class="text-center">End Time</th><th scope="col" class="text-center">Zoom Link</th><th scope="col" class="text-center"></th></tr></thead></table></div>';
             console.log("POPULATE TABLE");
+            var table = document.getElementById("meetingTable");
 
             meetings.forEach((element) => {
               console.log(element);
               var addRow = table.insertRow();
-
-              console.log(element.starttime);
-              console.log(element.endtime);
 
               var codeCell = addRow.insertCell(0);
               codeCell.innerHTML = element.code;
@@ -128,7 +117,11 @@
                 .local()
                 .format(format1);
               var linkCell = addRow.insertCell(3);
-              linkCell.innerHTML = element.link;
+
+              if (Date.parse(element.starttime) < Date.now()) {
+                linkCell.innerHTML = "<a href=" + element.link + "> Join </a>";
+                console.log("here");
+              }
 
               var delCell = addRow.insertCell(4);
               if (element.delete) {
@@ -138,14 +131,15 @@
               }
             });
           } else {
-            console.log("here");
-            $("#mainClass")[0].innerHTML =
-              "<h> You don't have any meetings yet. Check your class pages to schedule some! <h>";
+            $("#mainSection")[0].innerHTML =
+              "<div class='alert alert-primary'> You don't have any meetings yet. Check your class pages to schedule some! </div>";
           }
         })
         .catch((err) => {
           console.error("Error: ", err);
           alert("THERE WAS A SERVER ERROR. PLEASE TRY AGAIN LATER");
+          $("#mainSection")[0].innerHTML =
+            "<div class='alert alert-danger'> There was a server error. Please try again later </div>";
         });
     });
   </script>
