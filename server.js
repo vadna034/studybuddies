@@ -148,8 +148,15 @@ app.post("/addMeeting", async (req, res) => {
   try {
     await client.query("BEGIN");
     const result = await client.query(
-      "INSERT into classmeetings (owner, classid, startTime, endTime, link) values ($1,$2,to_timestamp($3),to_timestamp($4),$5) returning id",
-      [req.session.data.id, req.body.classId, start, end, req.body.zoom]
+      "INSERT into classmeetings (owner, classid, startTime, endTime, link, purpose) values ($1,$2,to_timestamp($3),to_timestamp($4),$5, $6) returning id",
+      [
+        req.session.data.id,
+        req.body.classId,
+        start,
+        end,
+        req.body.zoom,
+        req.body.purpose,
+      ]
     );
     console.log(result);
     await client.query(
