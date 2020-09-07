@@ -135,6 +135,7 @@ app.get("/dashboard/addMeetings", (req, res) => {
 });
 
 app.post("/addMeeting", async (req, res) => {
+  console.log(req.body);
   var start = Date.parse(req.body.startdatetime) / 1000.0;
   var end = Date.parse(req.body.enddatetime) / 1000.0;
 
@@ -397,7 +398,8 @@ app.post("/deleteMeeting", (req, res) => {
     .query("DELETE FROM classMeetings WHERE id = $1", [req.body.id])
     .then(() => {
       res.statusCode = 200;
-      res.send("SUCCESS");
+      res.writeHead(302, { Location: "/dashboard/myMeetings" });
+      res.end();
     })
     .catch((err) => {
       console.log(err);
@@ -414,13 +416,34 @@ app.post("/leaveMeeting", (req, res) => {
     )
     .then(() => {
       res.statusCode = 200;
-      res.send("SUCCESS");
+      res.writeHead(302, { Location: "/dashboard/myMeetings" });
+      res.end();
     })
     .catch((err) => {
       console.log(err);
       res.statusCode = 500;
       res.send("SERVER ERROR");
     });
+});
+
+app.get("/addClasses.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/addClasses.js");
+});
+
+app.get("/addMeetings.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/addMeetings.js");
+});
+
+app.get("/myClasses.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendfile(__dirname + "/src/myClasses.js");
+});
+
+app.get("/myMeetings.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/myMeetings.js");
 });
 
 app.get("*", (req, res) => {
