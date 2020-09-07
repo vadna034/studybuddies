@@ -22,6 +22,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.31/moment-timezone.min.js"></script>
+    <script src="/myMeetings.js"></script>
   </head>
   <body>
     <section id="sideMenu">
@@ -60,87 +61,22 @@
         <h1>My Meetings</h1>
       </div>
 
-      <div id="mainSection"></div>
+      <div id="mainSection" hidden>
+        <div class="card">
+          <table class="table table-dark" id="meetingTable">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">Class</th>
+                <th scope="col" class="text-center">Start Time</th>
+                <th scope="col" class="text-center">End Time</th>
+                <th scope="col" class="text-center">Purpose</th>
+                <th scope="col" class="text-center">Zoom Link</th>
+                <th scope="col" class="text-center"></th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
     </div>
   </body>
-
-  <script>
-    createDeleteButton = function (id) {
-      return (
-        '<form name = "deleteMeeting" action="/deleteMeeting" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
-        id +
-        ">Delete</button></form>"
-      );
-    };
-
-    createLeaveButton = function (id) {
-      return (
-        '<form name = "leaveMeeting" action="/leaveMeeting" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
-        id +
-        ">Delete</button></form>"
-      );
-    };
-
-    $(document).ready(() => {
-      fetch("/getMeetings", {
-        method: "POST",
-      })
-        .then((response) => response.text())
-        // The response is a stringified JSON object containing meeting data.
-        .then((response) => {
-          var meetings = JSON.parse(response);
-          meetings = meetings.filter(
-            (meeting) => Date.parse(meeting.endtime) > Date.now()
-          );
-          const format1 = "HH:mm \n YYYY-MM-DD ";
-
-          if (meetings.length != 0) {
-            $("#mainSection")[0].innerHTML =
-              '<div class="card"><table class="table table-dark" id="meetingTable"><thead><tr><th scope="col" class="text-center">Class</th><th scope="col" class="text-center">Start Time</th><th scope="col" class="text-center">End Time</th><th scope="col" class="text-center">Zoom Link</th><th scope="col" class="text-center"></th></tr></thead></table></div>';
-            console.log("POPULATE TABLE");
-            var table = document.getElementById("meetingTable");
-
-            meetings.forEach((element) => {
-              console.log(element);
-              var addRow = table.insertRow();
-
-              var codeCell = addRow.insertCell(0);
-              codeCell.innerHTML = element.code;
-              var startCell = addRow.insertCell(1);
-              startCell.innerHTML = moment
-                .utc(Date.parse(element.starttime))
-                .local()
-                .format(format1);
-              var endCell = addRow.insertCell(2);
-              endCell.innerHTML = moment
-                .utc(Date.parse(element.endtime))
-                .local()
-                .format(format1);
-              var linkCell = addRow.insertCell(3);
-
-              if (Date.parse(element.starttime) < Date.now()) {
-                linkCell.innerHTML = "<a href=" + element.link + "> Join </a>";
-                console.log("here");
-              }
-
-              var delCell = addRow.insertCell(4);
-              if (element.delete) {
-                delCell.innerHTML = createDeleteButton(element.id);
-              } else {
-                delCell.innerHTML = createLeaveButton(element.id);
-              }
-            });
-          } else {
-            $("#mainSection")[0].innerHTML =
-              "<div class='alert alert-primary'> You don't have any meetings yet. Check your class pages to schedule some! </div>";
-          }
-        })
-        .catch((err) => {
-          console.error("Error: ", err);
-          alert("THERE WAS A SERVER ERROR. PLEASE TRY AGAIN LATER");
-          $("#mainSection")[0].innerHTML =
-            "<div class='alert alert-danger'> There was a server error. Please try again later </div>";
-        });
-    });
-  </script>
 </html>

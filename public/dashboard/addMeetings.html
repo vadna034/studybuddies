@@ -27,6 +27,7 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="/addMeetings.js"></script>
   </head>
   <body>
     <section id="sideMenu">
@@ -62,70 +63,88 @@
 
     <div class="dash">
       <div class="pageTitle"><h1>Add Meetings</h1></div>
-      <div id="mainSection"></div>
+      <div id="mainSection" hidden>
+        <div class="addForm">
+          <div id="warningArea"></div>
+          <form
+            id="addMeeting"
+            name="addMeeting"
+            action="/addMeeting"
+            method="POST"
+          >
+            <div class="form-group row">
+              <label for="class" class="col-sm-2 col-form-label">Class: </label>
+              <div class="col-sm-10">
+                <select name="classId" id="classId" class="custom-select">
+                  <option disabled selected hidden>Choose...</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="startdatetime" class="col-sm-2 col-form-label"
+                >Start:
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  id="startdatetime"
+                  name="startdatetime"
+                  class="form-control"
+                  placeholder="Choose..."
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="enddatetime" class="col-sm-2 col-form-label"
+                >End:
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  id="enddatetime"
+                  class="form-control"
+                  name="enddatetime"
+                  placeholder="Choose..."
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="zoom" class="col-sm-2 col-form-label"
+                >Zoom Link:
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  name="zoom"
+                  class="form-control"
+                  id="zoom"
+                  placeholder="https://umn.zoom.us/j/..."
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="purpose" class="col-sm-2 col-form-label"
+                >Purpose:
+              </label>
+              <div class="col-sm-7">
+                <input
+                  type="text"
+                  name="purpose"
+                  class="form-control"
+                  id="purpose"
+                  placeholder="..."
+                />
+              </div>
+            </div>
+            <button id="addMeetingSubmit" type="submit" class="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
-
-  <script>
-    $(document).ready(() => {
-      console.log("READY");
-      fetch("/getClasses", {
-        method: "POST",
-      })
-        .then((response) => response.text())
-        .then((response) => {
-          var classes = JSON.parse(response);
-          if (classes.length != 0) {
-            document.getElementById("mainSection").innerHTML =
-              '<div class="addForm"> <div id="warningArea"></div><form   id="addMeeting"   name="addMeeting"   action="/addMeeting"   method="POST" >   <div class="form-group row"> <label for="class" class="col-sm-2 col-form-label">Class: </label> <div class="col-sm-10">   <select name="classId" id="classId" class="custom-select"> <option disabled selected hidden>Choose...</option>   </select> </div>   </div><div class="form-group row"> <label for="startdatetime" class="col-sm-2 col-form-label"   >Start: </label> <div class="col-sm-7">   <input type="text" id="startdatetime" name="startdatetime" class="form-control" placeholder="Choose..." required   /> </div>   </div><div class="form-group row"> <label for="enddatetime" class="col-sm-2 col-form-label"   >End: </label> <div class="col-sm-7">   <input type="text" id="enddatetime" class="form-control" name="enddatetime" placeholder="Choose..." required   /> </div>   </div><div class="form-group row"> <label for="zoom" class="col-sm-2 col-form-label"   >Zoom Link: </label> <div class="col-sm-7">   <input type="text" name="zoom" class="form-control" id="classNumber" placeholder="https://..." required   /> </div>   </div><button id="addMeetingSubmit" type="submit" class="btn btn-primary"> Submit   </button> </form>   </div>';
-            var classElement = document.getElementById("classId");
-            classes.forEach((c) => {
-              var opt = document.createElement("option");
-              opt.value = c.id;
-              opt.innerHTML = c.code; // whatever property it has
-              classElement.appendChild(opt);
-            });
-
-            $("#startdatetime").flatpickr({
-              enableTime: true,
-              dateFormat: "F, d Y H:i",
-              minDate: "today",
-            });
-            $("#enddatetime").flatpickr({
-              enableTime: true,
-              dateFormat: "F, d Y H:i",
-              minDate: "today",
-            });
-
-            $("#addMeeting").submit(function () {
-              var startTime = moment.utc($("#startdatetime").val());
-              var endTime = moment.utc($("#enddatetime").val());
-              $("#startdatetime").val(startTime);
-              $("#enddatetime").val(endTime);
-              console.log(startTime);
-              console.log(endTime);
-
-              if (
-                startTime >= endTime ||
-                Date.parse(startTime) < Date.now() ||
-                Date.parse(endTime) < Date.now()
-              ) {
-                document.getElementById("warningArea").innerHTML =
-                  "<div class='alert alert-primary'>Please check that you have selected valid times for your meeting</div>";
-                return false;
-              } else {
-                return true;
-              }
-            });
-          } else {
-            document.getElementById("mainSection").innerHTML =
-              "<div class='alert alert-primary'> You haven't signed up for any classes! You can schedule a meeting once you do that</h>";
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log("error");
-        });
-    });
-  </script>
 </html>
