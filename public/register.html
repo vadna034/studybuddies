@@ -22,17 +22,13 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Register</h5>
-              <form
-                name="register"
-                class="form-signin"
-                action="/register.html"
-                method="POST"
-              >
+              <div id="warningDiv"></div>
+              <form name="registerForm" id="registerForm" class="form-signin">
                 <div class="form-label-group">
                   <input
                     type="email"
                     name="inputEmail"
-                    id="emailField"
+                    id="inputEmail"
                     class="form-control"
                   />
                   <label for="inputEmail">Email Address</label>
@@ -40,19 +36,9 @@
 
                 <div class="form-label-group">
                   <input
-                    type="text"
-                    name="inputName"
-                    id="nameField"
-                    class="form-control"
-                  />
-                  <label for="inputEmail">First Name (Not Required)</label>
-                </div>
-
-                <div class="form-label-group">
-                  <input
                     type="password"
                     name="inputPassword"
-                    id="passwordField"
+                    id="inputPassword"
                     class="form-control"
                     required
                   />
@@ -63,7 +49,7 @@
                   <input
                     type="password"
                     name="confirmPassword"
-                    id="confirmPasswordField"
+                    id="confirmPassword"
                     class="form-control"
                     required
                   />
@@ -84,12 +70,6 @@
                 >
                   <i class="fab fa-google mr-2"></i> Register with Google
                 </button>
-                <button
-                  class="btn btn-lg btn-facebook btn-block text-uppercase"
-                  type="submit"
-                >
-                  <i class="fab fa-facebook-f mr-2"></i> Register with Facebook
-                </button>
               </form>
             </div>
           </div>
@@ -99,18 +79,36 @@
 
     <script>
       $(document).ready(() => {
-        var usernameField = $("#usernameField")[0];
-        var emailField = $("#emailField")[0];
-        var passwordField = $("#passwordField")[0];
-        var confirmPasswordField = $("#confirmPasswordField")[0];
+        $("document").ready(() => {
+          $("#registerForm").submit(function () {
+            var email = $("#inputEmail").val();
+            var password = $("#inputPassword").val();
+            var confirmpassword = $("#confirmPassword").val();
+            var warningDiv = $("#warningDiv")[0];
 
-        usernameField.addEventListener("keypress", () => {});
+            console.log(email);
+            console.log(password);
+            console.log(confirmpassword);
+            email = email.trim().split()[0].split("@");
+            var local = email[0];
+            var domain = email[1];
+            console.log(local);
+            console.log(domain);
+            if (domain !== "umn.edu") {
+              warningDiv.innerHTML =
+                "<div class='alert alert-danger text-center'> Please use a valid umn.edu email </div>";
+              return false;
+            }
 
-        emailField.addEventListener("keypress", () => {});
+            if (password != confirmpassword) {
+              warningDiv.innerHTML =
+                "<div class='alert alert-danger text-center'> Please check that password match </div>";
+              return false;
+            }
 
-        passwordField.addEventListener("keypress", () => {});
-
-        confirmPasswordField.addEventListener("keypress", () => {});
+            return false;
+          });
+        });
       });
     </script>
   </body>
