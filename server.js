@@ -61,12 +61,16 @@ app.use(function (req, res, next) {
   if (
     req.url === "/login" ||
     req.url === "/main.css" ||
-    req.url === "/login.html"
+    req.url === "/login.html" ||
+    req.url === "/register" ||
+    req.url === "/register.html" ||
+    req.url === "/" ||
+    req.url === "/index"
   ) {
     next();
   } else if (!req.session.data) {
     // check logged in status
-    res.writeHead(302, { Location: "/login" });
+    res.writeHead(302, { Location: "/" });
     res.end();
     // redirect to login page when not logged in
   } else {
@@ -357,7 +361,7 @@ app.post("/getMeetings", (req, res) => {
   // Gets all of the meetings that our user is attending
   pool
     .query(
-      "SELECT CM.id, C.code, CM.startTime, CM.endTime, CM.link, CM.owner FROM classes AS C, classmeetings AS CM, classmeetingmembership AS CMM WHERE CMM.userid = $1 AND CM.id = CMM.classmeetingid AND c.id = CM.classid ORDER BY CM.startTime",
+      "SELECT CM.id, C.code, CM.startTime, CM.endTime, CM.purpose, CM.link, CM.owner FROM classes AS C, classmeetings AS CM, classmeetingmembership AS CMM WHERE CMM.userid = $1 AND CM.id = CMM.classmeetingid AND c.id = CM.classid ORDER BY CM.startTime",
       [req.session.data.id]
     )
     .then((data) => {
