@@ -484,7 +484,7 @@ app.post("/register", (req, res) => {
   pool
     .query("SELECT * FROM users WHERE email = $1", [email])
     .then((result) => {
-      if (result.rows && result.rows.length > 0) {
+      if (result.rows && result.rows.length > 0 && result.rows.isConfirmed) {
         console.log("fail here");
         res.sendStatus(409);
       }
