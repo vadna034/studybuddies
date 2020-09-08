@@ -458,6 +458,7 @@ app.get("/dashboard.js", (req, res) => {
 
 app.post("/register", (req, res) => {
   //inputEmail, inputPassword are sent
+  console.log(req.body);
   const email = req.body.inputEmail;
   const password = req.body.inputPassword;
   const isConfirmed = "false";
@@ -466,6 +467,7 @@ app.post("/register", (req, res) => {
     { email: req.body.inputEmail, expireDate: expireDate },
     process.env.ACCESS_TOKEN_SECRET
   );
+
   var mailOptions = {
     from: process.env["EMAIL_USER"],
     to: email,
@@ -479,28 +481,15 @@ app.post("/register", (req, res) => {
       "\n",
   };
 
-  pool.query("SELECT * FROM users WHERE email = $1", [email]).then((result) => {
-    if (result.rows.length != 0 && result.rows[0].isconfirmed)
-      res.sendStatus(409); // checks that a user exists and he is confirmed
-    pool
-      .query(
-        "INSERT INTO users(email, password, isconfirmed) VALUES($1, crypt($2, gen_salt('bf')), $3)",
-        [email, password, isConfirmed]
-      )
-      .then((result) => {
-        var mailOptions = {
-          from: CONFIG["EMAIL_USER"],
-          to: email,
-          subject: "Account Verification Token",
-          text:
-            "Hello,\n\n" +
-            "Please verify your account by clicking the link: \nhttp://" +
-            req.headers.host +
-            "/confirmation/" +
-            accessToken +
-            "\n\nIf you did not activate this account, then ignore. This token will be active for 24 hours.",
-        };
-        console.log(mailOptions.text);
+  pool
+    .query("SELECT * FROM users WHERE email = $1", [email])
+    .then((result) => {
+      if (result.rows && result.rows.length > 0) {
+        console.log("fail here");
+        res.sendStatus(409);
+      }
+      // checks that a user exists and he is confirmed
+      else if (result.rows) {
         transporter
           .sendMail(mailOptions)
           .then(() => res.status(200).send(mailOptions.text))
@@ -508,14 +497,27 @@ app.post("/register", (req, res) => {
             res.sendStatus(500);
             console.log(err);
           });
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.code == 23505) res.sendStatus(409);
-        else res.sendStatus(501);
-      })
-      .catch((err) => res.sendStatus(500));
-  });
+      } else {
+        pool
+          .query(
+            "INSERT INTO users(email, password, isconfirmed) VALUES($1, crypt($2, gen_salt('bf')), $3)",
+            [email, password, isConfirmed]
+          )
+          .then((result) => {
+            res.sendStatus(200);
+            console.log(result);
+          })
+          .catch((err) => {
+            console.log(err);
+            if (err.code == 23505) res.sendStatus(409);
+            else res.sendStatus(501);
+          });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 function authenticateToken(req, res, next) {
