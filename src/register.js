@@ -27,7 +27,7 @@ $(document).ready(() => {
           warningDiv.innerHTML =
             "<div class='alert alert-danger text-center'> Please check that password match </div>";
         } else {
-          fetch("/register.html", {
+          fetch("/register", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
