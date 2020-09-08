@@ -65,15 +65,18 @@ app.use(function (req, res, next) {
     req.url === "/register" ||
     req.url === "/register.html" ||
     req.url === "/" ||
-    req.url === "/index"
+    req.url === "/index" ||
+    req.url === "/register.js" ||
+    req.url === "/login.js"
   ) {
     next();
-  } else if (!req.session.data) {
+  } else if (req.session.data === undefined) {
     // check logged in status
     res.writeHead(302, { Location: "/" });
     res.end();
     // redirect to login page when not logged in
   } else {
+    console.log(req.url);
     next();
   } // else just pass the request along
 });
@@ -85,13 +88,25 @@ app.listen(process.env.PORT || PORT, () =>
 app.use("/client", express.static(__dirname + "/public/client"));
 
 app.get("/", (req, res) => {
+  console.log(req.url);
+  console.log;
   // Sends the user our index file
-  res.sendFile(__dirname + "/public/index.html");
+  if (req.session.data !== undefined) {
+    res.writeHead(302, { Location: "/dashboard/home" });
+    res.end();
+  } else {
+    res.sendFile(__dirname + "/public/landing.html");
+  }
 });
 
 app.get("/index", (req, res) => {
   // Sends the user our index file
-  res.sendFile(__dirname + "/public/index.html");
+  if (req.session.data !== undefined) {
+    res.writeHead(302, { Location: "/dashboard/home" });
+    res.end();
+  } else {
+    res.sendFile(__dirname + "/public/landing.html");
+  }
 });
 
 app.get("/login", (req, res) => {
@@ -186,11 +201,10 @@ app.post("/register.html", (req, res) => {
   Lets users register for our site 
   */
   pool
-    .query("INSERT INTO users (email, password, name) VALUES ($1, $2, $3)", [
-      req.body.inputEmail,
-      req.body.inputPassword,
-      req.body.inputName,
-    ])
+    .query(
+      "INSERT INTO users (email, password, name) VALUES ($1, crypt($2, gen_salt('bf',10)), $3)",
+      [req.body.inputEmail, req.body.inputPassword, req.body.inputName]
+    )
     .then((result) => {
       console.log(result);
       res.statusCode = 200;
@@ -198,7 +212,7 @@ app.post("/register.html", (req, res) => {
     })
     .catch((err) => {
       if (err.code == 23505) {
-        res.statusCode = 200;
+        res.statusCode = 409;
         res.send("Email already registered");
       } else {
         res.statusCode = 500;
@@ -212,10 +226,10 @@ app.post("/login.html", (req, res) => {
   Lets users login to our site 
   */
   pool
-    .query("SELECT * FROM users WHERE email = $1 AND password = $2", [
-      req.body.inputEmail,
-      req.body.inputPassword,
-    ])
+    .query(
+      "SELECT * FROM users WHERE email = $1 AND password = crypt($2, password)",
+      [req.body.inputEmail, req.body.inputPassword]
+    )
     .then((result) => {
       if (result.rows.length === 0) {
         // FAILURE: No user exists
@@ -444,6 +458,16 @@ app.get("/myClasses.js", (req, res) => {
 app.get("/myMeetings.js", (req, res) => {
   res.statusCode = 200;
   res.sendFile(__dirname + "/src/myMeetings.js");
+});
+
+app.get("/login.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/login.js");
+});
+
+app.get("/register.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/register.js");
 });
 
 app.get("*", (req, res) => {
