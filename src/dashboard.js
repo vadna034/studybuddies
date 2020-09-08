@@ -5,6 +5,6 @@ $(document).ready(function () {
     $("#dash").toggleClass("wide");
     $("#dash").toggleClass("thin");
     $("#header").toggleClass("wide");
-    $("#header").toggleClass("thin");
+    $("#calendar").toggleClass("toggled");
   });
 });

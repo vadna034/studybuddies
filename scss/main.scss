@@ -149,9 +149,13 @@ td {
   #sideMenu {
     margin-left: -280px;
   }
-  #sideMenu.toggled {
-    margin-left: 0;
+  .toggled {
+    margin-left: 0px;
   }
+  #calendar.toggled {
+    visibility: hidden;
+  }
+
   .thin {
     margin-left: 0px;
     width: 100%;
