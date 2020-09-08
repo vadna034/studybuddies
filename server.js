@@ -478,8 +478,8 @@ app.post("/register", (req, res) => {
   };
 
   pool.query("SELECT * FROM users WHERE email = $1", [email]).then((result) => {
-    if (result.rows.length != 0) res.sendStatus(409);
-    if (result.rows[0] && result.rows[0].isconfirmed) res.sendStatus(409); // checks that a user exists and he is confirmed
+    if (result.rows.length != 0 && result.rows[0].isconfirmed)
+      res.sendStatus(409); // checks that a user exists and he is confirmed
     pool
       .query(
         "INSERT INTO users(email, password, isconfirmed) VALUES($1, crypt($2, gen_salt('bf')), $3)",
