@@ -476,13 +476,6 @@ app.post("/register", (req, res) => {
       accessToken +
       "\n",
   };
-  transporter
-    .sendMail(mailOptions)
-    .then(() => res.status(200).send(mailOptions.text))
-    .catch((err) => {
-      res.sendStatus(500);
-      console.log(err);
-    });
 
   pool.query("SELECT * FROM users WHERE email = $1", [email]).then((result) => {
     if (result.rows.length != 0) res.sendStatus(409);
