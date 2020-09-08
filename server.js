@@ -1,16 +1,27 @@
 var express = require("express"); // The server module
 var bodyparser = require("body-parser"); // Allows simple parsing of request body's
 var session = require("express-session"); // Allows sessions
+const crypto = require("crypto");
 const { Pool } = require("pg"); // Postgres module
 const handlebars = require("express-handlebars"); // Allows us to use templating
+const jwt = require("jsonwebtoken");
+var nodemailer = require("nodemailer");
+const { Console } = require("console");
+require("dotenv").config({ path: __dirname + "/.env" });
 
-const connectionString =
-  "postgres://mkgzmxfz:loV45Qk1P0veufFoUlxJcUdEx2XN46BO@drona.db.elephantsql.com:5432/mkgzmxfz";
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 // Sets up our application, with a bodyparser for reading response messages
 var app = express();
 app.use(bodyparser());
 app.use(express.static("public"));
+app.use(express.json());
 app.set("view engine", "hbs");
 app.engine(
   "hbs",
@@ -39,24 +50,21 @@ app.engine(
   })
 );
 
-// Sets up our port, our mongoURL, and the variable which will hold our database
-const PORT = 9000;
-// Gives us a dbclient, and connects that client to the database
-
 const pool = new Pool({
-  connectionString: connectionString,
-  max: 5,
-  idleTimeoutMillis: 1000,
+  connectionString: process.env.connectionString,
+  max: parseInt(process.env.maxConnections),
+  idleTimeoutMillis: parseInt(process.env.idleTimeoutMillis),
 });
 
 app.use(
   session({
-    secret: "b43920",
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
   })
 );
 
+/*
 app.use(function (req, res, next) {
   if (
     req.url === "/login" ||
@@ -80,9 +88,10 @@ app.use(function (req, res, next) {
     next();
   } // else just pass the request along
 });
+*/
 
-app.listen(process.env.PORT || PORT, () =>
-  console.log("Listening on port " + PORT + "!")
+app.listen(process.env.PORT || 9000, () =>
+  console.log("Listening on port " + process.env.PORT + "!")
 );
 
 app.use("/client", express.static(__dirname + "/public/client"));
@@ -194,49 +203,24 @@ app.post("/addMeeting", async (req, res) => {
   }
 });
 
-app.post("/register.html", (req, res) => {
-  /* 
-  This function needs email verification
-
-  Lets users register for our site 
-  */
-  pool
-    .query(
-      "INSERT INTO users (email, password, name) VALUES ($1, crypt($2, gen_salt('bf',10)), $3)",
-      [req.body.inputEmail, req.body.inputPassword, req.body.inputName]
-    )
-    .then((result) => {
-      console.log(result);
-      res.statusCode = 200;
-      res.send("Success");
-    })
-    .catch((err) => {
-      if (err.code == 23505) {
-        res.statusCode = 409;
-        res.send("Email already registered");
-      } else {
-        res.statusCode = 500;
-        res.send("Server Error");
-      }
-    });
-});
-
 app.post("/login.html", (req, res) => {
   /*
   Lets users login to our site 
   */
+  console.log(req.body);
   pool
     .query(
       "SELECT * FROM users WHERE email = $1 AND password = crypt($2, password)",
       [req.body.inputEmail, req.body.inputPassword]
     )
     .then((result) => {
+      console.log(result);
       if (result.rows.length === 0) {
         // FAILURE: No user exists
-        res.statusCode = 200;
-        res.send("No user found");
+        res.status(404).send("No user found");
       } else {
         // SUCCESS: Redirect to home page
+        console.log("successful login");
         req.session.data = {};
         req.session.data.id = result.rows[0].id;
         req.session.data.email = result.rows[0].email;
@@ -470,8 +454,106 @@ app.get("/register.js", (req, res) => {
   res.sendFile(__dirname + "/src/register.js");
 });
 
+app.post("/register", (req, res) => {
+  //inputEmail, inputPassword are sent
+  const email = req.body.inputEmail;
+  const password = req.body.inputPassword;
+  const isConfirmed = "false";
+  const expireDate = Date.now() + 24 * 60 * 60 * 1000;
+  const accessToken = jwt.sign(
+    { email: req.body.inputEmail, expireDate: expireDate },
+    process.env.ACCESS_TOKEN_SECRET
+  );
+  var mailOptions = {
+    from: process.env["EMAIL_USER"],
+    to: email,
+    subject: "Account Verification Link",
+    text:
+      "Hello,\n\n" +
+      "Please verify your account by clicking the link: \nhttp://" +
+      req.headers.host +
+      "/confirmation/" +
+      accessToken +
+      "\n",
+  };
+  transporter
+    .sendMail(mailOptions)
+    .then(() => res.status(200).send(mailOptions.text))
+    .catch((err) => {
+      res.sendStatus(500);
+      console.log(err);
+    });
+
+  pool.query("SELECT * FROM users WHERE email = $1", [email]).then((result) => {
+    if (result.rows.length != 0) res.sendStatus(409);
+    if (result.rows[0] && result.rows[0].isconfirmed) res.sendStatus(409); // checks that a user exists and he is confirmed
+    pool
+      .query(
+        "INSERT INTO users(email, password, isconfirmed) VALUES($1, crypt($2, gen_salt('bf')), $3)",
+        [email, password, isConfirmed]
+      )
+      .then((result) => {
+        var mailOptions = {
+          from: CONFIG["EMAIL_USER"],
+          to: email,
+          subject: "Account Verification Token",
+          text:
+            "Hello,\n\n" +
+            "Please verify your account by clicking the link: \nhttp://" +
+            req.headers.host +
+            "/confirmation/" +
+            accessToken +
+            "\n\nIf you did not activate this account, then ignore. This token will be active for 24 hours.",
+        };
+        console.log(mailOptions.text);
+        transporter
+          .sendMail(mailOptions)
+          .then(() => res.status(200).send(mailOptions.text))
+          .catch((err) => {
+            res.sendStatus(500);
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.code == 23505) res.sendStatus(409);
+        else res.sendStatus(501);
+      })
+      .catch((err) => res.sendStatus(500));
+  });
+});
+
+function authenticateToken(req, res, next) {
+  const token = req.params.token;
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, token) => {
+    if (err) return res.sendStatus(403);
+    if (token.expireDate < Date.now()) return res.sendStatus(401);
+    req.token = token;
+    next();
+  });
+}
+
+app.get("/confirmation/:token", authenticateToken, (req, res) => {
+  console.log(req.params);
+
+  pool
+    .query("update users set isconfirmed = false where email = $1")
+    .then(res.status(200).sendFile(__dirname + "/public/status/200.html"))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).sendFile(__dirname + "/public/status/500.html");
+    });
+
+  res.status(200).sendFile(__dirname + "/public/status/200.html");
+});
+
+app.get("/success", (req, res) => {
+  res.send(__dirname + "/public/login.html");
+});
+
 app.get("*", (req, res) => {
   console.log(req.url);
   res.statusCode = 404;
-  res.send("NOT FOUND");
+  res.sendFile(__dirname + "/public/status/404.html");
 });
