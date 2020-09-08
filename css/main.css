@@ -239,6 +239,15 @@ td {
   margin-left: 280px;
   width: calc(100% - 280px); }
 
+@media (max-width: 768px) {
+  #sideMenu {
+    margin-left: -280px; }
+  #sideMenu.toggled {
+    margin-left: 0; }
+  .thin {
+    margin-left: 280px;
+    width: calc(100% - 280px); } }
+
 header {
   display: inline-block;
   padding: 10px; }
