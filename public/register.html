@@ -14,15 +14,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/register.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="row">
         <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div id="successDiv"></div>
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Register</h5>
+
               <div id="warningDiv"></div>
+
               <form name="registerForm" id="registerForm" class="form-signin">
                 <div class="form-label-group">
                   <input
@@ -40,6 +44,8 @@
                     name="inputPassword"
                     id="inputPassword"
                     class="form-control"
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                    title="Ensure your password has each of the following: a lowercase and an uppercase character, a number, and length at least 8"
                     required
                   />
                   <label for="inputPassword">Password</label>
@@ -59,16 +65,17 @@
                 <button
                   class="btn btn-lg btn-primary btn-block text-uppercase"
                   type="submit"
+                  id="submitButton"
                 >
-                  Sign in
+                  Register
                 </button>
                 <hr class="my-4" />
 
                 <button
                   class="btn btn-lg btn-google btn-block text-uppercase"
-                  type="submit"
+                  id="registerButton"
                 >
-                  <i class="fab fa-google mr-2"></i> Register with Google
+                  <i class="fab fa-google mr-2"></i> Login
                 </button>
               </form>
             </div>
@@ -76,40 +83,5 @@
         </div>
       </div>
     </div>
-
-    <script>
-      $(document).ready(() => {
-        $("document").ready(() => {
-          $("#registerForm").submit(function () {
-            var email = $("#inputEmail").val();
-            var password = $("#inputPassword").val();
-            var confirmpassword = $("#confirmPassword").val();
-            var warningDiv = $("#warningDiv")[0];
-
-            console.log(email);
-            console.log(password);
-            console.log(confirmpassword);
-            email = email.trim().split()[0].split("@");
-            var local = email[0];
-            var domain = email[1];
-            console.log(local);
-            console.log(domain);
-            if (domain !== "umn.edu") {
-              warningDiv.innerHTML =
-                "<div class='alert alert-danger text-center'> Please use a valid umn.edu email </div>";
-              return false;
-            }
-
-            if (password != confirmpassword) {
-              warningDiv.innerHTML =
-                "<div class='alert alert-danger text-center'> Please check that password match </div>";
-              return false;
-            }
-
-            return false;
-          });
-        });
-      });
-    </script>
   </body>
 </html>
