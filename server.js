@@ -490,7 +490,7 @@ app.post("/register", (req, res) => {
         res.sendStatus(409);
       }
       // checks that a user exists and he is confirmed
-      else if (result.rows) {
+      else if (result.rows && result.rows.length > 0) {
         transporter
           .sendMail(mailOptions)
           .then(() => res.status(200).send(mailOptions.text))
