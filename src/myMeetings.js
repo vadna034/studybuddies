@@ -52,11 +52,7 @@ $(document).ready(() => {
           purposeCell.innerText = element.purpose;
 
           var linkCell = addRow.insertCell(4);
-
-          if (Date.parse(element.starttime) < Date.now()) {
-            linkCell.innerHTML = "<a href=" + element.link + "> Join </a>";
-            console.log("here");
-          }
+          linkCell.innerHTML = "<a href=" + element.link + "> Link </a>";
 
           var delCell = addRow.insertCell(5);
           if (element.delete) {
