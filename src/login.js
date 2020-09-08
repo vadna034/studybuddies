@@ -20,7 +20,7 @@ $(document).ready(() => {
         console.log(response);
         if (response.redirected) {
           window.location.href = "/dashboard/home";
-        } else if (response.status == 200) {
+        } else if (response.status == 404) {
           document.getElementById("successDiv").innerHTML =
             "<div class='alert alert-warning text-center'>User not found. Please check that your email and password have been entered correctly</div>";
         } else if (response.status == 500) {
