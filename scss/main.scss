@@ -146,10 +146,6 @@ td {
 }
 
 @media (max-width: 768px) {
-  #dash {
-    position: fixed;
-  }
-
   #sideMenu {
     margin-left: -280px;
   }
@@ -157,8 +153,14 @@ td {
     margin-left: 0;
   }
 
-  .thin {
-    margin-left: 0px;
+  #dash.thin {
+    margin-left: 280px;
+    width: 100%;
+    visibility: hidden;
+  }
+
+  #header.thin {
+    margin-left: 280px;
     width: 100%;
   }
 

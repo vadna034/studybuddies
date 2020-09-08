@@ -240,14 +240,16 @@ td {
   width: calc(100% - 280px); }
 
 @media (max-width: 768px) {
-  #dash {
-    position: fixed; }
   #sideMenu {
     margin-left: -280px; }
   #sideMenu.toggled {
     margin-left: 0; }
-  .thin {
-    margin-left: 0px;
+  #dash.thin {
+    margin-left: 280px;
+    width: 100%;
+    visibility: hidden; }
+  #header.thin {
+    margin-left: 280px;
     width: 100%; }
   .wide {
     margin-left: 0px;
