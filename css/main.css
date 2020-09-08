@@ -240,12 +240,12 @@ td {
   width: calc(100% - 280px); }
 
 @media (max-width: 768px) {
+  #dash {
+    position: fixed; }
   #sideMenu {
     margin-left: -280px; }
-  .toggled {
-    margin-left: 0px; }
-  #calendar.toggled {
-    visibility: hidden; }
+  #sideMenu.toggled {
+    margin-left: 0; }
   .thin {
     margin-left: 0px;
     width: 100%; }
