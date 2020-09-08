@@ -21,6 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="/myClasses.js"></script>
+    <script src="/dashboard.js"></script>
   </head>
   <body>
     <section id="sideMenu">
@@ -33,7 +34,11 @@
       </nav>
     </section>
 
-    <header>
+    <header id="header" class="thin">
+      <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <span>Toggle Sidebar</span>
+      </button>
       <div class="search-area">
         <div>
           <i class="fa fa-search"></i>
@@ -42,7 +47,7 @@
       </div>
     </header>
 
-    <div class="dash" id="mainClass">
+    <div class="dash thin" id="dash">
       <div class="pageTitle">
         <h1>My Classes</h1>
       </div>

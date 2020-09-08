@@ -454,6 +454,11 @@ app.get("/register.js", (req, res) => {
   res.sendFile(__dirname + "/src/register.js");
 });
 
+app.get("/dashboard.js", (req, res) => {
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/dashboard.js");
+});
+
 app.post("/register", (req, res) => {
   //inputEmail, inputPassword are sent
   const email = req.body.inputEmail;

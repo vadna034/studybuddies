@@ -61,6 +61,7 @@ td {
   position: fixed;
   top: 0;
   bottom: 0;
+
   nav {
     padding-top: 100px;
     a {
@@ -100,12 +101,23 @@ td {
   }
 }
 
+.toggled {
+  margin-left: -280px;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -280px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+}
+
 .dash {
   display: inline-block;
-  margin-left: 280px;
   padding: 10px;
   background-color: $greyLight;
-  width: calc(100% - 280px);
   min-height: 100%;
 }
 
@@ -132,13 +144,31 @@ td {
   }
 }
 
+@media (max-width: 768px) {
+  #sideMenu {
+    margin-left: -250px;
+  }
+  #side.active {
+    margin-left: 0;
+  }
+}
+
+.wide {
+  margin-left: 0px;
+  width: 100%;
+}
+
+.thin {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+}
 header {
   display: inline-block;
-  margin-left: 280px;
   padding: 10px;
 
   .search-area {
     display: inline-block;
+    padding-left: 20px;
     width: 50%;
 
     .fa {
