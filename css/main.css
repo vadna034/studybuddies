@@ -231,12 +231,6 @@ td {
   width: 60%;
   min-height: 30rem; }
 
-@media (max-width: 768px) {
-  #sideMenu {
-    margin-left: -250px; }
-  #side.active {
-    margin-left: 0; } }
-
 .wide {
   margin-left: 0px;
   width: 100%; }
