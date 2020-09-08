@@ -56,7 +56,7 @@ td {
 #sideMenu {
   display: inline-block;
   background: $purpleLight;
-  max-width: 10%;
+  max-width: 280px;
   width: 280px;
   position: fixed;
   top: 0;
@@ -102,10 +102,10 @@ td {
 
 .dash {
   display: inline-block;
-  margin-left: 10%;
+  margin-left: 280px;
   padding: 10px;
   background-color: $greyLight;
-  width: calc(90%);
+  width: calc(100% - 280px);
   min-height: 100%;
 }
 
@@ -134,7 +134,7 @@ td {
 
 header {
   display: inline-block;
-  margin-left: 10%;
+  margin-left: 280px;
   padding: 10px;
 
   .search-area {
