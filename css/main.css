@@ -172,7 +172,7 @@ td {
 #sideMenu {
   display: inline-block;
   background: #302d43;
-  max-width: 280px;
+  max-width: 10%;
   width: 280px;
   position: fixed;
   top: 0;
@@ -207,10 +207,10 @@ td {
 
 .dash {
   display: inline-block;
-  margin-left: 280px;
+  margin-left: 10%;
   padding: 10px;
   background-color: #f4f6f9;
-  width: calc(100% - 280px);
+  width: calc(90%);
   min-height: 100%; }
 
 .homeCards .card {
@@ -232,7 +232,7 @@ td {
 
 header {
   display: inline-block;
-  margin-left: 280px;
+  margin-left: 10%;
   padding: 10px; }
   header .search-area {
     display: inline-block;
