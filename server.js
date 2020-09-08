@@ -73,7 +73,8 @@ app.use(function (req, res, next) {
     req.url === "/" ||
     req.url === "/index" ||
     req.url === "/register.js" ||
-    req.url === "/login.js"
+    req.url === "/login.js" ||
+    req.url === "/confirmation/*"
   ) {
     next();
   } else if (req.session.data === undefined) {
