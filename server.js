@@ -525,7 +525,7 @@ app.get("/confirmation/:token", authenticateToken, (req, res) => {
     )
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(401).sendFile(__dirname + "/public/status/401.html"
+        res.status(401).sendFile(__dirname + "/public/status/401.html");
       } else {
         res.status(200).sendFile(__dirname + "/public/status/200.html");
       }
