@@ -526,7 +526,8 @@ app.get("/confirmation/:token", authenticateToken, (req, res) => {
 
   pool
     .query(
-      "update users set isconfirmed = false where email = $1 AND random=$2 returning id"
+      "update users set isconfirmed = false where email = $1 AND random=$2 returning id",
+      [req.token.email, req.token.random]
     )
     .then((result) => {
       if (result.rows.length === 0) {
