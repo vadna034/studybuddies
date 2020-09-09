@@ -23,9 +23,12 @@ $(document).ready(() => {
         if (domain !== "umn.edu") {
           warningDiv.innerHTML =
             "<div class='alert alert-danger text-center'> Please use a valid umn.edu email </div>";
+        } else if (password.length < 8) {
+          warningDiv.innerHTML =
+            "<div class='alert alert-danger text-center'> Please check that password is longer than 8 characters </div>";
         } else if (password != confirmpassword) {
           warningDiv.innerHTML =
-            "<div class='alert alert-danger text-center'> Please check that password match </div>";
+            "<div class='alert alert-danger text-center'> Please check that passwords match </div>";
         } else {
           fetch("/register", {
             method: "POST",
