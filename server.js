@@ -67,9 +67,7 @@ app.use(function (req, res, next) {
   if (
     req.url === "/login" ||
     req.url === "/main.css" ||
-    req.url === "/login.html" ||
     req.url === "/register" ||
-    req.url === "/register.html" ||
     req.url === "/" ||
     req.url === "/index" ||
     req.url === "/register.js" ||
@@ -201,7 +199,7 @@ app.post("/addMeeting", async (req, res) => {
   }
 });
 
-app.post("/login.html", (req, res) => {
+app.post("/login", (req, res) => {
   /*
   Lets users login to our site 
   */

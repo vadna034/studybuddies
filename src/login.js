@@ -5,7 +5,7 @@ $(document).ready(() => {
 
   document.getElementById("loginForm").addEventListener("submit", (event) => {
     event.preventDefault();
-    fetch("/login.html", {
+    fetch("/login", {
       method: "POST",
       redirect: "follow",
       headers: {
