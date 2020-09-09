@@ -478,7 +478,7 @@ app.post("/register", (req, res) => {
       else if (result.rows && result.rows.length > 0) {
         transporter
           .sendMail(mailOptions)
-          .then(() => res.status(200).send(mailOptions.text))
+          .then(() => res.sendStatus(200))
           .catch((err) => {
             res.sendStatus(500);
             console.log(err);
@@ -490,8 +490,13 @@ app.post("/register", (req, res) => {
             [email, password, isConfirmed, random]
           )
           .then((result) => {
-            res.sendStatus(200);
-            console.log(result);
+            transporter
+              .sendMail(mailOptions)
+              .then(() => res.sendStatus(200))
+              .catch((err) => {
+                res.sendStatus(500);
+                console.log(err);
+              });
           })
           .catch((err) => {
             console.log(err);
