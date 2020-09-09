@@ -66,18 +66,17 @@ app.use(
 app.use(function (req, res, next) {
   if (
     req.url === "/login" ||
-    req.url === "/main.css" ||
     req.url === "/register" ||
-    req.url === "/" ||
     req.url === "/index" ||
     req.url === "/register.js" ||
     req.url === "/login.js" ||
+    req.url === "/main.css" ||
     req.url.split("/")[1] === "confirmation"
   ) {
     next();
   } else if (req.session.data === undefined) {
     // check logged in status
-    res.writeHead(302, { Location: "/" });
+    res.writeHead(302, { Location: "/index" });
     res.end();
     // redirect to login page when not logged in
   } else {
@@ -93,25 +92,12 @@ app.listen(process.env.PORT || 3000, () =>
 app.use("/client", express.static(__dirname + "/public/client"));
 
 app.get("/", (req, res) => {
-  console.log(req.url);
-  console.log;
-  // Sends the user our index file
-  if (req.session.data !== undefined) {
-    res.writeHead(302, { Location: "/dashboard/home" });
-    res.end();
-  } else {
-    res.sendFile(__dirname + "/public/landing.html");
-  }
+  res.writeHead(302, { Location: "/dashboard/home" });
+  res.end();
 });
 
 app.get("/index", (req, res) => {
-  // Sends the user our index file
-  if (req.session.data !== undefined) {
-    res.writeHead(302, { Location: "/dashboard/home" });
-    res.end();
-  } else {
-    res.sendFile(__dirname + "/public/landing.html");
-  }
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 app.get("/login", (req, res) => {
