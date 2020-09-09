@@ -447,9 +447,10 @@ app.post("/register", (req, res) => {
   const email = req.body.inputEmail;
   const password = req.body.inputPassword;
   const isConfirmed = "false";
+  const random = crypto.randomBytes(64).toString("hex");
   const expireDate = Date.now() + 1 * 60 * 60 * 1000;
   const accessToken = jwt.sign(
-    { email: req.body.inputEmail, expireDate: expireDate },
+    { email: req.body.inputEmail, expireDate: expireDate, random: random },
     process.env.ACCESS_TOKEN_SECRET
   );
 
@@ -485,8 +486,8 @@ app.post("/register", (req, res) => {
       } else {
         pool
           .query(
-            "INSERT INTO users(email, password, isconfirmed) VALUES($1, crypt($2, gen_salt('bf')), $3)",
-            [email, password, isConfirmed]
+            "INSERT INTO users(email, password, isconfirmed, random) VALUES($1, crypt($2, gen_salt('bf')), $3, $4)",
+            [email, password, isConfirmed, random]
           )
           .then((result) => {
             res.sendStatus(200);
@@ -519,22 +520,27 @@ app.get("/confirmation/:token", authenticateToken, (req, res) => {
   console.log(req.params);
 
   pool
-    .query("update users set isconfirmed = false where email = $1")
-    .then(res.status(200).sendFile(__dirname + "/public/status/200.html"))
+    .query(
+      "update users set isconfirmed = false where email = $1 AND random=$2 returning id"
+    )
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(401).sendFile(__dirname + "/public/status/401.html"
+      } else {
+        res.status(200).sendFile(__dirname + "/public/status/200.html");
+      }
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).sendFile(__dirname + "/public/status/500.html");
     });
-
-  res.status(200).sendFile(__dirname + "/public/status/200.html");
 });
 
 app.get("/success", (req, res) => {
-  res.send(__dirname + "/public/login.html");
+  res.sendFile(__dirname + "/public/login.html");
 });
 
 app.get("*", (req, res) => {
   console.log(req.url);
-  res.statusCode = 404;
-  res.sendFile(__dirname + "/public/status/404.html");
+  res.status(404).sendFile(__dirname + "/public/status/404.html");
 });
