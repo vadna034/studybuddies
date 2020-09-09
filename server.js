@@ -447,7 +447,7 @@ app.post("/register", (req, res) => {
   const email = req.body.inputEmail;
   const password = req.body.inputPassword;
   const isConfirmed = "false";
-  const expireDate = Date.now() + 24 * 60 * 60 * 1000;
+  const expireDate = Date.now() + 1 * 60 * 60 * 1000;
   const accessToken = jwt.sign(
     { email: req.body.inputEmail, expireDate: expireDate },
     process.env.ACCESS_TOKEN_SECRET
@@ -463,7 +463,7 @@ app.post("/register", (req, res) => {
       req.headers.host +
       "/confirmation/" +
       accessToken +
-      "\n",
+      "\n\nThis link will be valid for the next hour",
   };
 
   pool
@@ -494,8 +494,7 @@ app.post("/register", (req, res) => {
           })
           .catch((err) => {
             console.log(err);
-            if (err.code == 23505) res.sendStatus(409);
-            else res.sendStatus(501);
+            res.sendStatus(500);
           });
       }
     })
