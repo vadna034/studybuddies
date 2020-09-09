@@ -49,6 +49,10 @@ td {
   }
 }
 
+#sidebarCollapse {
+  visibility: hidden;
+}
+
 .createMeetingButton {
   display: inline-block;
   width: calc(20% - 20px);
@@ -151,6 +155,10 @@ td {
   }
   #sideMenu.toggled {
     margin-left: 0;
+  }
+
+  #sidebarCollapse {
+    visibility: visible;
   }
 
   #dash.wide {

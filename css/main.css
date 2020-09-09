@@ -165,6 +165,9 @@ td {
   .pageTitle p {
     color: #999999; }
 
+#sidebarCollapse {
+  visibility: hidden; }
+
 .createMeetingButton {
   display: inline-block;
   width: calc(20% - 20px); }
@@ -244,6 +247,8 @@ td {
     margin-left: -280px; }
   #sideMenu.toggled {
     margin-left: 0; }
+  #sidebarCollapse {
+    visibility: visible; }
   #dash.wide {
     margin-left: 280px;
     width: 100%;
