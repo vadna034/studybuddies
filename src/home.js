@@ -12,8 +12,8 @@ $(document).ready(function () {
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: Date.parse(event.starttime),
-          end: Date.parse(event.endtime),
+          start: Date.parse(event.starttime) + Date.getTimezoneOffset(),
+          end: Date.parse(event.endtime) + Date.getTimezoneOffset(),
         });
         console.log(event.starttime);
         console.log(event.endtime);
