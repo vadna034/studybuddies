@@ -9,11 +9,14 @@ $(document).ready(function () {
       console.log(events);
 
       events.forEach((event) => {
+        console.log(moment.utc(Date.parse(event.starttime)).local());
+        console.log(moment.utc(Date.parse(event.endtime)).local());
+
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: Date.parse(event.starttime) + Date.getTimezoneOffset(),
-          end: Date.parse(event.endtime) + Date.getTimezoneOffset(),
+          start: Date.parse(moment.utc(Date.parse(event.starttime)).local()),
+          end: Date.parse(moment.utc(Date.parse(event.endtime)).local()),
         });
         console.log(event.starttime);
         console.log(event.endtime);
