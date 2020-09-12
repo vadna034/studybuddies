@@ -32,8 +32,6 @@ $(document).ready(() => {
         mainSection.hidden = false;
 
         $("#addMeeting").submit(function () {
-          var startTime = moment.utc($("#startdatetime").val());
-          var endTime = moment.utc($("#enddatetime").val());
           var start = Date.parse($("#startdatetime").val());
           var end = Date.parse($("#enddatetime").val());
           var now = Date.now();
@@ -54,8 +52,8 @@ $(document).ready(() => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                startdatetime: startTime,
-                enddatetime: endTime,
+                startdatetime: start.toISOString(),
+                enddatetime: endTime.toISOString(),
                 classId: $("#classId").val(),
                 zoom: $("#zoom").val().trim(),
                 purpose: $("#purpose").val(),

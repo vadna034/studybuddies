@@ -155,8 +155,6 @@ app.post("/addMeeting", async (req, res) => {
   var start = Date.parse(req.body.startdatetime) / 1000.0;
   var end = Date.parse(req.body.enddatetime) / 1000.0;
 
-  console.log(req.body);
-
   console.log(start);
   console.log(end);
 
