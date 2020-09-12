@@ -9,17 +9,16 @@ $(document).ready(function () {
       console.log(events);
 
       events.forEach((event) => {
-        console.log(moment.utc(Date.parse(event.starttime)).local());
-        console.log(moment.utc(Date.parse(event.endtime)).local());
-
+        console.log(event.starttime);
+        console.log(event.endtime);
+        console.log(Date.parse(event.starttime));
+        console.log(Date.parse(event.endtime));
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: Date.parse(moment.utc(Date.parse(event.starttime)).local()),
-          end: Date.parse(moment.utc(Date.parse(event.endtime)).local()),
+          start: event.starttime,
+          end: event.endtime,
         });
-        console.log(event.starttime);
-        console.log(event.endtime);
       });
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
