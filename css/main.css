@@ -166,7 +166,7 @@ td {
     color: #999999; }
 
 #sidebarCollapse {
-  visibility: hidden; }
+  display: none; }
 
 .createMeetingButton {
   display: inline-block;
