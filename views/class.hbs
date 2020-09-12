@@ -9,11 +9,12 @@
     </div>
     <div class="meetingTable">
         <!-- So now we have curMeetings and otherMeetings -->
+
         <div class="pageTitle">
-            <h1 class="text-center "> Current Meetings </h1>
+            <h1 class="text-center "> Meetings you should check out </h1>
         </div>
 
-        {{#if curMeetings.length}}
+        {{#if nonUserMeetings.length}}
         <div>
             <table class="table table-dark" id="classTable">
                 <thead>
@@ -28,14 +29,20 @@
                 </thead>
 
                 <tbody>
-                    {{#each curMeetings}}
+                    {{#each nonUserMeetings}}
                     <tr>
-                        <td> {{owner}} </td>
-                        <td> {{starttime}}</td>
-                        <td> {{endtime}} </td>
+                        <td> {{email}} </td>
+                        <td> {{format_time starttime}}<br>{{format_date starttime}}</td>
+                        <td> {{format_time endtime}}<br>{{format_date endtime}}</td>
                         <td> {{purpose}} </td>
                         <td> {{link}} </td>
-                        <td> <button type="button" class="btn btn-primary">RSVP</button>
+                        <td>
+                            <form name="addMeetingForm" action="/addMeeting" method="POST">
+                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
+                                    Leave
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -44,49 +51,69 @@
         </div>
         {{else}}
         <div class="alert alert-primary" role="alert">
-            No meetings for this class are currently occurring. You should create one :)
-        </div>
-        {{/if}}
-
-        <div class="pageTitle">
-            <h1 class="text-center "> Future Meetings </h1>
-        </div>
-
-        {{#if otherMeetings.length}}
-        <div>
-            <table class="table table-dark" id="classTable">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-center">Owner</th>
-                        <th scope="col" class="text-center">Start Time</th>
-                        <th scope="col" class="text-center">End Time</th>
-                        <th scope="col" class="text-center">Purpose</th>
-                        <th scope="col" class="text-center">Zoom Link</th>
-                        <th scope="col" class="text-center"></th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {{#each otherMeetings}}
-                    <tr>
-                        <td> {{owner}} </td>
-                        <td> {{starttime}}</td>
-                        <td> {{endtime}} </td>
-                        <td> {{purpose}} </td>
-                        <td> {{link}} </td>
-                        <td> <button type="button" href="{{zoom}}" class="btn btn-primary">RSVP</button>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-
-        </div>
-        {{else}}
-        <div class="alert alert-primary" role="alert">
-            No meetings for this class are scheduled to start in the future.
+            There are no meetings that you are not already attending
         </div>
         {{/if}}
     </div>
+
+    <div class="meetingTable">
+        <div class="pageTitle">
+            <h1 class="text-center "> Your meetings for this class </h1>
+        </div>
+        {{#if userMeetings.length}}
+        <div>
+            <table class="table table-dark" id="classTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">Owner</th>
+                        <th scope="col" class="text-center">Start Time</th>
+                        <th scope="col" class="text-center">End Time</th>
+                        <th scope="col" class="text-center">Purpose</th>
+                        <th scope="col" class="text-center">Zoom Link</th>
+                        <th scope="col" class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{#each userMeetings}}
+                    <tr>
+                        <td> {{email}} </td>
+                        <td> {{format_time starttime}}<br>{{format_date starttime}}</td>
+                        <td> {{format_time endtime}}<br>{{format_date starttime}}</td>
+                        <td> {{purpose}} </td>
+                        <td>
+                            <a href="{{Link}}">
+                                Link
+                            </a>
+                        </td>
+                        <td>
+                            {{#if delete}}
+                            <form name="deleteMeeting" action="/deleteMeeting" method="POST">
+                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
+                                    Delete
+                                </button>
+                            </form>
+                            {{else}}
+                            <form name="leaveMeeting" action="/leaveMeeting" method="POST">
+                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
+                                    Leave
+                                </button>
+                            </form>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+        {{else}}
+        <div class="alert alert-primary" role="alert">
+            You are not attending any meetings for this class
+        </div>
+        {{/if}}
+    </div>
+
 
 
 </div>

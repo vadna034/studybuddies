@@ -34,8 +34,8 @@ $(document).ready(() => {
         $("#addMeeting").submit(function () {
           var startTime = moment.utc($("#startdatetime").val());
           var endTime = moment.utc($("#enddatetime").val());
-          var start = Date.parse(startTime);
-          var end = Date.parse(endTime);
+          var start = Date.parse($("#startdatetime").val());
+          var end = Date.parse($("#enddatetime").val());
           var now = Date.now();
           var zoom = $("#zoom").val();
           if (start > end || start < now || end < now) {

@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const { Pool } = require("pg"); // Postgres module
 const handlebars = require("express-handlebars"); // Allows us to use templating
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
 var nodemailer = require("nodemailer");
 const { Console } = require("console");
 require("dotenv").config({ path: __dirname + "/.env" });
@@ -44,6 +45,14 @@ app.engine(
           fn = opts.inverse;
           break;
         }
+      },
+      format_time: function (dateString) {
+        const format1 = "h:mm a ";
+        return moment.utc(Date.parse(dateString)).local().format(format1);
+      },
+      format_date: function (dateString) {
+        const format1 = "MMMM Do ";
+        return moment.utc(Date.parse(dateString)).local().format(format1);
       },
     },
   })
@@ -281,7 +290,7 @@ app.post("/deleteClass", (req, res) => {
     ])
     .then(() => {
       console.log("success");
-      res.writeHead(302, { Location: "/dashboard/myClasses" });
+      res.writeHead(302, { Location: req.originalUrl });
       res.end();
     })
     .catch((err) => {
@@ -292,60 +301,62 @@ app.post("/deleteClass", (req, res) => {
     });
 });
 
-app.get("/dashboard/class/([0-9]+)", (req, res) => {
+app.get("/dashboard/class/([0-9]+)", async (req, res) => {
   // Displays a classes home page, with the meetings it has scheduled
   console.log("here");
   var classID = req.originalUrl.split("/")[3]; // Class ID parameter
   var userID = req.session.data.id;
 
-  pool
-    .query(
-      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
-      [classID]
-    )
-    .then((userData) => {
-      pool
-        .query(
-          "SELECT * from classMeetings WHERE classId = $1 ORDER BY StartTime",
-          [classID]
-        )
-        .then((meetingData) => {
-          pool
-            .query("SELECT * from classes WHERE id=$1", [classID])
-            .then((classData) => {
-              curMeetings = meetingData.rows.filter(
-                (meeting) =>
-                  Date.parse(meeting.starttime) <= Date.now() &&
-                  Date.parse(meeting.endtime) >= Date.now()
-              );
+  try {
+    var classData = await pool
+      .query("SELECT * from classes WHERE id=$1", [classID])
+      .catch((err) => {
+        throw err;
+      });
+    var userData = await pool
+      .query(
+        "SELECT users.id, users.email FROM users, classmembership WHERE classmembership.classid = $1 AND  users.id = classmembership.userid",
+        [classID]
+      )
+      .catch((err) => {
+        console.log("Failed selecting users");
+        throw err;
+      });
+    var userMeetings = await pool
+      .query(
+        "SELECT U.email, CM.owner, CM.starttime, CM.endtime, CM.link, CM.purpose, (case when exists (SELECT userid from classmeetingmembership WHERE classmeetingid = CM.id AND userid = $2) then True else False end) AS enrolled from classMeetings AS CM, users as U WHERE CM.classId = $1 AND U.id = CM.owner ORDER BY CM.StartTime ",
+        [classID, req.session.data.id]
+      )
+      .catch((err) => {
+        console.log("Failed selecting meetings");
+        throw err;
+      });
 
-              otherMeetings = meetingData.rows.filter(
-                (meeting) => Date.parse(meeting.starttime) > Date.now()
-              );
+    userMeetings = userMeetings.rows;
+    console.log(userMeetings);
 
-              res.render("class", {
-                layout: "index",
-                users: userData.rows,
-                curMeetings: curMeetings,
-                otherMeetings: otherMeetings,
-                class: classData.rows[0],
-                numberUsers: userData.rows.length,
-              });
-            })
-            .catch((err) => {
-              throw err;
-            });
-        })
-        .catch((err) => {
-          throw err;
-        });
-    })
-    .catch((err) => {
-      console.log("SERVER ERROR");
-      console.log(err);
-      res.writeHead(302, { Location: "/dashboard/home" });
-      res.end();
+    userMeetings.forEach(
+      (meeting) => (meeting.delete = meeting.owner == req.session.data.id)
+    );
+    var userMeetingsData = userMeetings.filter((meeting) => meeting.enrolled);
+    var nonUserMeetingsData = userMeetings.filter(
+      (meeting) => !meeting.enrolled
+    );
+
+    res.render("class", {
+      layout: "index",
+      users: userData.rows,
+      userMeetings: userMeetingsData,
+      nonUserMeetings: nonUserMeetingsData,
+      class: classData.rows[0],
+      numberUsers: userData.rows.length,
     });
+  } catch (err) {
+    console.log("SERVER ERROR");
+    console.log(err);
+    res.writeHead(500, { Location: "/status/500.html" });
+    res.end();
+  }
 });
 
 app.post("/getMeetings", (req, res) => {
@@ -381,7 +392,7 @@ app.post("/deleteMeeting", (req, res) => {
     .query("DELETE FROM classMeetings WHERE id = $1", [req.body.id])
     .then(() => {
       res.statusCode = 200;
-      res.writeHead(302, { Location: "/dashboard/myMeetings" });
+      res.writeHead(302, { Location: req.originalUrl });
       res.end();
     })
     .catch((err) => {
@@ -399,7 +410,25 @@ app.post("/leaveMeeting", (req, res) => {
     )
     .then(() => {
       res.statusCode = 200;
-      res.writeHead(302, { Location: "/dashboard/myMeetings" });
+      res.writeHead(302, { Location: req.originalUrl });
+      res.end();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.statusCode = 500;
+      res.send("SERVER ERROR");
+    });
+});
+
+app.post("/addMeeting", (req, res) => {
+  pool
+    .query(
+      "INSERT INTO classMeetingMembership (classMeetingid, userid) VALUES ($1, $2)",
+      [req.body.id, req.session.data.id]
+    )
+    .then(() => {
+      res.statusCode = 200;
+      res.writeHead(302, { Location: req.originalUrl });
       res.end();
     })
     .catch((err) => {

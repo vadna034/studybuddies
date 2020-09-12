@@ -25,7 +25,7 @@ $(document).ready(() => {
       meetings = meetings.filter(
         (meeting) => Date.parse(meeting.endtime) > Date.now()
       );
-      const format1 = "HH:mm \n YYYY-MM-DD ";
+      const format1 = "h:mm a <br> MMMM Do ";
 
       if (meetings.length != 0) {
         $("#mainSection")[0].hidden = false;
