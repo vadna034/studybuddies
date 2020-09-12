@@ -64,6 +64,7 @@ app.use(
 );
 
 app.use(function (req, res, next) {
+  console.log(req.url);
   if (
     req.url === "/login" ||
     req.url === "/register" ||
@@ -196,9 +197,10 @@ app.post("/login", (req, res) => {
       [req.body.inputEmail, req.body.inputPassword]
     )
     .then((result) => {
-      console.log(result);
-      if (result.rows.length === 0) {
+      console.log(result.rows);
+      if (!result.rows[0] || !result.rows[0].isconfirmed) {
         // FAILURE: No user exists
+        console.log("No user found");
         res.status(404).send("No user found");
       } else {
         // SUCCESS: Redirect to home page
@@ -292,12 +294,13 @@ app.post("/deleteClass", (req, res) => {
 
 app.get("/dashboard/class/([0-9]+)", (req, res) => {
   // Displays a classes home page, with the meetings it has scheduled
+  console.log("here");
   var classID = req.originalUrl.split("/")[3]; // Class ID parameter
   var userID = req.session.data.id;
 
   pool
     .query(
-      "SELECT users.id, users.email, users.name FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
+      "SELECT users.id, users.email FROM users WHERE users.id IN (SELECT userID from classMembership WHERE classID = $1)",
       [classID]
     )
     .then((userData) => {
@@ -441,9 +444,8 @@ app.get("/dashboard.js", (req, res) => {
   res.sendFile(__dirname + "/src/dashboard.js");
 });
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   //inputEmail, inputPassword are sent
-  console.log(req.body);
   const email = req.body.inputEmail;
   const password = req.body.inputPassword;
   const isConfirmed = "false";
@@ -467,47 +469,45 @@ app.post("/register", (req, res) => {
       "\n\nThis link will be valid for the next hour",
   };
 
-  pool
-    .query("SELECT * FROM users WHERE email = $1", [email])
-    .then((result) => {
-      if (result.rows && result.rows.length > 0 && result.rows[0].isConfirmed) {
-        console.log("fail here");
-        res.sendStatus(409);
-      }
-      // checks that a user exists and he is confirmed
-      else if (result.rows && result.rows.length > 0) {
-        transporter
-          .sendMail(mailOptions)
-          .then(() => res.sendStatus(200))
-          .catch((err) => {
-            res.sendStatus(500);
-            console.log(err);
-          });
-      } else {
-        pool
-          .query(
-            "INSERT INTO users(email, password, isconfirmed, random) VALUES($1, crypt($2, gen_salt('bf')), $3, $4)",
-            [email, password, isConfirmed, random]
-          )
-          .then((result) => {
-            transporter
-              .sendMail(mailOptions)
-              .then(() => res.sendStatus(200))
-              .catch((err) => {
-                res.sendStatus(500);
-                console.log(err);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.sendStatus(500);
-          });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(500);
-    });
+  try {
+    const result = await pool.query(
+      "SELECT isconfirmed FROM users where email = $1",
+      [email]
+    );
+    console.log(result.rows);
+    if (result.rows[0] && result.rows[0].isconfirmed) {
+      res.sendStatus(409);
+    } else if (result.rows[0]) {
+      await pool
+        .query(
+          "UPDATE users SET password = crypt($2, gen_salt('bf')), random = $3 WHERE email = $1",
+          [email, password, random]
+        )
+        .then(() => console.log("UPDATE success"))
+        .catch((err) => {
+          console.log("UPDATE failed");
+          throw err;
+        });
+    } else {
+      await pool
+        .query(
+          "INSERT INTO users (email, password, isconfirmed, random) values ($1, crypt($2, gen_salt('bf')), $3, $4)",
+          [email, password, false, random]
+        )
+        .then(() => console.log("INSERT success"))
+        .catch((err) => {
+          console.log("INSERT failed");
+          throw err;
+        });
+    }
+
+    transporter.sendMail(mailOptions).then(() => res.sendStatus(200));
+  } catch (err) {
+    console.log(err);
+    res.statusCode = 500;
+    res.send("SERVER ERROR");
+    console.log("fail");
+  }
 });
 
 function authenticateToken(req, res, next) {
@@ -523,10 +523,11 @@ function authenticateToken(req, res, next) {
 
 app.get("/confirmation/:token", authenticateToken, (req, res) => {
   console.log(req.params);
-
+  console.log(req.token);
   pool
     .query(
-      "update users set isconfirmed = false where email = $1 AND random=$2 returning id"
+      "update users set isconfirmed = true where email = $1 AND random=$2 returning id",
+      [req.token.email, req.token.random]
     )
     .then((result) => {
       if (result.rows.length === 0) {
