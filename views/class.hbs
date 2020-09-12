@@ -21,6 +21,7 @@
                         <th scope="col" class="text-center">Owner</th>
                         <th scope="col" class="text-center">Start Time</th>
                         <th scope="col" class="text-center">End Time</th>
+                        <th scope="col" class="text-center">Purpose</th>
                         <th scope="col" class="text-center">Zoom Link</th>
                         <th scope="col" class="text-center"></th>
                     </tr>
@@ -32,6 +33,7 @@
                         <td> {{owner}} </td>
                         <td> {{starttime}}</td>
                         <td> {{endtime}} </td>
+                        <td> {{purpose}} </td>
                         <td> {{link}} </td>
                         <td> <button type="button" class="btn btn-primary">RSVP</button>
                     </tr>
@@ -58,6 +60,7 @@
                         <th scope="col" class="text-center">Owner</th>
                         <th scope="col" class="text-center">Start Time</th>
                         <th scope="col" class="text-center">End Time</th>
+                        <th scope="col" class="text-center">Purpose</th>
                         <th scope="col" class="text-center">Zoom Link</th>
                         <th scope="col" class="text-center"></th>
                     </tr>
@@ -69,8 +72,9 @@
                         <td> {{owner}} </td>
                         <td> {{starttime}}</td>
                         <td> {{endtime}} </td>
+                        <td> {{purpose}} </td>
                         <td> {{link}} </td>
-                        <td> <button type="button" href="{{zoom}}" class="btn btn-primary">JOIN</button>
+                        <td> <button type="button" href="{{zoom}}" class="btn btn-primary">RSVP</button>
                     </tr>
                     {{/each}}
                 </tbody>

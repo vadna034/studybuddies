@@ -33,7 +33,7 @@ $(document).ready(() => {
           nameCell.innerHTML = c.name;
           var pageCell = addRow.insertCell(3);
           pageCell.innerHTML =
-            "<a href='class/" + c.id + "'>" + "Link" + "</a>";
+            "<a href='/dashboard/class/" + c.id + "'>" + "Link" + "</a>";
           var delCell = addRow.insertCell(4);
 
           delCell.innerHTML =
