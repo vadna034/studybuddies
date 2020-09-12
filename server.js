@@ -443,6 +443,10 @@ app.get("/addClasses.js", (req, res) => {
   res.sendFile(__dirname + "/src/addClasses.js");
 });
 
+app.get("/home.js", (req, res) => {
+  res.status(200).sendFile(__dirname + "/src/home.js");
+});
+
 app.get("/addMeetings.js", (req, res) => {
   res.statusCode = 200;
   res.sendFile(__dirname + "/src/addMeetings.js");
