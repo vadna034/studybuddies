@@ -8,16 +8,17 @@ $(document).ready(function () {
       var calendarEl = document.getElementById("calendar");
       console.log(events);
 
+ 
+
       events.forEach((event) => {
-        console.log(event.starttime);
-        console.log(event.endtime);
-        console.log(Date.parse(event.starttime));
-        console.log(Date.parse(event.endtime));
+        var starttime = new Date(event.starttime);
+        var endtime = new Date(event.endtime);
+        console.log(event);
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: event.starttime,
-          end: event.endtime,
+          start: starttime,
+          end: endtime
         });
       });
 
@@ -25,6 +26,7 @@ $(document).ready(function () {
         initialView: "timeGridWeek",
         events: calEvents,
       });
+      console.log(calEvents);
 
       calendar.render();
     })

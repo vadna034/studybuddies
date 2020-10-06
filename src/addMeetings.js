@@ -31,10 +31,12 @@ $(document).ready(() => {
 
         mainSection.hidden = false;
 
-        $("#addMeeting").submit(function () {
-          var start = Date.parse($("#startdatetime").val());
-          var end = Date.parse($("#enddatetime").val());
+        $("#addMeeting").submit(function (event) {
+          event.preventDefault();
+          var start = new Date($("#startdatetime").val());
+          var end = new Date($("#enddatetime").val());
           var now = Date.now();
+
           var zoom = $("#zoom").val();
           if (start > end || start < now || end < now) {
             document.getElementById("warningArea").innerHTML =
@@ -53,7 +55,7 @@ $(document).ready(() => {
               },
               body: JSON.stringify({
                 startdatetime: start.toISOString(),
-                enddatetime: endTime.toISOString(),
+                enddatetime: end.toISOString(),
                 classId: $("#classId").val(),
                 zoom: $("#zoom").val().trim(),
                 purpose: $("#purpose").val(),

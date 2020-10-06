@@ -1,6 +1,6 @@
 createDeleteButton = function (id) {
   return (
-    '<form name = "deleteMeeting" action="/deleteMeeting" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
+    '<form name = "deleteMeeting" class = "deleteForm"action="/deleteMeeting" method = "POST"><button type="submit" class="btn btn-danger" name="id" value =' +
     id +
     ">Delete</button></form>"
   );
@@ -13,6 +13,8 @@ createLeaveButton = function (id) {
     ">Delete</button></form>"
   );
 };
+
+
 
 $(document).ready(() => {
   fetch("/getMeetings", {
@@ -35,19 +37,19 @@ $(document).ready(() => {
         meetings.forEach((element) => {
           console.log(element);
           var addRow = table.insertRow();
+          
+          console.log(Date.parse(element.starttime));
+          var starttime = new Date(element.starttime);
+          var endtime = new Date(element.endtime);
 
           var codeCell = addRow.insertCell(0);
           codeCell.innerHTML = element.code;
           var startCell = addRow.insertCell(1);
-          startCell.innerHTML = moment
-            .utc(Date.parse(element.starttime))
-            .local()
-            .format(format1);
+          startCell.innerHTML = 
+            starttime.toLocaleString();
           var endCell = addRow.insertCell(2);
-          endCell.innerHTML = moment
-            .utc(Date.parse(element.endtime))
-            .local()
-            .format(format1);
+          endCell.innerHTML = 
+            endtime.toLocaleString();
           var purposeCell = addRow.insertCell(3);
           purposeCell.innerText = element.purpose;
 

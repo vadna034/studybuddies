@@ -73,7 +73,6 @@ app.use(
 );
 
 app.use(function (req, res, next) {
-  console.log(req.url);
   if (
     req.url === "/login" ||
     req.url === "/register" ||
@@ -390,7 +389,7 @@ app.post("/deleteMeeting", (req, res) => {
     .query("DELETE FROM classMeetings WHERE id = $1", [req.body.id])
     .then(() => {
       res.statusCode = 200;
-      res.writeHead(302, { Location: req.originalUrl });
+      res.writeHead(302, { Location: "/dashboard/myMeetings" });
       res.end();
     })
     .catch((err) => {
@@ -408,7 +407,7 @@ app.post("/leaveMeeting", (req, res) => {
     )
     .then(() => {
       res.statusCode = 200;
-      res.writeHead(302, { Location: req.originalUrl });
+      res.writeHead(302, { Location: "/dashboard/myMeetings" });
       res.end();
     })
     .catch((err) => {
@@ -578,6 +577,5 @@ app.get("/success", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  console.log(req.url);
   res.status(404).sendFile(__dirname + "/public/status/404.html");
 });
