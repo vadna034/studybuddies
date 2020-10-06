@@ -20,8 +20,8 @@ $(document).ready(function () {
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: adjustForTimezone(starttime),
-          end: adjustForTimezone(endtime),
+          start: starttime,
+          end: endtime,
         });
       });
 
