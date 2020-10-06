@@ -45,9 +45,6 @@ $(document).ready(() => {
           console.log(starttime.toLocaleString());
           console.log(endtime.toLocaleString());
 
-          starttime = adjustForTimezone(starttime)
-          endtime = adjustForTimezone(endtime)
-
           var codeCell = addRow.insertCell(0);
           codeCell.innerHTML = element.code;
           var startCell = addRow.insertCell(1);
