@@ -41,6 +41,12 @@ $(document).ready(() => {
           console.log(Date.parse(element.starttime));
           var starttime = new Date(element.starttime);
           var endtime = new Date(element.endtime);
+          console.log(starttime.toUTCString());
+          console.log(starttime.toLocaleString());
+          console.log(endtime.toLocaleString());
+
+          starttime = adjustForTimezone(starttime)
+          endtime = adjustForTimezone(endtime)
 
           var codeCell = addRow.insertCell(0);
           codeCell.innerHTML = element.code;
@@ -76,3 +82,11 @@ $(document).ready(() => {
         "<div class='alert alert-danger'> There was a server error. Please try again later </div>";
     });
 });
+
+function adjustForTimezone(date){
+  
+  var timeOffsetInMS = new Date().getTimezoneOffset() * 60000;
+  console.log(timeOffsetInMS);
+  date.setTime(date.getTime() - timeOffsetInMS);
+  return date
+}

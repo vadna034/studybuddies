@@ -7,18 +7,21 @@ $(document).ready(function () {
       var calEvents = [];
       var calendarEl = document.getElementById("calendar");
       console.log(events);
+      
 
  
 
       events.forEach((event) => {
         var starttime = new Date(event.starttime);
         var endtime = new Date(event.endtime);
-        console.log(event);
+        console.log(starttime);
+        console.log(starttime.toLocaleString());
+
         calEvents.push({
           title: event.code,
           timeZone: "local",
-          start: starttime,
-          end: endtime
+          start: adjustForTimezone(starttime),
+          end: adjustForTimezone(endtime),
         });
       });
 
@@ -36,3 +39,11 @@ $(document).ready(function () {
       console.log(dash);
     });
 });
+
+function adjustForTimezone(date){
+  
+  var timeOffsetInMS = new Date().getTimezoneOffset() * 60000;
+  console.log(timeOffsetInMS);
+  date.setTime(date.getTime() - timeOffsetInMS);
+  return date
+}

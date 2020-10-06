@@ -287,7 +287,7 @@ app.post("/deleteClass", (req, res) => {
     ])
     .then(() => {
       console.log("success");
-      res.writeHead(302, { Location: req.originalUrl });
+      res.writeHead(302, { Location: "/dashboard/myClasses" });
       res.end();
     })
     .catch((err) => {
@@ -321,7 +321,7 @@ app.get("/dashboard/class/([0-9]+)", async (req, res) => {
       });
     var userMeetings = await pool
       .query(
-        "SELECT U.email, CM.owner, CM.starttime, CM.endtime, CM.link, CM.purpose, (case when exists (SELECT userid from classmeetingmembership WHERE classmeetingid = CM.id AND userid = $2) then True else False end) AS enrolled from classMeetings AS CM, users as U WHERE CM.classId = $1 AND U.id = CM.owner ORDER BY CM.StartTime ",
+        "SELECT U.email, CM.owner, CM.starttime, CM.endtime, CM.link, CM.purpose, CM.id, (case when exists (SELECT userid from classmeetingmembership WHERE classmeetingid = CM.id AND userid = $2) then True else False end) AS enrolled from classMeetings AS CM, users as U WHERE CM.classId = $1 AND U.id = CM.owner ORDER BY CM.StartTime ",
         [classID, req.session.data.id]
       )
       .catch((err) => {
@@ -417,16 +417,14 @@ app.post("/leaveMeeting", (req, res) => {
     });
 });
 
-app.post("/addMeeting", (req, res) => {
+app.post("/joinMeeting", (req, res) => {
   pool
     .query(
       "INSERT INTO classMeetingMembership (classMeetingid, userid) VALUES ($1, $2)",
       [req.body.id, req.session.data.id]
     )
     .then(() => {
-      res.statusCode = 200;
-      res.writeHead(302, { Location: req.originalUrl });
-      res.end();
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.log(err);
@@ -441,7 +439,8 @@ app.get("/addClasses.js", (req, res) => {
 });
 
 app.get("/home.js", (req, res) => {
-  res.status(200).sendFile(__dirname + "/src/home.js");
+  res.statusCode = 200;
+  res.sendFile(__dirname + "/src/home.js");
 });
 
 app.get("/addMeetings.js", (req, res) => {
@@ -472,6 +471,10 @@ app.get("/register.js", (req, res) => {
 app.get("/dashboard.js", (req, res) => {
   res.statusCode = 200;
   res.sendFile(__dirname + "/src/dashboard.js");
+});
+
+app.get("/class.js", (req, res) => {
+  res.status(200).sendFile(__dirname + "/src/class.js");
 });
 
 app.post("/register", async (req, res) => {

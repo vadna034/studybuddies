@@ -54,8 +54,8 @@ $(document).ready(() => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                startdatetime: start.toISOString(),
-                enddatetime: end.toISOString(),
+                startdatetime: start.toUTCString(),
+                enddatetime: end.toUTCString(),
                 classId: $("#classId").val(),
                 zoom: $("#zoom").val().trim(),
                 purpose: $("#purpose").val(),

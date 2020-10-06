@@ -9,7 +9,7 @@
     </div>
     <div class="meetingTable">
         <!-- So now we have curMeetings and otherMeetings -->
-
+        <div id="errorArea"></div>
         <div class="pageTitle">
             <h1 class="text-center "> Meetings you should check out </h1>
         </div>
@@ -37,9 +37,9 @@
                         <td> {{purpose}} </td>
                         <td> {{link}} </td>
                         <td>
-                            <form name="addMeetingForm" action="/addMeeting" method="POST">
-                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
-                                    Leave
+                            <form name="addMeetingForm" id="{{id}}" class="addMeetingForm">
+                                <button type="submit" class="btn btn-primary" name="submit" value="{{id}}">
+                                    Join
                                 </button>
                             </form>
                         </td>
@@ -85,21 +85,6 @@
                             <a href="{{Link}}">
                                 Link
                             </a>
-                        </td>
-                        <td>
-                            {{#if delete}}
-                            <form name="deleteMeeting" action="/deleteMeeting" method="POST">
-                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
-                                    Delete
-                                </button>
-                            </form>
-                            {{else}}
-                            <form name="leaveMeeting" action="/leaveMeeting" method="POST">
-                                <button type="submit" class="btn btn-danger" name="id" value="{{id}}">
-                                    Leave
-                                </button>
-                            </form>
-                            {{/if}}
                         </td>
                     </tr>
                     {{/each}}
